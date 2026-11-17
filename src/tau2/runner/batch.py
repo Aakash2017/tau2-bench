@@ -482,6 +482,13 @@ def run_single_task(
                     review_guidelines = get_user_guidelines(
                         is_voice=is_voice, agent_directed=agent_directed
                     )
+            elif config.domain == "automation_workplace":
+                from tau2.domains.automation_workplace.prompts import (
+                    USER_SIMULATION_GUIDELINES,
+                )
+
+                review_guidelines = USER_SIMULATION_GUIDELINES
+                review_context = None
             run_auto_review(
                 simulation=simulation,
                 task=user_prompt_task(config, task),

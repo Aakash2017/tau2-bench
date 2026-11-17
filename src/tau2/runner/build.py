@@ -230,6 +230,12 @@ def build_user(
             user_kwargs["global_guidelines_override"] = get_user_guidelines(
                 is_voice=False, agent_directed=False, persona=persona_config
             )
+        elif environment.get_domain_name() == "automation_workplace":
+            from tau2.domains.automation_workplace.prompts import (
+                USER_SIMULATION_GUIDELINES,
+            )
+
+            user_kwargs["global_guidelines_override"] = USER_SIMULATION_GUIDELINES
 
     return UserConstructor(**user_kwargs)
 
