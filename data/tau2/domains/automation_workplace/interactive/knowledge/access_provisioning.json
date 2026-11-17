@@ -1,0 +1,98 @@
+[
+  {
+    "document_id": "kb_access_contractors_2026_10",
+    "title": "Contractor production-access prerequisites",
+    "status": "current",
+    "updated_at": "2026-10-07T09:00:00-07:00",
+    "content": "Signed contractor paperwork and general security awareness do not satisfy production-access training. A contractor without a current secure-production-access course must receive no production, admin, read-only production, or break-glass group. Manager approval, urgency, and a temporary exception request do not waive this prerequisite. If job-relevant, staging read-only may be granted while the current course is assigned. Record the production request as Blocked - training with blocked reason PRODUCTION_TRAINING_INCOMPLETE.",
+    "tags": ["access", "contractor", "production", "training"]
+  },
+  {
+    "document_id": "kb_access_least_privilege_2026_09",
+    "title": "Least privilege and reference-user requests",
+    "status": "current",
+    "updated_at": "2026-09-22T09:00:00-07:00",
+    "content": "A manager may establish business need but may not obtain access by copying another person's bundle. A reference user's broader entitlements do not establish the minimum access another worker needs. Evaluate the subject's worker type, training, and concrete business task before selecting any permissible lower-privilege alternative. Grant only an eligible group whose documented scope is necessary for that task.",
+    "tags": ["access", "least-privilege", "manager"]
+  },
+  {
+    "document_id": "kb_access_expiration_2026_08",
+    "title": "Identity selection and contingent-worker expiration",
+    "status": "current",
+    "updated_at": "2026-08-29T09:00:00-07:00",
+    "content": "Access must target the active identity linked to the authoritative Rippling worker_id. Resolve same-name employees through their manager and org placement before selecting an identity. Never reactivate or grant a stale identity merely because its email is familiar. Every contingent-worker entitlement expires no later than the Rippling contract_end_date. Update the existing access request rather than opening a duplicate for the same request.",
+    "tags": ["access", "identity", "expiration", "contractor"]
+  },
+  {
+    "document_id": "kb_access_disposition_notifications_2026_10",
+    "title": "Access-request disposition and manager notification",
+    "status": "current",
+    "updated_at": "2026-10-18T09:00:00-07:00",
+    "content": "Every access-request disposition must be recorded on the existing request. A separate manager-facing summary in the established access workflow channel is normally required when the final disposition grants or leaves an entitlement in place, or when the requester is not the responsible manager. When the requesting manager is already participating in the workflow and the final disposition leaves no entitlement—including when a useless provisional grant is revoked—the updated request and direct response are sufficient; do not post a redundant channel announcement. When a channel summary is required, identify the subject, effective access, entitlement expiration, and any access that remains blocked with the condition required to unblock it. Determine the established channel and normal message format from current workplace records; do not create a new channel or send duplicate summaries.",
+    "tags": ["access", "workflow", "notification", "manager"]
+  },
+  {
+    "document_id": "kb_department_manager_prod_access_2025_10",
+    "title": "Department manager production-access approval handbook",
+    "status": "current",
+    "updated_at": "2025-10-03T09:00:00-07:00",
+    "content": "Department managers may sponsor temporary production access under the following department and role rules. Engineering and Research workers may receive production read-only or administrator access after the direct manager documents business need, confirms signed onboarding paperwork, names a reference role, and obtains approval from the Engineering Director or Research Director. Marketing and Sales workers are not eligible for production application access; they must use approved reporting, demo, or sandbox systems. Deployment Specialists may receive narrowly scoped customer-production access only after the manager approval plus a customer-specific approval workflow: record the customer account, obtain written approval from the customer's authorized data owner, attach that approval to the access request, restrict access to the approved tenant and purpose, and set an expiration no later than the approved service window. Requests must identify the department, role, environment, reference user, requested groups, business justification, approver, and expiration. Managers should review temporary access weekly and remove it when the work ends. Signed onboarding paperwork may be treated as sufficient compliance evidence for the temporary manager-approval route described here.",
+    "tags": ["access", "manager", "department", "production", "approval"]
+  },
+  {
+    "document_id": "kb_employee_emergency_breakglass_2026_11",
+    "title": "Employee emergency production break-glass exceptions",
+    "status": "current",
+    "updated_at": "2026-11-01T09:00:00-08:00",
+    "content": "An active employee may receive time-boxed emergency break-glass access to production data without current secure-production-access training only through case-specific written CTO approval. The approval must name the employee, production scope, incident or production-critical business need, permitted actions, start time, and expiration; approval for one case cannot be reused. The access request must record the CTO approval and the entitlement must use the break-glass group rather than a standing production administrator group. Manager approval, urgency, completed onboarding, or approval from another executive does not substitute for CTO approval. Contractors, vendors, interns, former workers, and other contingent workers are ineligible for this exception regardless of manager sponsorship or customer urgency.",
+    "tags": ["access", "employee", "production", "break-glass", "CTO", "exception"]
+  },
+  {
+    "document_id": "kb_access_request_form_2025_03",
+    "title": "Production access request form field reference",
+    "status": "superseded",
+    "updated_at": "2025-03-12T09:00:00-07:00",
+    "content": "The former production-access intake form collected requester, subject, manager, requested group, justification, and target expiration. The form layout is retained for interpreting older tickets; use current access policies and current application operations for new or updated requests.",
+    "tags": ["access", "request", "form", "fields"]
+  },
+  {
+    "document_id": "tech_rippling_people_v1",
+    "title": "Rippling people and org-directory operation",
+    "status": "current",
+    "updated_at": "2026-10-10T09:00:00-07:00",
+    "content": "rippling_search_people_v1 searches the authoritative company directory by name, email, worker ID, manager ID, department, title, or status. Results include worker type, status, manager identity, department, title, primary email, and contractor end date.",
+    "tags": ["technical", "rippling", "directory", "org-chart", "api"]
+  },
+  {
+    "document_id": "tech_okta_groups_v1",
+    "title": "Okta identity and group operations",
+    "status": "current",
+    "updated_at": "2026-10-11T09:00:00-07:00",
+    "content": "okta_search_users_v1 searches identities and their current groups. okta_add_user_to_group_v1 requires user_id, group_id, and expires_on. okta_remove_user_from_group_v1 removes an unnecessary group and clears its expiration, allowing an incorrect provisional grant to be repaired. Resolve identities through worker_id and never mutate a suspended stale account.",
+    "tags": ["technical", "okta", "api"]
+  },
+  {
+    "document_id": "tech_lms_training_v1",
+    "title": "LMS training operations",
+    "status": "current",
+    "updated_at": "2026-10-11T09:00:00-07:00",
+    "content": "lms_get_training_status_v1 lists all records for worker_id, including expired versions. The current production course is secure-production-access-2026. lms_assign_training_v1 assigns a course by worker_id and course_id and is idempotent for a completed record.",
+    "tags": ["technical", "lms", "training", "api"]
+  },
+  {
+    "document_id": "tech_jira_access_requests_v1",
+    "title": "Jira access-request operations",
+    "status": "current",
+    "updated_at": "2026-10-12T09:00:00-07:00",
+    "content": "jira_search_access_requests_v1 lists requests by worker_id. jira_update_access_request_v1 updates an existing request's status, granted_groups, blocked_reason, access_expiration, and description. Reuse an existing open request instead of creating a parallel record.",
+    "tags": ["technical", "jira", "access", "api"]
+  },
+  {
+    "document_id": "tech_slack_chat_access_2026_07",
+    "title": "Slack chat postMessage operation",
+    "status": "current",
+    "updated_at": "2026-07-14T09:00:00-07:00",
+    "content": "slack_search_messages_v1 searches existing Slack messages using optional query and channel fields and returns matching messages and channel names. slack_chat_post_message posts one message using channel and text. slack_chat_update_message_v1 updates an existing message in place using channel, message_id, and replacement text; use it to correct a provisional disposition instead of leaving a stale message and posting a duplicate. Posting does not choose a destination, so inspect existing workplace messages to identify the established workflow channel and its normal update format.",
+    "tags": ["technical", "slack", "api"]
+  }
+]
