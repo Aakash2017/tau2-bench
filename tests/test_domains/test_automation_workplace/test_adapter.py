@@ -25,9 +25,9 @@ def test_catalog_preserves_source_control_and_adds_interactive_canonicals():
 
     assert len(tasks) == 10
     assert sum(len(task.evaluation_criteria.env_assertions) for task in tasks) == 158
-    assert len(all_tasks) == 29
+    assert len(all_tasks) == 26
     assert len(get_tasks("interactive_pilot")) == 1
-    assert len(get_tasks("interactive_canonical")) == 19
+    assert len(get_tasks("interactive_canonical")) == 16
     assert all(
         task.evaluation_criteria.reward_basis == [RewardType.ENV_ASSERTION]
         for task in tasks
@@ -198,26 +198,3 @@ def test_runtime_user_receives_workplace_specific_system_prompt():
     assert 'vague completion claims such as "done"' in user.system_prompt
     assert task.user_scenario.persona in user.system_prompt
     assert task.user_scenario.instructions.reason_for_call in user.system_prompt
-
-
-def test_interactive_access_task_grades_unrelated_generic_api_side_effects():
-    task = next(
-        task
-        for task in get_tasks("interactive_canonical")
-        if task.id.endswith("access_provisioning_001")
-    )
-    environment = get_environment()
-    environment.set_state(
-        initialization_data=task.initial_state.initialization_data,
-        initialization_actions=None,
-        message_history=[],
-    )
-    assertion_index = next(
-        index
-        for index, assertion in enumerate(environment.tools.db.interactive_assertions)
-        if assertion["type"] == "access_no_unrelated_api_side_effects"
-    )
-
-    assert environment.tools.assert_interactive_assertion(assertion_index)
-    environment.tools.db.world = {"gmail": {"messages": [{"id": "unexpected"}]}}
-    assert not environment.tools.assert_interactive_assertion(assertion_index)

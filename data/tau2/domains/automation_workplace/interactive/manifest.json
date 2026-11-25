@@ -1,7 +1,7 @@
 {
   "schema_version": "0.1.0",
   "benchmark_layer": "authored_interactive_workplace",
-  "task_count": 19,
+  "task_count": 16,
   "knowledge_document_count": 94,
   "knowledge_bundle_count": 7,
   "pilot_task_id": "automation_workplace__interactive__incident_triage_001",

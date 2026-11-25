@@ -1,0 +1,34 @@
+{
+  "automation_workplace__interactive__access_provisioning_010": [
+    {
+      "id": "dara_end",
+      "person": "Dara",
+      "critical": true,
+      "ambiguity": "ACCESS-451 says 'for the cutover' with no end date. No record in the world contains the date; only the manager knows it.",
+      "value_patterns": ["january 8", "jan 8", "jan\\.? 8", "1/8", "2027-01-08", "8th of january"],
+      "trigger_patterns": ["how long", "until when", "through when", "end date", "when (does|will|is) .*(end|wrap|finish|done|over)", "duration", "how much (time|longer)", "need (it|access) (for|until|through)", "expire|expiry|expiration"],
+      "outcome_assertions": [0, 1],
+      "probe_replies_must_contain": "january 8"
+    },
+    {
+      "id": "omar_end",
+      "person": "Omar",
+      "critical": false,
+      "ambiguity": "ACCESS-452 says 'for the capacity project' with no end date. The stated need is longer than the window, so the outcome is the same without asking.",
+      "value_patterns": ["end of march", "through march", "march"],
+      "trigger_patterns": ["how long", "until when", "through when", "end date", "when (does|will|is) .*(end|wrap|finish|done|over)", "duration", "how much (time|longer)", "need (it|access) (for|until|through)", "expire|expiry|expiration"],
+      "outcome_assertions": [2, 3],
+      "probe_replies_must_contain": "march"
+    },
+    {
+      "id": "sven_verbal_approval",
+      "person": "Sven",
+      "critical": false,
+      "ambiguity": "No written approval from the role owner exists anywhere; the manager only has a hallway conversation. The right outcome (hold) does not depend on asking.",
+      "value_patterns": ["in person", "told me", "hallway", "talked", "said (she|marta)"],
+      "trigger_patterns": ["approv", "sign.?off", "okay|ok'?d|ok\\b", "owner", "marta"],
+      "outcome_assertions": [4],
+      "probe_replies_must_contain": "in person"
+    }
+  ]
+}

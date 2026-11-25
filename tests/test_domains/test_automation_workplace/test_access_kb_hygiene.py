@@ -25,8 +25,10 @@ def _kb(file: str) -> dict:
     }
 
 
-KB = _kb("knowledge/access_provisioning.json")
-LEDGER = json.loads((INTERACTIVE / "evidence/access_provisioning.json").read_text())
+LEDGER = {
+    **json.loads((INTERACTIVE / "evidence/access_provisioning.json").read_text()),
+    **json.loads((INTERACTIVE / "evidence/access_precedent_extra.json").read_text()),
+}
 TASKS = {
     spec["id"]: spec
     for spec in (

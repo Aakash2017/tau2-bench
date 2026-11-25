@@ -137,7 +137,7 @@ def test_dataset_manifest_and_remaining_task_families_are_reviewable():
     manifest = load_file(AUTOMATION_WORKPLACE_INTERACTIVE_DIR / "manifest.json")
     families = load_file(AUTOMATION_WORKPLACE_INTERACTIVE_DIR / "task_families.json")
 
-    assert manifest["task_count"] == 19
+    assert manifest["task_count"] == 16
     assert manifest["knowledge_document_count"] == 94
     assert manifest["knowledge_bundle_count"] == 7
     assert manifest["planned_dataset"] == {

@@ -1,0 +1,290 @@
+{
+ "access_provisioning_008": [
+  [
+   "okta_add_user_to_group_v1",
+   {
+    "user_id": "okta_tomas_ruiz",
+    "group_id": "grp_prod_admin",
+    "expires_on": "2026-12-28"
+   }
+  ],
+  [
+   "jira_update_access_request_v1",
+   {
+    "request_id": "ACCESS-451",
+    "status": "Completed",
+    "granted_groups": [
+     "grp_prod_admin"
+    ],
+    "blocked_reason": "",
+    "access_expiration": "2026-12-28",
+    "description": "Granted production admin through 2026-12-28."
+   }
+  ],
+  [
+   "okta_add_user_to_group_v1",
+   {
+    "user_id": "okta_ines_moreau",
+    "group_id": "grp_prod_readonly",
+    "expires_on": "2027-01-13"
+   }
+  ],
+  [
+   "jira_update_access_request_v1",
+   {
+    "request_id": "ACCESS-452",
+    "status": "Completed",
+    "granted_groups": [
+     "grp_prod_readonly"
+    ],
+    "blocked_reason": "",
+    "access_expiration": "2027-01-13",
+    "description": "Granted production read-only through 2027-01-13."
+   }
+  ],
+  [
+   "okta_add_user_to_group_v1",
+   {
+    "user_id": "okta_lena_ostrowski",
+    "group_id": "grp_staging_deployer",
+    "expires_on": "2027-03-14"
+   }
+  ],
+  [
+   "jira_update_access_request_v1",
+   {
+    "request_id": "ACCESS-453",
+    "status": "Completed",
+    "granted_groups": [
+     "grp_staging_deployer"
+    ],
+    "blocked_reason": "",
+    "access_expiration": "2027-03-14",
+    "description": "Granted staging deployer through 2027-03-14."
+   }
+  ],
+  [
+   "lms_assign_training_v1",
+   {
+    "worker_id": "worker_hana_kim",
+    "course_id": "secure-production-access-2026"
+   }
+  ],
+  [
+   "jira_update_access_request_v1",
+   {
+    "request_id": "ACCESS-454",
+    "status": "Blocked - training",
+    "granted_groups": [],
+    "blocked_reason": "PRODUCTION_TRAINING_INCOMPLETE",
+    "access_expiration": null,
+    "description": "Waiting on the production course, assigned."
+   }
+  ],
+  [
+   "slack_chat_post_message",
+   {
+    "channel": "eng-access-requests",
+    "text": "Tomas Ruiz received production admin through 2026-12-28 (ACCESS-451)."
+   }
+  ],
+  [
+   "slack_chat_post_message",
+   {
+    "channel": "eng-access-requests",
+    "text": "Ines Moreau received production read-only through 2027-01-13 (ACCESS-452)."
+   }
+  ],
+  [
+   "slack_chat_post_message",
+   {
+    "channel": "eng-access-requests",
+    "text": "Lena Ostrowski received staging deployer through 2027-03-14 (ACCESS-453)."
+   }
+  ]
+ ],
+ "access_provisioning_009": [
+  [
+   "okta_add_user_to_group_v1",
+   {
+    "user_id": "okta_omar_haddad",
+    "group_id": "grp_prod_readonly",
+    "expires_on": "2026-12-21"
+   }
+  ],
+  [
+   "jira_update_access_request_v1",
+   {
+    "request_id": "ACCESS-451",
+    "status": "Completed",
+    "granted_groups": [
+     "grp_prod_readonly"
+    ],
+    "blocked_reason": "",
+    "access_expiration": "2026-12-21",
+    "description": "Granted production read-only through 2026-12-21."
+   }
+  ],
+  [
+   "okta_add_user_to_group_v1",
+   {
+    "user_id": "okta_noor_aziz",
+    "group_id": "grp_prod_readonly",
+    "expires_on": "2027-01-13"
+   }
+  ],
+  [
+   "jira_update_access_request_v1",
+   {
+    "request_id": "ACCESS-452",
+    "status": "Completed",
+    "granted_groups": [
+     "grp_prod_readonly"
+    ],
+    "blocked_reason": "",
+    "access_expiration": "2027-01-13",
+    "description": "Granted production read-only through 2027-01-13."
+   }
+  ],
+  [
+   "okta_add_user_to_group_v1",
+   {
+    "user_id": "okta_selin_aydin",
+    "group_id": "grp_prod_readonly",
+    "expires_on": "2027-01-08"
+   }
+  ],
+  [
+   "jira_update_access_request_v1",
+   {
+    "request_id": "ACCESS-453",
+    "status": "Completed",
+    "granted_groups": [
+     "grp_prod_readonly"
+    ],
+    "blocked_reason": "",
+    "access_expiration": "2027-01-08",
+    "description": "Granted production read-only through 2027-01-08."
+   }
+  ],
+  [
+   "jira_update_access_request_v1",
+   {
+    "request_id": "ACCESS-454",
+    "status": "Blocked - approval",
+    "granted_groups": [],
+    "blocked_reason": "ROLE_OWNER_APPROVAL_PENDING",
+    "access_expiration": null,
+    "description": "Waiting on the production admin owners."
+   }
+  ],
+  [
+   "slack_chat_post_message",
+   {
+    "channel": "eng-access-requests",
+    "text": "Omar Haddad received production read-only through 2026-12-21 (ACCESS-451)."
+   }
+  ],
+  [
+   "slack_chat_post_message",
+   {
+    "channel": "eng-access-requests",
+    "text": "Noor Aziz received production read-only through 2027-01-13 (ACCESS-452)."
+   }
+  ],
+  [
+   "slack_chat_post_message",
+   {
+    "channel": "eng-access-requests",
+    "text": "Selin Aydin received production read-only through 2027-01-08 (ACCESS-453)."
+   }
+  ]
+ ],
+ "access_provisioning_010": [
+  [
+   "okta_add_user_to_group_v1",
+   {
+    "user_id": "okta_dara_quinn",
+    "group_id": "grp_prod_readonly",
+    "expires_on": "2027-01-08"
+   }
+  ],
+  [
+   "jira_update_access_request_v1",
+   {
+    "request_id": "ACCESS-451",
+    "status": "Completed",
+    "granted_groups": [
+     "grp_prod_readonly"
+    ],
+    "blocked_reason": "",
+    "access_expiration": "2027-01-08",
+    "description": "Granted production read-only through 2027-01-08."
+   }
+  ],
+  [
+   "okta_add_user_to_group_v1",
+   {
+    "user_id": "okta_omar_haddad",
+    "group_id": "grp_prod_readonly",
+    "expires_on": "2027-01-13"
+   }
+  ],
+  [
+   "jira_update_access_request_v1",
+   {
+    "request_id": "ACCESS-452",
+    "status": "Completed",
+    "granted_groups": [
+     "grp_prod_readonly"
+    ],
+    "blocked_reason": "",
+    "access_expiration": "2027-01-13",
+    "description": "Granted production read-only through 2027-01-13."
+   }
+  ],
+  [
+   "jira_update_access_request_v1",
+   {
+    "request_id": "ACCESS-453",
+    "status": "Blocked - approval",
+    "granted_groups": [],
+    "blocked_reason": "ROLE_OWNER_APPROVAL_PENDING",
+    "access_expiration": null,
+    "description": "Waiting for the production admin owner to approve in writing."
+   }
+  ],
+  [
+   "lms_assign_training_v1",
+   {
+    "worker_id": "worker_hana_kim",
+    "course_id": "secure-production-access-2026"
+   }
+  ],
+  [
+   "jira_update_access_request_v1",
+   {
+    "request_id": "ACCESS-454",
+    "status": "Blocked - training",
+    "granted_groups": [],
+    "blocked_reason": "PRODUCTION_TRAINING_INCOMPLETE",
+    "access_expiration": null,
+    "description": "Waiting on the production course, assigned."
+   }
+  ],
+  [
+   "slack_chat_post_message",
+   {
+    "channel": "eng-access-requests",
+    "text": "Dara Quinn received production read-only through 2027-01-08 (ACCESS-451)."
+   }
+  ],
+  [
+   "slack_chat_post_message",
+   {
+    "channel": "eng-access-requests",
+    "text": "Omar Haddad received production read-only through 2027-01-13 (ACCESS-452)."
+   }
+  ]
+ ]
+}

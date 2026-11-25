@@ -39,27 +39,27 @@
     "automation_workplace__interactive__incident_triage_001"
   ],
   "interactive_canonical": [
-    "automation_workplace__interactive__incident_triage_001",
-    "automation_workplace__interactive__vendor_invoice_001",
-    "automation_workplace__interactive__customer_escalation_001",
-    "automation_workplace__interactive__access_provisioning_001",
-    "automation_workplace__interactive__access_provisioning_002",
-    "automation_workplace__interactive__access_provisioning_003",
-    "automation_workplace__interactive__access_provisioning_004",
-    "automation_workplace__interactive__access_provisioning_005",
-    "automation_workplace__interactive__access_provisioning_006",
     "automation_workplace__interactive__access_provisioning_007",
-    "automation_workplace__interactive__renewal_portfolio_001",
-    "automation_workplace__interactive__meeting_coordination_001",
-    "automation_workplace__interactive__vendor_invoice_002",
-    "automation_workplace__interactive__renewal_portfolio_002",
+    "automation_workplace__interactive__access_provisioning_008",
+    "automation_workplace__interactive__access_provisioning_009",
+    "automation_workplace__interactive__access_provisioning_010",
+    "automation_workplace__interactive__customer_escalation_001",
     "automation_workplace__interactive__customer_escalation_002",
+    "automation_workplace__interactive__incident_triage_001",
+    "automation_workplace__interactive__meeting_coordination_001",
+    "automation_workplace__interactive__renewal_portfolio_001",
+    "automation_workplace__interactive__renewal_portfolio_002",
+    "automation_workplace__interactive__vendor_invoice_001",
+    "automation_workplace__interactive__vendor_invoice_002",
     "automation_workplace__interactive__vendor_invoice_002_solo",
     "automation_workplace__interactive__vendor_invoice_003",
     "automation_workplace__interactive__vendor_invoice_004",
     "automation_workplace__interactive__vendor_invoice_005"
   ],
   "access_precedent": [
-    "automation_workplace__interactive__access_provisioning_007"
+    "automation_workplace__interactive__access_provisioning_007",
+    "automation_workplace__interactive__access_provisioning_008",
+    "automation_workplace__interactive__access_provisioning_009",
+    "automation_workplace__interactive__access_provisioning_010"
   ]
 }

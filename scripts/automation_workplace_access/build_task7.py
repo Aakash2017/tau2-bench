@@ -13,13 +13,9 @@ from copy import deepcopy
 from pathlib import Path
 
 INTERACTIVE = Path(sys.argv[1])
-BASE = json.loads((INTERACTIVE / "tasks/access_provisioning_006.json").read_text())
-KB6 = {
-    d["document_id"]: d
-    for d in json.loads(
-        (INTERACTIVE / "knowledge/access_provisioning.json").read_text()
-    )
-}
+BASE_DIR = Path(__file__).parent / "base"
+BASE = json.loads((BASE_DIR / "task6_world.json").read_text())
+KB6 = {d["document_id"]: d for d in json.loads((BASE_DIR / "old_kb.json").read_text())}
 
 KEN = "worker_ken_watanabe"
 AVA = "worker_ava_cole"

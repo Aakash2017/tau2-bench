@@ -3,7 +3,13 @@
     "family_id": "incident_triage",
     "status": "implemented_pilot",
     "canonical_task": "incident_triage_001",
-    "apps": ["Datadog", "PagerDuty", "Linear", "Statuspage", "Slack"],
+    "apps": [
+      "Datadog",
+      "PagerDuty",
+      "Linear",
+      "Statuspage",
+      "Slack"
+    ],
     "knowledge": [
       "incident severity policy",
       "response runbook",
@@ -25,7 +31,13 @@
     "family_id": "vendor_invoice",
     "status": "implemented_canonical",
     "canonical_task": "vendor_invoice_001",
-    "apps": ["QuickBooks", "Gmail", "DocuSign", "Jira", "Slack"],
+    "apps": [
+      "QuickBooks",
+      "Gmail",
+      "DocuSign",
+      "Jira",
+      "Slack"
+    ],
     "knowledge": [
       "three-way match policy",
       "invoice overage handling",
@@ -46,7 +58,13 @@
     "family_id": "customer_escalation",
     "status": "implemented_canonical",
     "canonical_task": "customer_escalation_001",
-    "apps": ["Salesforce", "Zendesk", "Gmail", "Linear", "Slack"],
+    "apps": [
+      "Salesforce",
+      "Zendesk",
+      "Gmail",
+      "Linear",
+      "Slack"
+    ],
     "knowledge": [
       "customer incident communication policy",
       "service-credit authority",
@@ -66,16 +84,22 @@
   {
     "family_id": "access_provisioning",
     "status": "implemented_canonical",
-    "canonical_task": "access_provisioning_001",
-    "apps": ["BambooHR", "Okta", "LMS", "Jira", "Slack"],
+    "canonical_task": "access_provisioning_007",
+    "apps": [
+      "BambooHR",
+      "Okta",
+      "LMS",
+      "Jira",
+      "Slack"
+    ],
     "knowledge": [
       "least-privilege policy",
       "contractor access rules",
       "training dependency",
       "technical app operations"
     ],
-    "user_dimension": "The manager incorrectly assumes signed Legal paperwork permits production access, then selects staging read-only after the agent establishes the training dependency.",
-    "target_state": "Grant expiring staging read-only access, assign training, and create a blocked production request without granting production entitlements.",
+    "user_dimension": "The manager only states wants. The desk process (default window, approval, training, conflicts, announcements) is inferred from dated Slack threads and closed tickets; later tasks add per-group windows, anchored expiries and facts only the manager holds.",
+    "target_state": "Grant with the window the precedent implies, hold the rest with the right reason, assign required training, and announce each grant once.",
     "primary_failure_modes": [
       "copies an overprivileged team bundle",
       "grants production access",
@@ -117,7 +141,13 @@
     "family_id": "meeting_coordination",
     "status": "implemented_canonical",
     "canonical_task": "meeting_coordination_001",
-    "apps": ["Google Calendar", "Gmail", "Google Drive", "Salesforce", "Slack"],
+    "apps": [
+      "Google Calendar",
+      "Gmail",
+      "Google Drive",
+      "Salesforce",
+      "Slack"
+    ],
     "knowledge": [
       "external meeting policy",
       "scheduling and quorum rules",

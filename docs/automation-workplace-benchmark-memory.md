@@ -780,3 +780,24 @@ correctly among three sources:
 - enterprise systems control facts, policy, eligibility, and recorded state; and
 - the agent must reconcile both, execute the complete workflow, and verify the exact
   outcome without being coached through the answer.
+
+## Access provisioning restarted at Tasks 7 to 10
+
+Tasks 1 to 6 were saturated and have been removed (they remain in git history at commit `0e05cea` on branch
+`automation-workplace-access-precedent`). Task 7's builder now reads its inputs from
+`scripts/automation_workplace_access/base/` (the Task 6 world and the old KB) and rebuilds Task 7 byte for byte.
+`build_precedent_tasks.py` builds Tasks 8 to 10 on Task 7's world (same company, same 566-message Slack history,
+plus each task's own dated threads). Golden call sequences for 008 to 010 live in
+`evidence/access_precedent_golden.json`.
+
+| Task | Unstated parameter | Astra 6.2 xhigh, 3 trials |
+|---|---|---|
+| 008 | window depends on the group (admin 14, read-only 30, staging deployer 90 days) | strict 2/3, decision 3/3 |
+| 009 | expiry anchored elsewhere (on-call rotation end, training lapse, later contract end does not apply) | strict 2/3, decision 3/3 |
+| 010 | progressive disclosure: Dara's end date is known only to the manager | strict 1/3 |
+
+The 008 and 009 misses were announcement granularity only (one combined Slack post). The 010 misses were the agent never
+asking Ken for Dara's end date. `disclosure_conformance.py` (simulator check before a run) and `disclosure_audit.py`
+(per-trial attribution to agent or environment after a run) support the disclosure task.
+Open items: the same people appear with different dates across the separate 008 to 010 worlds, so the worlds cannot be
+merged for a memory eval without reconciling timelines; `manifest.json` `knowledge_document_count` is stale.

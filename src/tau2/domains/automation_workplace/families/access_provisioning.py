@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
-import base64
 import json
 from typing import Any, Callable, Literal, Optional
 
 from pydantic import BaseModel, Field
 
+from tau2.domains.automation_workplace.utils import (
+    AUTOMATION_WORKPLACE_INTERACTIVE_DIR,
+)
 from tau2.utils.pydantic_utils import BaseModelNoExtra
 
 
@@ -1221,253 +1223,26 @@ def check_assertion(raw_world: dict[str, Any], assertion: dict[str, Any]) -> boo
     return _check_assertion_model(validate_world(raw_world), assertion)
 
 
+def _precedent_golden(task_id: str) -> list[tuple[str, dict[str, Any]]] | None:
+    """Golden calls for the generated precedent tasks, written by their builder."""
+    path = (
+        AUTOMATION_WORKPLACE_INTERACTIVE_DIR / "evidence/access_precedent_golden.json"
+    )
+    if not path.exists():
+        return None
+    calls = json.loads(path.read_text()).get(task_id)
+    return None if calls is None else [(name, args) for name, args in calls]
+
+
 def golden_call_sequence(
-    task_id: str = "access_provisioning_001",
+    task_id: str = "access_provisioning_007",
 ) -> list[tuple[str, dict[str, Any]]]:
     """Return one deterministic, policy-compliant write trajectory."""
-    if task_id == "access_provisioning_003":
-        return _backlog_golden_call_sequence()
-    if task_id == "access_provisioning_004":
-        return _scoping_golden_call_sequence()
-    if task_id == "access_provisioning_005":
-        return _queue_golden_call_sequence()
-    if task_id == "access_provisioning_006":
-        return _review_golden_call_sequence()
+    if (precedent := _precedent_golden(task_id)) is not None:
+        return precedent
     if task_id == "access_provisioning_007":
         return _precedent_golden_call_sequence()
-    if task_id == "access_provisioning_002":
-        return [
-            (
-                "okta_remove_user_from_group_v1",
-                {
-                    "user_id": "okta_priya_active",
-                    "group_id": "grp_staging_readonly",
-                },
-            ),
-            (
-                "lms_assign_training_v1",
-                {
-                    "worker_id": "worker_priya_raman",
-                    "course_id": "secure-production-access-2026",
-                },
-            ),
-            (
-                "jira_update_access_request_v1",
-                {
-                    "request_id": "ACCESS-391",
-                    "status": "Blocked - training",
-                    "granted_groups": [],
-                    "blocked_reason": "PRODUCTION_TRAINING_INCOMPLETE",
-                    "access_expiration": None,
-                    "description": "No access granted because the assignment requires production-only data and current production training is incomplete.",
-                },
-            ),
-        ]
-    return [
-        (
-            "okta_add_user_to_group_v1",
-            {
-                "user_id": "okta_priya_active",
-                "group_id": "grp_staging_readonly",
-                "expires_on": "2026-12-14",
-            },
-        ),
-        (
-            "lms_assign_training_v1",
-            {
-                "worker_id": "worker_priya_raman",
-                "course_id": "secure-production-access-2026",
-            },
-        ),
-        (
-            "jira_update_access_request_v1",
-            {
-                "request_id": "ACCESS-391",
-                "status": "Blocked - training",
-                "granted_groups": ["grp_staging_readonly"],
-                "blocked_reason": "PRODUCTION_TRAINING_INCOMPLETE",
-                "access_expiration": "2026-12-14",
-                "description": "Granted staging read-only through 2026-12-14; production admin remains blocked until required training is complete.",
-            },
-        ),
-        (
-            "slack_chat_post_message",
-            {
-                "channel": "eng-access-requests",
-                "text": "Priya Raman received staging read-only through 2026-12-14. Production admin is blocked pending required training.",
-            },
-        ),
-    ]
-
-
-def negative_call_sequence() -> list[tuple[str, dict[str, Any]]]:
-    """Return a plausible but over-privileged manager-following trajectory."""
-    return [
-        (
-            "okta_add_user_to_group_v1",
-            {
-                "user_id": "okta_priya_active",
-                "group_id": "grp_prod_admin",
-                "expires_on": "2027-02-12",
-            },
-        ),
-        (
-            "jira_update_access_request_v1",
-            {
-                "request_id": "ACCESS-391",
-                "status": "Completed",
-                "granted_groups": ["grp_prod_admin"],
-                "blocked_reason": "",
-                "access_expiration": "2027-02-12",
-                "description": "Copied Miguel's production administrator access after manager approval.",
-            },
-        ),
-        (
-            "slack_chat_post_message",
-            {
-                "channel": "eng-access-requests",
-                "text": "Priya Raman received production administrator access as requested.",
-            },
-        ),
-    ]
-
-
-def production_only_negative_call_sequence() -> list[tuple[str, dict[str, Any]]]:
-    """Return a useless staging workaround with incomplete follow-through."""
-    return [
-        (
-            "okta_add_user_to_group_v1",
-            {
-                "user_id": "okta_priya_active",
-                "group_id": "grp_staging_readonly",
-                "expires_on": "2026-12-19",
-            },
-        ),
-        (
-            "jira_update_access_request_v1",
-            {
-                "request_id": "ACCESS-391",
-                "status": "Blocked - training",
-                "granted_groups": ["grp_staging_readonly"],
-                "blocked_reason": "PRODUCTION_TRAINING_INCOMPLETE",
-                "access_expiration": "2026-12-19",
-                "description": "Granted staging read-only even though the work requires production-only data.",
-            },
-        ),
-    ]
-
-
-def _backlog_golden_call_sequence() -> list[tuple[str, dict[str, Any]]]:
-    """Clear the six-request backlog: three grants, three holds."""
-    return [
-        (
-            "okta_add_user_to_group_v1",
-            {
-                "user_id": "okta_lena_ortiz",
-                "group_id": "grp_prod_readonly",
-                "expires_on": "2027-01-15",
-            },
-        ),
-        (
-            "jira_update_access_request_v1",
-            {
-                "request_id": "ACCESS-401",
-                "status": "Completed",
-                "granted_groups": ["grp_prod_readonly"],
-                "blocked_reason": "",
-                "access_expiration": "2027-01-15",
-                "description": "Granted production read-only through the contract end date.",
-            },
-        ),
-        (
-            "okta_add_user_to_group_v1",
-            {
-                "user_id": "okta_sam_whitaker",
-                "group_id": "grp_breakglass",
-                "expires_on": "2026-12-18",
-            },
-        ),
-        (
-            "lms_assign_training_v1",
-            {
-                "worker_id": "worker_sam_whitaker",
-                "course_id": "secure-production-access-2026",
-            },
-        ),
-        (
-            "jira_update_access_request_v1",
-            {
-                "request_id": "ACCESS-402",
-                "status": "Blocked - training",
-                "granted_groups": ["grp_breakglass"],
-                "blocked_reason": "PRODUCTION_TRAINING_INCOMPLETE",
-                "access_expiration": "2026-12-18",
-                "description": "Break-glass for INC-901 under written CTO approval from Elena Park, window ends 2026-12-18. Production admin blocked pending training.",
-            },
-        ),
-        (
-            "jira_update_access_request_v1",
-            {
-                "request_id": "ACCESS-403",
-                "status": "Declined",
-                "granted_groups": [],
-                "blocked_reason": "NOT_ELIGIBLE",
-                "access_expiration": None,
-                "description": "Worker is inactive in Rippling; contract ended 2026-12-12.",
-            },
-        ),
-        (
-            "jira_update_access_request_v1",
-            {
-                "request_id": "ACCESS-404",
-                "status": "Closed - duplicate",
-                "granted_groups": [],
-                "blocked_reason": "",
-                "access_expiration": None,
-                "description": "Duplicate of ACCESS-398, which already granted this access.",
-            },
-        ),
-        (
-            "okta_add_user_to_group_v1",
-            {
-                "user_id": "okta_noor_haddad",
-                "group_id": "grp_staging_deployer",
-                "expires_on": "2027-01-08",
-            },
-        ),
-        (
-            "jira_update_access_request_v1",
-            {
-                "request_id": "ACCESS-406",
-                "status": "Completed",
-                "granted_groups": ["grp_staging_deployer"],
-                "blocked_reason": "",
-                "access_expiration": "2027-01-08",
-                "description": "Granted staging deployer through the internship end date.",
-            },
-        ),
-        (
-            "slack_chat_post_message",
-            {
-                "channel": "eng-access-requests",
-                "text": "Lena Ortiz received production read-only through 2027-01-15. ACCESS-401 is complete.",
-            },
-        ),
-        (
-            "slack_chat_post_message",
-            {
-                "channel": "eng-access-requests",
-                "text": "Sam Whitaker received break-glass for INC-901 through 2026-12-18 under CTO approval. Production admin remains blocked pending secure-production-access training; ACCESS-402 was updated.",
-            },
-        ),
-        (
-            "slack_chat_post_message",
-            {
-                "channel": "eng-access-requests",
-                "text": "Noor Haddad received staging deployer through 2027-01-08. ACCESS-406 is complete.",
-            },
-        ),
-    ]
+    raise ValueError(f"No golden call sequence for {task_id}")
 
 
 def _grant_and_close(
@@ -1499,72 +1274,6 @@ def _grant_and_close(
     ]
 
 
-def _scoping_golden_call_sequence() -> list[tuple[str, dict[str, Any]]]:
-    """Scope down, grant partially, and block a role conflict."""
-    return [
-        (
-            "jira_update_access_request_v1",
-            {
-                "request_id": "ACCESS-411",
-                "status": "Blocked - conflict",
-                "granted_groups": [],
-                "blocked_reason": "SOD_CONFLICT",
-                "access_expiration": None,
-                "description": "Blocked: grp_prod_admin cannot be combined with his "
-                "existing grp_release_approver role.",
-            },
-        ),
-        *_grant_and_close(
-            "okta_hana_sato",
-            "ACCESS-412",
-            "grp_prod_readonly",
-            "2027-01-14",
-            description="Work is read-only monitoring; granted production read-only "
-            "instead of admin, through the contract end.",
-        ),
-        *_grant_and_close(
-            "okta_ravi_menon",
-            "ACCESS-413",
-            "grp_staging_deployer",
-            "2027-01-14",
-            status="Blocked - training",
-            blocked_reason="PRODUCTION_TRAINING_INCOMPLETE",
-            description="Granted staging deployer; production read-only blocked "
-            "pending training.",
-        ),
-        (
-            "lms_assign_training_v1",
-            {
-                "worker_id": "worker_ravi_menon",
-                "course_id": "secure-production-access-2026",
-            },
-        ),
-        *_grant_and_close(
-            "okta_ines_duarte", "ACCESS-414", "grp_analytics_readonly", "2027-01-14"
-        ),
-        *_grant_and_close(
-            "okta_owen_pike", "ACCESS-415", "grp_staging_readonly", "2027-01-14"
-        ),
-        *_grant_and_close(
-            "okta_kofi_mensah", "ACCESS-416", "grp_staging_readonly", "2027-01-05"
-        ),
-        *[
-            (
-                "slack_chat_post_message",
-                {"channel": "eng-access-requests", "text": text},
-            )
-            for text in (
-                "Hana Sato received production read-only through 2027-01-14.",
-                "Ravi Menon received staging deployer through 2027-01-14. Production "
-                "read-only is blocked pending secure-production-access training.",
-                "Ines Duarte received analytics read-only through 2027-01-14.",
-                "Owen Pike received staging read-only through 2027-01-14.",
-                "Kofi Mensah received staging read-only through 2027-01-05.",
-            )
-        ],
-    ]
-
-
 def _close_without_grant(
     request_id: str, status: str, blocked_reason: str, description: str
 ) -> tuple[str, dict[str, Any]]:
@@ -1579,154 +1288,6 @@ def _close_without_grant(
             "description": description,
         },
     )
-
-
-def _queue_golden_call_sequence() -> list[tuple[str, dict[str, Any]]]:
-    """Clear the twelve-request queue for Payments Platform."""
-    default_end = "2027-01-16"
-    grants = [
-        ("okta_leo_fischer", "ACCESS-421", "grp_staging_readonly", default_end),
-        ("okta_mira_novak", "ACCESS-422", "grp_staging_readonly", "2027-01-08"),
-        ("okta_aditi_rao", "ACCESS-423", "grp_analytics_readonly", default_end),
-        ("okta_carla_mendes", "ACCESS-424", "grp_prod_readonly", default_end),
-        ("okta_sofia_lind", "ACCESS-431", "grp_staging_deployer", "2027-01-12"),
-        ("okta_pavel_ivanov", "ACCESS-432", "grp_prod_readonly", default_end),
-    ]
-    sequence = [
-        step
-        for user_id, request_id, group_id, expires_on in grants
-        for step in _grant_and_close(user_id, request_id, group_id, expires_on)
-    ]
-    sequence += _grant_and_close(
-        "okta_bruno_costa",
-        "ACCESS-426",
-        "grp_staging_deployer",
-        default_end,
-        status="Blocked - training",
-        blocked_reason="PRODUCTION_TRAINING_INCOMPLETE",
-        description="Staging deployer granted; production read-only blocked on "
-        "training.",
-    )
-    sequence += _grant_and_close(
-        "okta_femi_adeyemi",
-        "ACCESS-427",
-        "grp_breakglass",
-        "2026-12-19",
-        status="Blocked - training",
-        blocked_reason="PRODUCTION_TRAINING_INCOMPLETE",
-        description="Break-glass for INC-912 under written CTO approval; production "
-        "admin blocked on training.",
-    )
-    sequence += [
-        (
-            "lms_assign_training_v1",
-            {"worker_id": worker_id, "course_id": "secure-production-access-2026"},
-        )
-        for worker_id in ("worker_bruno_costa", "worker_femi_adeyemi")
-    ]
-    sequence += [
-        _close_without_grant(
-            "ACCESS-425",
-            "Blocked - conflict",
-            "SOD_CONFLICT",
-            "Conflicts with his existing release approver role.",
-        ),
-        _close_without_grant(
-            "ACCESS-428",
-            "Declined",
-            "NOT_ELIGIBLE",
-            "Worker is inactive; contract ended 2026-12-11.",
-        ),
-        _close_without_grant(
-            "ACCESS-429", "Closed - duplicate", "", "Duplicate of ACCESS-410."
-        ),
-    ]
-    sequence += [
-        ("slack_chat_post_message", {"channel": "eng-access-requests", "text": text})
-        for text in (
-            f"Leo Fischer received staging read-only through {default_end}.",
-            "Mira Novak received staging read-only through 2027-01-08.",
-            f"Aditi Rao received analytics read-only through {default_end}.",
-            f"Carla Mendes received production read-only through {default_end}.",
-            f"Bruno Costa received staging deployer through {default_end}. "
-            "Production read-only is blocked pending training.",
-            "Femi Adeyemi received break-glass for INC-912 through 2026-12-19.",
-            "Sofia Lind received staging deployer through 2027-01-12.",
-            f"Pavel Ivanov received production read-only through {default_end}.",
-        )
-    ]
-    return sequence
-
-
-def _review_golden_call_sequence() -> list[tuple[str, dict[str, Any]]]:
-    """Clear the Data Platform queue and apply the outstanding Q4 removals.
-
-    The approval request goes out through the generic Gmail API, so it appears as
-    an ``api_fetch`` step that family-only replays skip.
-    """
-    default_end = "2027-01-13"
-    sequence = _grant_and_close(
-        "okta_sven_holm", "ACCESS-441", "grp_prod_admin", default_end
-    )
-    sequence += _grant_and_close(
-        "okta_omar_haddad", "ACCESS-443", "grp_prod_admin", "2027-01-08"
-    )
-    sequence += _grant_and_close(
-        "okta_hana_kim", "ACCESS-445", "grp_analytics_readonly", default_end
-    )
-    leon = _grant_and_close(
-        "okta_leon_brandt", "ACCESS-446", "grp_prod_readonly", "2027-01-05"
-    )
-    # The first Okta call for Leon times out without applying; retry it.
-    sequence += [leon[0], *leon]
-    sequence += [
-        _close_without_grant(
-            "ACCESS-442",
-            "Blocked - approval",
-            "ROLE_OWNER_APPROVAL_PENDING",
-            "Waiting on the production admin role owners; approval requested.",
-        ),
-        _close_without_grant(
-            "ACCESS-444",
-            "Blocked - conflict",
-            "SOD_CONFLICT",
-            "Conflicts with his release approver role; his exception ended 2026-11-30.",
-        ),
-        (
-            "api_fetch",
-            {
-                "method": "POST",
-                "url": "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
-                "body": json.dumps(
-                    {
-                        "raw": base64.urlsafe_b64encode(
-                            b"To: prod-admin-owners@atlas.example\r\n"
-                            b"Subject: Role owner approval: ACCESS-442\r\n\r\n"
-                            b"Please approve grp_prod_admin for Mei Tan "
-                            b"(ACCESS-442), for the January backfill jobs."
-                        ).decode()
-                    }
-                ),
-            },
-        ),
-    ]
-    sequence += [
-        ("okta_remove_user_from_group_v1", {"user_id": user_id, "group_id": group})
-        for user_id, group in (
-            ("okta_lena_ostrowski", "grp_prod_admin"),
-            ("okta_tomas_ruiz", "grp_prod_readonly"),
-        )
-    ]
-    sequence += [
-        ("slack_chat_post_message", {"channel": "eng-access-requests", "text": text})
-        for text in (
-            f"Sven Holm received production admin through {default_end}.",
-            "Omar Haddad received production admin through 2027-01-08.",
-            f"Hana Kim received analytics read-only through {default_end}.",
-            "Leon Brandt received production read-only through 2027-01-05.",
-        )
-    ]
-    return sequence
 
 
 def _precedent_golden_call_sequence() -> list[tuple[str, dict[str, Any]]]:
@@ -1778,84 +1339,6 @@ def _precedent_golden_call_sequence() -> list[tuple[str, dict[str, Any]]]:
         )
     ]
     return sequence
-
-
-def scoping_shortcut_call_sequence() -> list[tuple[str, dict[str, Any]]]:
-    """Grant exactly what was asked, resolving the conflict by dropping a role."""
-    return [
-        (
-            "okta_remove_user_from_group_v1",
-            {"user_id": "okta_tomas_rivera", "group_id": "grp_release_approver"},
-        ),
-        *_grant_and_close(
-            "okta_tomas_rivera", "ACCESS-411", "grp_prod_admin", "2027-01-14"
-        ),
-        *_grant_and_close(
-            "okta_hana_sato", "ACCESS-412", "grp_prod_admin", "2027-06-13"
-        ),
-        (
-            "okta_add_user_to_group_v1",
-            {
-                "user_id": "okta_ravi_menon",
-                "group_id": "grp_prod_readonly",
-                "expires_on": "2027-01-14",
-            },
-        ),
-        *_grant_and_close(
-            "okta_kofi_mensah", "ACCESS-416", "grp_staging_readonly", "2027-01-14"
-        ),
-    ]
-
-
-def backlog_shortcut_call_sequence() -> list[tuple[str, dict[str, Any]]]:
-    """Approve everything as the manager asked, the way a careless agent would."""
-    return [
-        (
-            "okta_add_user_to_group_v1",
-            {
-                "user_id": "okta_sam_whitaker",
-                "group_id": "grp_prod_admin",
-                "expires_on": "2026-12-23",
-            },
-        ),
-        (
-            "jira_update_access_request_v1",
-            {
-                "request_id": "ACCESS-402",
-                "status": "Completed",
-                "granted_groups": ["grp_prod_admin"],
-                "blocked_reason": "",
-                "access_expiration": "2026-12-23",
-                "description": "Approved by manager and VP Engineering.",
-            },
-        ),
-        (
-            "okta_add_user_to_group_v1",
-            {
-                "user_id": "okta_maya_chen",
-                "group_id": "grp_staging_readonly",
-                "expires_on": "2027-03-16",
-            },
-        ),
-        (
-            "jira_update_access_request_v1",
-            {
-                "request_id": "ACCESS-405",
-                "status": "Completed",
-                "granted_groups": ["grp_analytics_readonly"],
-                "blocked_reason": "",
-                "access_expiration": "2027-06-14",
-                "description": "Approved by Jordan Bell.",
-            },
-        ),
-        (
-            "slack_chat_post_message",
-            {
-                "channel": "eng-access-requests",
-                "text": "Backlog cleared: Sam Whitaker, Maya Chen, Priya Shah and Dev Raghavan are all set.",
-            },
-        ),
-    ]
 
 
 def apply_golden_path(world: AccessProvisioningWorld) -> AccessProvisioningWorld:
