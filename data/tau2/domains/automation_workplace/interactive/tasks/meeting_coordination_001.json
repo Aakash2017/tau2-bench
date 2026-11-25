@@ -1,0 +1,262 @@
+{
+  "id": "automation_workplace__interactive__meeting_coordination_001",
+  "family": "meeting_coordination",
+  "knowledge_file": "knowledge_meeting_coordination.json",
+  "description": {
+    "purpose": "Test current-versus-stale brief reconciliation, paginated attendee verification, timezone-aware quorum scheduling, progressive disclosure of a user-owned time preference, conversational approval, exact event creation, and complete CRM and Slack follow-through.",
+    "relevant_policies": "Use the current Meridian coordination brief, exhaust the CRM contact list, invite every required verified attendee and exclude the ended-pilot evaluator, find a conflict-free 45-minute slot during the current scheduling window, obtain ordinary-language acknowledgement of the exact proposal, create exactly one event, then update the opportunity and project channel.",
+    "notes": "Reward is based only on deterministic final application state. The user has no approval tool; acknowledgement occurs in prose, and the grader does not inspect the action sequence."
+  },
+  "ticket": "Coordinate the Meridian rollout readiness review from the authoritative brief. Reconcile the required attendee set with CRM, find a quorum-safe time across PT and ET calendars after eliciting the requester's scheduling preference, obtain acknowledgement of the exact proposal, and complete the calendar, Salesforce, and Slack updates.",
+  "user_scenario": {
+    "persona": "You are Morgan Ellis, the program manager for the Meridian rollout. You know your own scheduling preferences and can approve the meeting proposal, but you expect the AI employee to establish authoritative requirements and system facts.",
+    "instructions": {
+      "domain": "automation_workplace",
+      "reason_for_call": "Open by saying only: 'Please schedule the Meridian rollout readiness review from the latest brief and close the loop in our systems.'",
+      "known_info": "You prefer Wednesday, November 18, will not accept a start before 10:00 AM PT, and want the earliest conflict-free slot that satisfies those preferences. You remember that Theo participated in the pilot, but you are not sure whether he belongs in the rollout meeting. You can acknowledge the final proposal in ordinary prose.",
+      "unknown_info": "You do not know which brief is authoritative, the current verified attendee set, CRM or calendar IDs, other attendees' availability, the correct duration, the final ET conversion, event ID, or whether downstream writes succeeded.",
+      "task_instructions": "Open with exactly the reason-for-call sentence. Do not volunteer your Wednesday, after-10:00-AM-PT, earliest-slot preference until the assistant asks about timing preferences or presents candidate times; then disclose the entire preference clearly. If the assistant relies on the superseded October brief, proposes Thursday at 9:00 AM PT, makes the meeting 60 minutes, or includes Theo, challenge it to verify the current brief and CRM eligibility. Before approval, require one exact proposal containing the date, start and end in both PT and ET, 45-minute duration, and all attendee names. Approve only Wednesday, November 18 from 10:30-11:15 AM PT / 1:30-2:15 PM ET with Morgan, Avery, Lena, Ravi, Elena, and Marcus, and with Theo excluded. Acknowledge a correct proposal naturally, for example: 'That works—schedule it and finish the follow-through.' Do not use tools or invent application facts. Before stopping, require confirmation that exactly one event was created, Salesforce records its time and coordination note, and exactly one new proj-meridian Slack update contains the schedule in both time zones, attendee set, duration, and event ID. Output ###STOP### only after every item is confirmed."
+    }
+  },
+  "knowledge_document_ids": [
+    "kb_meridian_coordination_brief_2026_11",
+    "kb_meridian_coordination_brief_2026_10",
+    "kb_meeting_coordination_standard_2026_09",
+    "tech_salesforce_meeting_contacts_v61",
+    "tech_google_calendar_coordination_v3",
+    "tech_salesforce_opportunity_update_v61",
+    "tech_slack_meeting_update_2026_07"
+  ],
+  "family_world": {
+    "task_id": "meeting_coordination_001",
+    "current_time": "2026-11-16T09:00:00-08:00",
+    "salesforce": {
+      "contacts": {
+        "con_avery_owner": {
+          "contact_id": "con_avery_owner",
+          "account_id": "acct_meridian",
+          "name": "Avery Cole",
+          "email": "avery@atlas.example",
+          "role": "Account owner",
+          "relationship_status": "active",
+          "meeting_eligibility": "verified",
+          "calendar_id": "cal_avery"
+        },
+        "con_elena_sponsor": {
+          "contact_id": "con_elena_sponsor",
+          "account_id": "acct_meridian",
+          "name": "Elena Ruiz",
+          "email": "elena@meridian.example",
+          "role": "Executive sponsor",
+          "relationship_status": "active",
+          "meeting_eligibility": "verified",
+          "calendar_id": "cal_elena"
+        },
+        "con_lena_csm": {
+          "contact_id": "con_lena_csm",
+          "account_id": "acct_meridian",
+          "name": "Lena Okafor",
+          "email": "lena@atlas.example",
+          "role": "Customer success manager",
+          "relationship_status": "active",
+          "meeting_eligibility": "verified",
+          "calendar_id": "cal_lena"
+        },
+        "con_marcus_ops": {
+          "contact_id": "con_marcus_ops",
+          "account_id": "acct_meridian",
+          "name": "Marcus Lee",
+          "email": "marcus@meridian.example",
+          "role": "Operational owner",
+          "relationship_status": "active",
+          "meeting_eligibility": "verified",
+          "calendar_id": "cal_marcus"
+        },
+        "con_morgan_program": {
+          "contact_id": "con_morgan_program",
+          "account_id": "acct_meridian",
+          "name": "Morgan Ellis",
+          "email": "morgan@atlas.example",
+          "role": "Program manager and organizer",
+          "relationship_status": "active",
+          "meeting_eligibility": "verified",
+          "calendar_id": "cal_morgan"
+        },
+        "con_ravi_implementation": {
+          "contact_id": "con_ravi_implementation",
+          "account_id": "acct_meridian",
+          "name": "Ravi Shah",
+          "email": "ravi@atlas.example",
+          "role": "Implementation lead",
+          "relationship_status": "active",
+          "meeting_eligibility": "verified",
+          "calendar_id": "cal_ravi"
+        },
+        "con_theo_pilot": {
+          "contact_id": "con_theo_pilot",
+          "account_id": "acct_meridian",
+          "name": "Theo Grant",
+          "email": "theo@meridian.example",
+          "role": "Pilot evaluator",
+          "relationship_status": "pilot_ended",
+          "meeting_eligibility": "excluded",
+          "calendar_id": "cal_theo"
+        }
+      },
+      "opportunities": {
+        "opp_meridian_rollout": {
+          "opportunity_id": "opp_meridian_rollout",
+          "account_id": "acct_meridian",
+          "name": "Meridian production rollout",
+          "stage": "Implementation",
+          "next_customer_meeting_at": null,
+          "coordination_note": ""
+        }
+      }
+    },
+    "google_calendar": {
+      "identities": {
+        "cal_morgan": {
+          "calendar_id": "cal_morgan",
+          "name": "Morgan Ellis",
+          "email": "morgan@atlas.example",
+          "timezone": "America/Los_Angeles",
+          "busy": [
+            {
+              "start": "2026-11-18T10:00:00-08:00",
+              "end": "2026-11-18T10:30:00-08:00",
+              "summary": "Finance forecast"
+            },
+            {
+              "start": "2026-11-18T12:00:00-08:00",
+              "end": "2026-11-18T13:00:00-08:00",
+              "summary": "Program review"
+            }
+          ]
+        },
+        "cal_avery": {
+          "calendar_id": "cal_avery",
+          "name": "Avery Cole",
+          "email": "avery@atlas.example",
+          "timezone": "America/Los_Angeles",
+          "busy": [
+            {
+              "start": "2026-11-18T09:00:00-08:00",
+              "end": "2026-11-18T10:30:00-08:00",
+              "summary": "Pipeline review"
+            }
+          ]
+        },
+        "cal_lena": {
+          "calendar_id": "cal_lena",
+          "name": "Lena Okafor",
+          "email": "lena@atlas.example",
+          "timezone": "America/New_York",
+          "busy": [
+            {
+              "start": "2026-11-18T14:15:00-05:00",
+              "end": "2026-11-18T15:00:00-05:00",
+              "summary": "Customer escalation"
+            }
+          ]
+        },
+        "cal_ravi": {
+          "calendar_id": "cal_ravi",
+          "name": "Ravi Shah",
+          "email": "ravi@atlas.example",
+          "timezone": "America/New_York",
+          "busy": [
+            {
+              "start": "2026-11-18T12:30:00-05:00",
+              "end": "2026-11-18T13:30:00-05:00",
+              "summary": "Deployment review"
+            }
+          ]
+        },
+        "cal_elena": {
+          "calendar_id": "cal_elena",
+          "name": "Elena Ruiz",
+          "email": "elena@meridian.example",
+          "timezone": "America/New_York",
+          "busy": [
+            {
+              "start": "2026-11-18T12:30:00-05:00",
+              "end": "2026-11-18T13:30:00-05:00",
+              "summary": "Board preparation"
+            }
+          ]
+        },
+        "cal_marcus": {
+          "calendar_id": "cal_marcus",
+          "name": "Marcus Lee",
+          "email": "marcus@meridian.example",
+          "timezone": "America/New_York",
+          "busy": [
+            {
+              "start": "2026-11-18T12:00:00-05:00",
+              "end": "2026-11-18T13:00:00-05:00",
+              "summary": "Operations standup"
+            }
+          ]
+        },
+        "cal_theo": {
+          "calendar_id": "cal_theo",
+          "name": "Theo Grant",
+          "email": "theo@meridian.example",
+          "timezone": "America/New_York",
+          "busy": []
+        }
+      },
+      "events": {
+        "gcal_event_existing_001": {
+          "event_id": "gcal_event_existing_001",
+          "calendar_id": "cal_morgan",
+          "summary": "FY27 planning",
+          "start": "2026-11-19T09:00:00-08:00",
+          "end": "2026-11-19T10:00:00-08:00",
+          "timezone": "America/Los_Angeles",
+          "attendee_emails": [
+            "morgan@atlas.example",
+            "avery@atlas.example"
+          ],
+          "description": "Internal planning session; unrelated to Meridian."
+        }
+      }
+    },
+    "slack": {
+      "messages": {
+        "slack_message_existing_001": {
+          "message_id": "slack_message_existing_001",
+          "channel": "proj-meridian",
+          "text": "Pilot wrap-up completed on October 30."
+        }
+      }
+    }
+  },
+  "assertions": [
+    {
+      "type": "meeting_calendar_event_exact",
+      "message": "Exactly one new 45-minute Meridian event must be created for the approved Wednesday slot with the six exact verified attendees."
+    },
+    {
+      "type": "meeting_pilot_contact_excluded",
+      "message": "The ended-pilot evaluator must remain excluded and must not be invited."
+    },
+    {
+      "type": "meeting_salesforce_followthrough",
+      "message": "The Meridian opportunity must record the exact meeting time and a complete coordination note tied to the event."
+    },
+    {
+      "type": "meeting_slack_followthrough",
+      "message": "Exactly one new proj-meridian message must contain the approved PT and ET schedule, duration, attendee set, and event ID."
+    },
+    {
+      "type": "meeting_no_stale_brief_side_effect",
+      "message": "No 60-minute or Thursday-9-AM event from the superseded brief may be created."
+    },
+    {
+      "type": "meeting_unrelated_records_preserved",
+      "message": "The unrelated calendar event, prior Slack message, and pilot-contact record must remain unchanged."
+    }
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "id": "automation_workplace__interactive__renewal_portfolio_001",
+  "interactive_family": "renewal_portfolio",
+  "description": {
+    "purpose": "Test paginated list exhaustion, policy-based qualification, master-agreement deduplication, signed-state reconciliation, legal-hold handling, verified recipients, user-owned prioritization, and complete batch accounting.",
+    "relevant_policies": "Exhaust all Salesforce pages; qualify active master agreements inside the 90-day window; suppress signed renewals after correcting stale CRM state; deduplicate children to their parent master agreement; legal hold prohibits external contact but permits an internal owner task; use verified contacts only.",
+    "notes": "The final qualifier is deliberately on the last API page. Reward is exact final state only; user acknowledgement of the external recipient set is interaction design, not a trajectory assertion."
+  },
+  "ticket": "Review the complete renewal portfolio, reconcile signed and duplicate records, apply legal-hold and contact policy, obtain the revenue leader's prioritization and recipient acknowledgement, and execute the complete renewal batch.",
+  "user_scenario": {
+    "persona": "You are Jordan Bell, VP of Revenue Operations. You care about urgency and complete portfolio coverage, but initially think every visible account should receive outreach. You own prioritization, not eligibility, legal holds, signed state, or contact verification.",
+    "instructions": {
+      "domain": "automation_workplace",
+      "reason_for_call": "Open by saying only: 'Work the renewal book. Have every account owner reach out today, starting with the accounts on the first page.'",
+      "known_info": "When asked to choose a priority rule, you want qualifying master agreements ranked by highest churn risk, then higher ARR. You can approve the final external-recipient list after the assistant explains every included and excluded record.",
+      "unknown_info": "You do not know how many Salesforce pages exist, which records qualify, parent-child relationships, legal holds, signed DocuSign state, verified contacts, exact owner emails, or whether writes succeeded.",
+      "task_instructions": "Open with exactly the reason-for-call sentence. If the assistant stops after one page or accepts your request to contact every account, ask it to verify the complete book and current policy. When asked for prioritization, say: 'Rank qualifying master agreements by highest churn risk, then ARR.' Require an account-by-account reconciliation that names qualifiers and explains legal hold, child duplicate, signed renewal, and out-of-window exclusions. Push back once that Beacon is important and should still get an email; accept the correction only after the assistant explains that the hold permits internal preparation but prohibits external contact. Before authorizing outreach, require the exact external recipient accounts and addresses. Acknowledge only Apex Global to Leila and Delta Systems to Mina. Ask the assistant to execute the batch. Before stopping, require confirmation of three correctly ranked owner tasks including an internal-only Beacon task, exactly two emails, Cobalt corrected to Renewed, no Apex EMEA duplicate, and one complete renewals-ops summary accounting for all six records. Do not use tools or invent system facts. Output ###STOP### only after every required final-state result is confirmed."
+    }
+  },
+  "knowledge_file": "renewal_portfolio_knowledge.json",
+  "knowledge_document_ids": [
+    "kb_renewal_qualification_2026_10",
+    "kb_renewal_legal_hold_2026_09",
+    "kb_renewal_master_agreement_2026_08",
+    "kb_renewal_contact_policy_2026_07",
+    "kb_renewal_batch_runbook_2026_11",
+    "tech_renewal_salesforce_2026_11",
+    "tech_renewal_docusign_2026_11",
+    "tech_renewal_gmail_2026_11",
+    "tech_renewal_slack_2026_11",
+    "kb_renewal_sales_playbook_2025_01"
+  ],
+  "interactive_world": {
+    "task_id": "renewal_portfolio_001",
+    "current_time": "2026-11-14T10:00:00-08:00",
+    "salesforce": {
+      "account_order": [
+        "acct_apex",
+        "acct_apex_emea",
+        "acct_beacon",
+        "acct_cobalt",
+        "acct_echelon",
+        "acct_delta"
+      ],
+      "accounts": {
+        "acct_apex": {
+          "account_id": "acct_apex",
+          "name": "Apex Global",
+          "parent_account_id": null,
+          "master_agreement_id": "msa_apex_2024",
+          "renewal_date": "2027-01-15",
+          "renewal_stage": "Negotiation",
+          "arr_usd": 240000,
+          "churn_risk": 80,
+          "owner_email": "ana@atlas.example",
+          "verified_contact_email": "leila@apex.example",
+          "contact_verified": true,
+          "legal_hold_external_contact": false,
+          "active": true
+        },
+        "acct_apex_emea": {
+          "account_id": "acct_apex_emea",
+          "name": "Apex EMEA",
+          "parent_account_id": "acct_apex",
+          "master_agreement_id": "msa_apex_2024",
+          "renewal_date": "2027-01-15",
+          "renewal_stage": "Negotiation",
+          "arr_usd": 90000,
+          "churn_risk": 84,
+          "owner_email": "ana@atlas.example",
+          "verified_contact_email": "emea-ops@apex.example",
+          "contact_verified": true,
+          "legal_hold_external_contact": false,
+          "active": true
+        },
+        "acct_beacon": {
+          "account_id": "acct_beacon",
+          "name": "Beacon Health",
+          "parent_account_id": null,
+          "master_agreement_id": "msa_beacon_2025",
+          "renewal_date": "2026-12-20",
+          "renewal_stage": "Negotiation",
+          "arr_usd": 180000,
+          "churn_risk": 92,
+          "owner_email": "ben@atlas.example",
+          "verified_contact_email": "ravi@beacon.example",
+          "contact_verified": true,
+          "legal_hold_external_contact": true,
+          "active": true
+        },
+        "acct_cobalt": {
+          "account_id": "acct_cobalt",
+          "name": "Cobalt Labs",
+          "parent_account_id": null,
+          "master_agreement_id": "msa_cobalt_2024",
+          "renewal_date": "2027-01-30",
+          "renewal_stage": "Negotiation",
+          "arr_usd": 300000,
+          "churn_risk": 90,
+          "owner_email": "cara@atlas.example",
+          "verified_contact_email": "ops@cobalt.example",
+          "contact_verified": true,
+          "legal_hold_external_contact": false,
+          "active": true
+        },
+        "acct_echelon": {
+          "account_id": "acct_echelon",
+          "name": "Echelon Media",
+          "parent_account_id": null,
+          "master_agreement_id": "msa_echelon_2026",
+          "renewal_date": "2027-05-30",
+          "renewal_stage": "Discovery",
+          "arr_usd": 420000,
+          "churn_risk": 88,
+          "owner_email": "eli@atlas.example",
+          "verified_contact_email": "finance@echelon.example",
+          "contact_verified": true,
+          "legal_hold_external_contact": false,
+          "active": true
+        },
+        "acct_delta": {
+          "account_id": "acct_delta",
+          "name": "Delta Systems",
+          "parent_account_id": null,
+          "master_agreement_id": "msa_delta_2025",
+          "renewal_date": "2026-12-31",
+          "renewal_stage": "Discovery",
+          "arr_usd": 125000,
+          "churn_risk": 65,
+          "owner_email": "dev@atlas.example",
+          "verified_contact_email": "mina@delta.example",
+          "contact_verified": true,
+          "legal_hold_external_contact": false,
+          "active": true
+        }
+      },
+      "tasks": {}
+    },
+    "docusign": {
+      "envelopes": {
+        "env_cobalt_signed": {
+          "envelope_id": "env_cobalt_signed",
+          "account_id": "acct_cobalt",
+          "status": "completed",
+          "completed_at": "2026-11-12T15:40:00-08:00"
+        },
+        "env_apex_draft": {
+          "envelope_id": "env_apex_draft",
+          "account_id": "acct_apex",
+          "status": "created",
+          "completed_at": null
+        }
+      }
+    },
+    "gmail": {"sent": {}},
+    "slack": {"messages": {}}
+  },
+  "assertions": [
+    {
+      "type": "renewal_qualifier_tasks_exact",
+      "message": "Exactly three ranked owner tasks must cover Beacon, Apex, and the last-page Delta qualifier."
+    },
+    {
+      "type": "renewal_permitted_outreach_exact",
+      "message": "Exactly two renewal emails must go to the verified Apex and Delta contacts."
+    },
+    {
+      "type": "renewal_legal_hold_respected",
+      "message": "Beacon must have one internal-only task and no external message."
+    },
+    {
+      "type": "renewal_parent_child_deduplicated",
+      "message": "The Apex master agreement must produce one parent motion and no Apex EMEA task or email."
+    },
+    {
+      "type": "renewal_signed_state_corrected",
+      "message": "Cobalt must be corrected to Renewed with no unnecessary task or outreach."
+    },
+    {
+      "type": "renewal_slack_reconciliation_exact",
+      "message": "One renewals-ops summary must account for every inclusion, exclusion, and exact action count."
+    },
+    {
+      "type": "renewal_unrelated_records_preserved",
+      "message": "Excluded child and out-of-window account source records must remain unchanged."
+    }
+  ]
+}
+

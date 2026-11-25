@@ -1,0 +1,1659 @@
+{
+  "automation_workplace__interactive__access_provisioning_001": [
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "the teammate's groups are context, not the request."
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "Grant the least-privileged group that covers the described work, which may be narrower than what was requested"
+        ],
+        [
+          "tech_okta_engineering_groups_2026_10",
+          "| grp_staging_readonly | Staging | Staging Argo apps, k8s namespaces, deploy manifests and config, logs (read-only) |"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "30 days by default, extendable. Contractor and intern access also ends no later than the contract (or internship) end date, so the earlier of the two applies."
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "Grant to the account linked to the person's current worker record."
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "| Contractor | Current training | Current training + role owner | Not eligible |"
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "Holding a production role requires a current secure-production-access completion."
+        ]
+      ],
+      "records": [
+        "family_world.workers.worker_priya_raman.worker_type",
+        "family_world.workers.worker_priya_raman.contract_end_date",
+        "family_world.identities.okta_priya_active.worker_id",
+        "family_world.current_time",
+        "user_scenario.instructions.known_info"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_production_access_standard_2026_10",
+          "| Contractor | Current training | Current training + role owner | Not eligible |"
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "Holding a production role requires a current secure-production-access completion."
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "Approvals confirm need; they don't change eligibility."
+        ],
+        [
+          "kb_employee_emergency_breakglass_2026_11",
+          "Contractors, vendors, interns and former workers are ineligible."
+        ]
+      ],
+      "records": [
+        "family_world.workers.worker_priya_raman.worker_type",
+        "family_world.training_records.worker_priya_raman:secure-production-access-2025.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Missing or expired training is assigned once"
+        ],
+        [
+          "tech_lms_training_v1",
+          "| secure-production-access-2026 |"
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "Holding a production role requires a current secure-production-access completion."
+        ]
+      ],
+      "records": [
+        "family_world.training_records.worker_priya_raman:secure-production-access-2025.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Blocked - training | Requested access is still wanted but pending training |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| PRODUCTION_TRAINING_INCOMPLETE |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| granted_groups | Groups added under this request that remain active at closeout |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| access_expiration | Expiry of the granted groups; null when none |"
+        ]
+      ],
+      "records": [
+        "family_world.access_requests.ACCESS-391.requested_groups",
+        "user_scenario.instructions.task_instructions"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "There is one open request per ask"
+        ]
+      ],
+      "records": [
+        "family_world.access_requests.ACCESS-391.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Requests that result in new access get one update in the access requests channel"
+        ]
+      ],
+      "records": [
+        "family_world.slack_messages.slack_message_001.text"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "Grant to the account linked to the person's current worker record."
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "the old one stays suspended for audit."
+        ]
+      ],
+      "records": [
+        "family_world.identities.okta_priya_stale.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "the teammate's groups are context, not the request."
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "The desk doesn't change access a person holds under other requests unless someone asks for that change."
+        ]
+      ],
+      "records": [
+        "family_world.identities.okta_miguel.groups"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "tech_jira_access_requests_v1",
+          "Every update emails the requester and the person the request is for"
+        ],
+        [
+          "tech_lms_training_v1",
+          "sends the learner the standard assignment email"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Requests blocked for another reason aren't sent to owners until that is resolved."
+        ]
+      ],
+      "records": []
+    }
+  ],
+  "automation_workplace__interactive__access_provisioning_002": [
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "A grant should enable the described work; access that doesn't serve it isn't granted."
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "It is reviewed at closeout like any other grant and kept only if it meets this standard."
+        ],
+        [
+          "kb_production_data_boundary_2026_11",
+          "Live customer data and live deployment configuration exist only in production services and audited production sessions."
+        ]
+      ],
+      "records": [
+        "family_world.identities.okta_priya_active.groups",
+        "family_world.access_requests.ACCESS-391.description",
+        "user_scenario.instructions.known_info"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Missing or expired training is assigned once"
+        ],
+        [
+          "tech_lms_training_v1",
+          "| secure-production-access-2026 |"
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "Holding a production role requires a current secure-production-access completion."
+        ]
+      ],
+      "records": [
+        "family_world.training_records.worker_priya_raman:secure-production-access-2025.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Blocked - training | Requested access is still wanted but pending training |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| PRODUCTION_TRAINING_INCOMPLETE |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| granted_groups | Groups added under this request that remain active at closeout |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| access_expiration | Expiry of the granted groups; null when none |"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "It is reviewed at closeout like any other grant and kept only if it meets this standard."
+        ]
+      ],
+      "records": [
+        "family_world.access_requests.ACCESS-391.granted_groups",
+        "user_scenario.instructions.known_info"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "There is one open request per ask"
+        ]
+      ],
+      "records": [
+        "family_world.access_requests.ACCESS-391.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Requests that result in new access get one update in the access requests channel"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Outcomes with no new access are recorded on the request and reported back to the requester."
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "Grant to the account linked to the person's current worker record."
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "the old one stays suspended for audit."
+        ]
+      ],
+      "records": [
+        "family_world.identities.okta_priya_stale.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "the teammate's groups are context, not the request."
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "The desk doesn't change access a person holds under other requests unless someone asks for that change."
+        ]
+      ],
+      "records": [
+        "family_world.identities.okta_miguel.groups"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "tech_jira_access_requests_v1",
+          "Every update emails the requester and the person the request is for"
+        ],
+        [
+          "tech_lms_training_v1",
+          "sends the learner the standard assignment email"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Requests blocked for another reason aren't sent to owners until that is resolved."
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "The desk doesn't change access a person holds under other requests unless someone asks for that change."
+        ]
+      ],
+      "records": []
+    }
+  ],
+  "automation_workplace__interactive__access_provisioning_003": [
+    {
+      "kb": [
+        [
+          "kb_production_access_standard_2026_10",
+          "| Contractor | Current training | Current training + role owner | Not eligible |"
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "Holding a production role requires a current secure-production-access completion."
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "30 days by default, extendable. Contractor and intern access also ends no later than the contract (or internship) end date, so the earlier of the two applies."
+        ]
+      ],
+      "records": [
+        "family_world.workers.worker_lena_ortiz.worker_type",
+        "family_world.workers.worker_lena_ortiz.contract_end_date",
+        "family_world.current_time",
+        "family_world.training_records.worker_lena_ortiz:secure-production-access-2026.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Completed | Nothing on the request is still pending; a narrower role in the same environment may stand in for what was asked |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| access_expiration | Expiry of the granted groups; null when none |"
+        ]
+      ],
+      "records": [
+        "family_world.access_requests.ACCESS-401.requested_groups"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_employee_emergency_breakglass_2026_11",
+          "Active employees, including those without current secure-production-access training, with written CTO approval."
+        ],
+        [
+          "kb_employee_emergency_breakglass_2026_11",
+          "The CTO approves in writing for this incident"
+        ],
+        [
+          "kb_employee_emergency_breakglass_2026_11",
+          "adds the employee to grp_breakglass, expiring at the end of the approved window (72 hours at most), and records the approval on the access request."
+        ]
+      ],
+      "records": [
+        "generic_world.gmail.messages.msg_cto_inc901",
+        "family_world.workers.worker_sam_whitaker.worker_type"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_employee_emergency_breakglass_2026_11",
+          "Break-glass is temporary and does not fulfil a standing access request; that request stays open with whatever still blocks it."
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Blocked - training | Requested access is still wanted but pending training |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| PRODUCTION_TRAINING_INCOMPLETE |"
+        ],
+        [
+          "kb_employee_emergency_breakglass_2026_11",
+          "adds the employee to grp_breakglass, expiring at the end of the approved window (72 hours at most), and records the approval on the access request."
+        ]
+      ],
+      "records": [
+        "family_world.access_requests.ACCESS-402.requested_groups",
+        "family_world.training_records.worker_sam_whitaker:secure-production-access-2025.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Declined | Not eligible, with no path to eligibility |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| NOT_ELIGIBLE | Worker cannot hold the role (worker type or inactive status) |"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "When a contract changes, the worker record is updated first and the desk extends access after."
+        ]
+      ],
+      "records": [
+        "family_world.workers.worker_dev_raghavan.status",
+        "generic_world.google_sheets.spreadsheets.ss_contractor_sow"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Closed - duplicate | Superseded by an existing request (cite it) |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| granted_groups | Groups added under this request that remain active at closeout |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| access_expiration | Expiry of the granted groups; null when none |"
+        ]
+      ],
+      "records": [
+        "family_world.access_requests.ACCESS-398.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "tech_okta_engineering_groups_2026_10",
+          "| grp_staging_deployer | Staging | Deploy and roll back in staging | Same as above | Staging readonly for 2 weeks |"
+        ],
+        [
+          "tech_okta_groups_v1",
+          "group_history (one entry per membership: group_id, added_on, removed_on)"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "30 days by default, extendable. Contractor and intern access also ends no later than the contract (or internship) end date, so the earlier of the two applies."
+        ]
+      ],
+      "records": [
+        "family_world.identities.okta_noor_haddad.group_history",
+        "family_world.workers.worker_noor_haddad.contract_end_date",
+        "family_world.current_time"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Completed | Nothing on the request is still pending; a narrower role in the same environment may stand in for what was asked |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| access_expiration | Expiry of the granted groups; null when none |"
+        ]
+      ],
+      "records": [
+        "family_world.access_requests.ACCESS-406.requested_groups"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Missing or expired training is assigned once"
+        ],
+        [
+          "tech_lms_training_v1",
+          "| secure-production-access-2026 |"
+        ]
+      ],
+      "records": [
+        "family_world.training_records.worker_sam_whitaker:secure-production-access-2025.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Requests that result in new access get one update in the access requests channel"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Outcomes with no new access are recorded on the request and reported back to the requester."
+        ]
+      ],
+      "records": [
+        "family_world.slack_messages.slack_message_001.text"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "The request is approved by the person's manager. Requests approved by someone else go back to the requester to reroute."
+        ]
+      ],
+      "records": [
+        "family_world.workers.worker_priya_shah.manager_id",
+        "family_world.access_requests.ACCESS-405.approver_id"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "There is one open request per ask"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "The desk doesn't change access a person holds under other requests unless someone asks for that change."
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "Grant to the account linked to the person's current worker record."
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "the old one stays suspended for audit."
+        ]
+      ],
+      "records": [
+        "family_world.identities.okta_noor_haddad_2025.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "tech_jira_access_requests_v1",
+          "Every update emails the requester and the person the request is for"
+        ],
+        [
+          "tech_lms_training_v1",
+          "sends the learner the standard assignment email"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Requests blocked for another reason aren't sent to owners until that is resolved."
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "The desk doesn't change access a person holds under other requests unless someone asks for that change."
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Blocked - training | Requested access is still wanted but pending training |"
+        ]
+      ],
+      "records": [
+        "family_world.access_requests.ACCESS-391.status"
+      ]
+    }
+  ],
+  "automation_workplace__interactive__access_provisioning_004": [
+    {
+      "kb": [
+        [
+          "kb_production_access_standard_2026_10",
+          "A request that would create an active pair is blocked as a conflict."
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Blocked - conflict |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| SOD_CONFLICT |"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "The desk doesn't change access a person holds under other requests unless someone asks for that change."
+        ]
+      ],
+      "records": [
+        "family_world.identities.okta_tomas_rivera.groups",
+        "generic_world.google_sheets.spreadsheets.ss_sod_matrix"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "Grant the least-privileged group that covers the described work, which may be narrower than what was requested"
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "| Contractor | Current training | Current training + role owner | Not eligible |"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "30 days by default, extendable. Contractor and intern access also ends no later than the contract (or internship) end date, so the earlier of the two applies."
+        ]
+      ],
+      "records": [
+        "family_world.access_requests.ACCESS-412.description",
+        "family_world.workers.worker_hana_sato.contract_end_date",
+        "family_world.current_time"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Completed | Nothing on the request is still pending; a narrower role in the same environment may stand in for what was asked |"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "Grant the least-privileged group that covers the described work, which may be narrower than what was requested"
+        ]
+      ],
+      "records": [
+        "family_world.access_requests.ACCESS-412.requested_groups"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "Each requested group is decided on its own merits."
+        ],
+        [
+          "tech_okta_engineering_groups_2026_10",
+          "| grp_staging_deployer | Staging | Deploy and roll back in staging | Same as above | Staging readonly for 2 weeks |"
+        ],
+        [
+          "tech_okta_groups_v1",
+          "group_history (one entry per membership: group_id, added_on, removed_on)"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "30 days by default, extendable. Contractor and intern access also ends no later than the contract (or internship) end date, so the earlier of the two applies."
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "Holding a production role requires a current secure-production-access completion."
+        ]
+      ],
+      "records": [
+        "family_world.identities.okta_ravi_menon.group_history",
+        "family_world.training_records.worker_ravi_menon:secure-production-access-2025.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Blocked - training | Requested access is still wanted but pending training |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| PRODUCTION_TRAINING_INCOMPLETE |"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "Each requested group is decided on its own merits."
+        ]
+      ],
+      "records": [
+        "family_world.access_requests.ACCESS-413.requested_groups"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "tech_okta_engineering_groups_2026_10",
+          "| grp_analytics_readonly | Warehouse | Read analytics schemas | Pseudonymized | data-handling course |"
+        ],
+        [
+          "kb_database_access_2026_10",
+          "The owner approves in the thread"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "30 days by default, extendable. Contractor and intern access also ends no later than the contract (or internship) end date, so the earlier of the two applies."
+        ]
+      ],
+      "records": [
+        "family_world.slack_messages.slack_message_031.text",
+        "family_world.training_records.worker_ines_duarte:data-handling-2026.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Completed | Nothing on the request is still pending; a narrower role in the same environment may stand in for what was asked |"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "tech_okta_engineering_groups_2026_10",
+          "| grp_staging_readonly | Staging | Staging Argo apps, k8s namespaces, deploy manifests and config, logs (read-only) |"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "30 days by default, extendable. Contractor and intern access also ends no later than the contract (or internship) end date, so the earlier of the two applies."
+        ]
+      ],
+      "records": [
+        "family_world.current_time"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Completed | Nothing on the request is still pending; a narrower role in the same environment may stand in for what was asked |"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "30 days by default, extendable. Contractor and intern access also ends no later than the contract (or internship) end date, so the earlier of the two applies."
+        ]
+      ],
+      "records": [
+        "family_world.workers.worker_kofi_mensah.contract_end_date"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Completed | Nothing on the request is still pending; a narrower role in the same environment may stand in for what was asked |"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Missing or expired training is assigned once"
+        ],
+        [
+          "tech_lms_training_v1",
+          "| secure-production-access-2026 |"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Requests that result in new access get one update in the access requests channel"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Outcomes with no new access are recorded on the request and reported back to the requester."
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "There is one open request per ask"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "The desk doesn't change access a person holds under other requests unless someone asks for that change."
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "A request that would create an active pair is blocked as a conflict."
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "tech_jira_access_requests_v1",
+          "Every update emails the requester and the person the request is for"
+        ],
+        [
+          "tech_lms_training_v1",
+          "sends the learner the standard assignment email"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Requests blocked for another reason aren't sent to owners until that is resolved."
+        ]
+      ],
+      "records": []
+    }
+  ],
+  "automation_workplace__interactive__access_provisioning_005": [
+    {
+      "kb": [
+        [
+          "tech_okta_engineering_groups_2026_10",
+          "| grp_staging_readonly | Staging | Staging Argo apps, k8s namespaces, deploy manifests and config, logs (read-only) |"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "30 days by default, extendable. Contractor and intern access also ends no later than the contract (or internship) end date, so the earlier of the two applies."
+        ]
+      ],
+      "records": [
+        "family_world.current_time"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Completed | Nothing on the request is still pending; a narrower role in the same environment may stand in for what was asked |"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "30 days by default, extendable. Contractor and intern access also ends no later than the contract (or internship) end date, so the earlier of the two applies."
+        ]
+      ],
+      "records": [
+        "family_world.workers.worker_mira_novak.contract_end_date"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Completed | Nothing on the request is still pending; a narrower role in the same environment may stand in for what was asked |"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "tech_okta_engineering_groups_2026_10",
+          "| grp_analytics_readonly | Warehouse | Read analytics schemas | Pseudonymized | data-handling course |"
+        ],
+        [
+          "kb_database_access_2026_10",
+          "The owner approves in the thread"
+        ]
+      ],
+      "records": [
+        "family_world.slack_messages.slack_message_034.text",
+        "family_world.training_records.worker_aditi_rao:data-handling-2026.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Completed | Nothing on the request is still pending; a narrower role in the same environment may stand in for what was asked |"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "Grant the least-privileged group that covers the described work, which may be narrower than what was requested"
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "| Contractor | Current training | Current training + role owner | Not eligible |"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "30 days by default, extendable. Contractor and intern access also ends no later than the contract (or internship) end date, so the earlier of the two applies."
+        ]
+      ],
+      "records": [
+        "family_world.slack_messages.slack_message_032.text",
+        "family_world.workers.worker_carla_mendes.contract_end_date"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Completed | Nothing on the request is still pending; a narrower role in the same environment may stand in for what was asked |"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "Grant the least-privileged group that covers the described work, which may be narrower than what was requested"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "Each requested group is decided on its own merits."
+        ],
+        [
+          "tech_okta_engineering_groups_2026_10",
+          "| grp_staging_deployer | Staging | Deploy and roll back in staging | Same as above | Staging readonly for 2 weeks |"
+        ],
+        [
+          "tech_okta_groups_v1",
+          "group_history (one entry per membership: group_id, added_on, removed_on)"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "30 days by default, extendable. Contractor and intern access also ends no later than the contract (or internship) end date, so the earlier of the two applies."
+        ]
+      ],
+      "records": [
+        "family_world.identities.okta_bruno_costa.group_history"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Blocked - training | Requested access is still wanted but pending training |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| PRODUCTION_TRAINING_INCOMPLETE |"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "Each requested group is decided on its own merits."
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_employee_emergency_breakglass_2026_11",
+          "Active employees, including those without current secure-production-access training, with written CTO approval."
+        ],
+        [
+          "kb_employee_emergency_breakglass_2026_11",
+          "The CTO approves in writing for this incident"
+        ],
+        [
+          "kb_employee_emergency_breakglass_2026_11",
+          "adds the employee to grp_breakglass, expiring at the end of the approved window (72 hours at most), and records the approval on the access request."
+        ]
+      ],
+      "records": [
+        "generic_world.gmail.messages.msg_cto_inc912"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_employee_emergency_breakglass_2026_11",
+          "Break-glass is temporary and does not fulfil a standing access request; that request stays open with whatever still blocks it."
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Blocked - training | Requested access is still wanted but pending training |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| PRODUCTION_TRAINING_INCOMPLETE |"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "tech_okta_engineering_groups_2026_10",
+          "| grp_staging_deployer | Staging | Deploy and roll back in staging | Same as above | Staging readonly for 2 weeks |"
+        ],
+        [
+          "tech_okta_groups_v1",
+          "group_history (one entry per membership: group_id, added_on, removed_on)"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "30 days by default, extendable. Contractor and intern access also ends no later than the contract (or internship) end date, so the earlier of the two applies."
+        ]
+      ],
+      "records": [
+        "family_world.identities.okta_sofia_lind.group_history",
+        "family_world.workers.worker_sofia_lind.contract_end_date"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Completed | Nothing on the request is still pending; a narrower role in the same environment may stand in for what was asked |"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_production_access_standard_2026_10",
+          "| Contractor | Current training | Current training + role owner | Not eligible |"
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "Holding a production role requires a current secure-production-access completion."
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "30 days by default, extendable. Contractor and intern access also ends no later than the contract (or internship) end date, so the earlier of the two applies."
+        ]
+      ],
+      "records": [
+        "family_world.workers.worker_pavel_ivanov.contract_end_date",
+        "family_world.training_records.worker_pavel_ivanov:secure-production-access-2026.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Completed | Nothing on the request is still pending; a narrower role in the same environment may stand in for what was asked |"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_production_access_standard_2026_10",
+          "A request that would create an active pair is blocked as a conflict."
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Blocked - conflict |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| SOD_CONFLICT |"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "The desk doesn't change access a person holds under other requests unless someone asks for that change."
+        ]
+      ],
+      "records": [
+        "family_world.identities.okta_jiho_park.groups",
+        "generic_world.google_sheets.spreadsheets.ss_sod_matrix"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Declined | Not eligible, with no path to eligibility |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| NOT_ELIGIBLE | Worker cannot hold the role (worker type or inactive status) |"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "When a contract changes, the worker record is updated first and the desk extends access after."
+        ]
+      ],
+      "records": [
+        "family_world.workers.worker_yusuf_demir.status",
+        "generic_world.google_sheets.spreadsheets.ss_contractor_sow"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Closed - duplicate | Superseded by an existing request (cite it) |"
+        ]
+      ],
+      "records": [
+        "family_world.access_requests.ACCESS-410.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Missing or expired training is assigned once"
+        ],
+        [
+          "tech_lms_training_v1",
+          "| secure-production-access-2026 |"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Requests that result in new access get one update in the access requests channel"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Outcomes with no new access are recorded on the request and reported back to the requester."
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "The request is approved by the person's manager. Requests approved by someone else go back to the requester to reroute."
+        ]
+      ],
+      "records": [
+        "family_world.workers.worker_arjun_mehta.manager_id",
+        "family_world.access_requests.ACCESS-430.approver_id"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "There is one open request per ask"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "The desk doesn't change access a person holds under other requests unless someone asks for that change."
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "Grant to the account linked to the person's current worker record."
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "the old one stays suspended for audit."
+        ]
+      ],
+      "records": [
+        "family_world.identities.okta_sofia_lind_2025.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "tech_jira_access_requests_v1",
+          "Every update emails the requester and the person the request is for"
+        ],
+        [
+          "tech_lms_training_v1",
+          "sends the learner the standard assignment email"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Requests blocked for another reason aren't sent to owners until that is resolved."
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "The desk doesn't change access a person holds under other requests unless someone asks for that change."
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Blocked - training | Requested access is still wanted but pending training |"
+        ]
+      ],
+      "records": [
+        "family_world.access_requests.ACCESS-419.status"
+      ]
+    }
+  ],
+  "automation_workplace__interactive__access_provisioning_006": [
+    {
+      "kb": [
+        [
+          "kb_production_access_standard_2026_10",
+          "| Employee | Current training | Current training + role owner |"
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "Holding a production role requires a current secure-production-access completion."
+        ],
+        [
+          "tech_okta_engineering_groups_2026_10",
+          "Owner approvals come from prod-admin-owners@atlas.example"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "30 days by default, extendable. Contractor and intern access also ends no later than the contract (or internship) end date, so the earlier of the two applies."
+        ]
+      ],
+      "records": [
+        "generic_world.gmail.messages.msg_owner_441",
+        "family_world.current_time",
+        "family_world.training_records.worker_sven_holm:secure-production-access-2026.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Completed | Nothing on the request is still pending; a narrower role in the same environment may stand in for what was asked |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| access_expiration | Expiry of the granted groups; null when none |"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_production_access_standard_2026_10",
+          "A request that would create an active pair is blocked as a conflict."
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "The pair is allowed only while the exception runs, and access that depends on it ends when the exception does."
+        ],
+        [
+          "tech_okta_engineering_groups_2026_10",
+          "Owner approvals come from prod-admin-owners@atlas.example"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "The desk doesn't change access a person holds under other requests unless someone asks for that change."
+        ]
+      ],
+      "records": [
+        "family_world.identities.okta_omar_haddad.groups",
+        "generic_world.google_sheets.spreadsheets.ss_sod_matrix",
+        "generic_world.gmail.messages.msg_owner_443"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Completed | Nothing on the request is still pending; a narrower role in the same environment may stand in for what was asked |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| access_expiration | Expiry of the granted groups; null when none |"
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "The pair is allowed only while the exception runs, and access that depends on it ends when the exception does."
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "tech_okta_engineering_groups_2026_10",
+          "| grp_analytics_readonly | Warehouse | Read analytics schemas | Pseudonymized | data-handling course |"
+        ],
+        [
+          "kb_database_access_2026_10",
+          "The owner approves in the thread"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "30 days by default, extendable. Contractor and intern access also ends no later than the contract (or internship) end date, so the earlier of the two applies."
+        ]
+      ],
+      "records": [
+        "family_world.slack_messages.slack_message_033.text",
+        "family_world.training_records.worker_hana_kim:data-handling-2026.status"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Completed | Nothing on the request is still pending; a narrower role in the same environment may stand in for what was asked |"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_production_access_standard_2026_10",
+          "| Contractor | Current training | Current training + role owner | Not eligible |"
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "30 days by default, extendable. Contractor and intern access also ends no later than the contract (or internship) end date, so the earlier of the two applies."
+        ],
+        [
+          "kb_temporary_access_2026_09",
+          "When a contract changes, the worker record is updated first and the desk extends access after."
+        ]
+      ],
+      "records": [
+        "family_world.workers.worker_leon_brandt.contract_end_date",
+        "generic_world.google_sheets.spreadsheets.ss_contractor_sow"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Completed | Nothing on the request is still pending; a narrower role in the same environment may stand in for what was asked |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| access_expiration | Expiry of the granted groups; null when none |"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Roles that need a role owner have the owner's approval in writing. If that is the only thing missing, ask the owner once and hold the request as Blocked - approval"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Blocked - approval | Requested access is still wanted but pending a role-owner or CTO approval |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| ROLE_OWNER_APPROVAL_PENDING | Role owner has not approved |"
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "Approvals confirm need; they don't change eligibility."
+        ],
+        [
+          "tech_okta_engineering_groups_2026_10",
+          "Owner approvals come from prod-admin-owners@atlas.example"
+        ]
+      ],
+      "records": [
+        "generic_world.gmail.messages.msg_vp_mei",
+        "family_world.workers.worker_rafael_ortiz.job_title"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_production_access_standard_2026_10",
+          "A request that would create an active pair is blocked as a conflict."
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Blocked - conflict |"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| SOD_CONFLICT |"
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "The pair is allowed only while the exception runs, and access that depends on it ends when the exception does."
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "Approvals confirm need; they don't change eligibility."
+        ]
+      ],
+      "records": [
+        "family_world.identities.okta_rui_silva.groups",
+        "generic_world.google_sheets.spreadsheets.ss_sod_matrix",
+        "generic_world.gmail.messages.msg_owner_444"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_quarterly_access_review_2026_q4",
+          "For each person, mark Keep or Remove."
+        ]
+      ],
+      "records": [
+        "generic_world.google_sheets.spreadsheets.ss_q4_review"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_quarterly_access_review_2026_q4",
+          "Anything not marked by November 27 is removed on November 30."
+        ],
+        [
+          "kb_quarterly_access_review_2026_q4",
+          "Reviews cover existing memberships only. New access goes through the access desk as usual."
+        ]
+      ],
+      "records": [
+        "generic_world.google_sheets.spreadsheets.ss_q4_review",
+        "family_world.current_time"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Missing or expired training is assigned once"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Requests that result in new access get one update in the access requests channel"
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Outcomes with no new access are recorded on the request and reported back to the requester."
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "Roles that need a role owner have the owner's approval in writing. If that is the only thing missing, ask the owner once and hold the request as Blocked - approval"
+        ],
+        [
+          "tech_okta_engineering_groups_2026_10",
+          "Owner approvals come from prod-admin-owners@atlas.example"
+        ],
+        [
+          "tech_jira_access_requests_v1",
+          "Every update emails the requester and the person the request is for"
+        ],
+        [
+          "tech_lms_training_v1",
+          "sends the learner the standard assignment email"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "The request is approved by the person's manager. Requests approved by someone else go back to the requester to reroute."
+        ]
+      ],
+      "records": [
+        "family_world.workers.worker_bruno_costa.manager_id",
+        "family_world.access_requests.ACCESS-447.approver_id"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_access_desk_runbook_2026_10",
+          "There is one open request per ask"
+        ]
+      ],
+      "records": []
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "The desk doesn't change access a person holds under other requests unless someone asks for that change."
+        ],
+        [
+          "kb_production_access_standard_2026_10",
+          "A request that would create an active pair is blocked as a conflict."
+        ]
+      ],
+      "records": [
+        "family_world.identities.okta_rui_silva.groups"
+      ]
+    },
+    {
+      "kb": [
+        [
+          "kb_temporary_access_2026_09",
+          "The desk doesn't change access a person holds under other requests unless someone asks for that change."
+        ],
+        [
+          "kb_access_desk_runbook_2026_10",
+          "| Completed | Nothing on the request is still pending; a narrower role in the same environment may stand in for what was asked |"
+        ]
+      ],
+      "records": [
+        "family_world.access_requests.ACCESS-435.status"
+      ]
+    }
+  ],
+  "automation_workplace__interactive__access_provisioning_007": [
+    {
+      "kb": [],
+      "records": [
+        "family_world.slack_messages.slack_message_352.text",
+        "family_world.slack_messages.slack_message_330.text",
+        "family_world.slack_messages.slack_message_531.text"
+      ]
+    },
+    {
+      "kb": [],
+      "records": [
+        "family_world.slack_messages.slack_message_352.text",
+        "family_world.slack_messages.slack_message_330.text",
+        "family_world.slack_messages.slack_message_332.text"
+      ]
+    },
+    {
+      "kb": [],
+      "records": [
+        "family_world.slack_messages.slack_message_352.text",
+        "family_world.slack_messages.slack_message_279.text"
+      ]
+    },
+    {
+      "kb": [],
+      "records": [
+        "family_world.slack_messages.slack_message_352.text",
+        "family_world.slack_messages.slack_message_419.text"
+      ]
+    },
+    {
+      "kb": [],
+      "records": [
+        "family_world.slack_messages.slack_message_187.text",
+        "family_world.slack_messages.slack_message_188.text"
+      ]
+    },
+    {
+      "kb": [],
+      "records": [
+        "family_world.slack_messages.slack_message_187.text",
+        "family_world.slack_messages.slack_message_188.text"
+      ]
+    },
+    {
+      "kb": [],
+      "records": [
+        "family_world.slack_messages.slack_message_544.text",
+        "family_world.slack_messages.slack_message_325.text",
+        "family_world.slack_messages.slack_message_330.text"
+      ]
+    },
+    {
+      "kb": [],
+      "records": [
+        "family_world.slack_messages.slack_message_325.text",
+        "family_world.slack_messages.slack_message_330.text"
+      ]
+    },
+    {
+      "kb": [],
+      "records": [
+        "family_world.slack_messages.slack_message_390.text"
+      ]
+    },
+    {
+      "kb": [],
+      "records": [
+        "family_world.slack_messages.slack_message_390.text"
+      ]
+    },
+    {
+      "kb": [],
+      "records": [
+        "family_world.slack_messages.slack_message_261.text",
+        "family_world.slack_messages.slack_message_279.text",
+        "family_world.slack_messages.slack_message_082.text"
+      ]
+    },
+    {
+      "kb": [],
+      "records": [
+        "family_world.slack_messages.slack_message_082.text",
+        "family_world.slack_messages.slack_message_271.text"
+      ]
+    },
+    {
+      "kb": [],
+      "records": [
+        "family_world.slack_messages.slack_message_261.text",
+        "family_world.slack_messages.slack_message_272.text",
+        "family_world.slack_messages.slack_message_332.text"
+      ]
+    },
+    {
+      "kb": [],
+      "records": [
+        "family_world.slack_messages.slack_message_082.text",
+        "family_world.slack_messages.slack_message_271.text"
+      ]
+    },
+    {
+      "kb": [],
+      "records": [
+        "family_world.slack_messages.slack_message_260.text",
+        "family_world.slack_messages.slack_message_261.text"
+      ]
+    }
+  ]
+}

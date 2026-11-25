@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Visual workplace simulator for human τ task testing" />
+    <title>τ Workplace Sandbox</title>
+    <script>
+      if (window.location.protocol === "file:") {
+        window.location.replace("http://127.0.0.1:8765/");
+      }
+    </script>
+    <link rel="stylesheet" href="/static/styles.css?v=5" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark">τ</div>
+        <div><strong>Workplace sandbox</strong><span>Visual human testing environment</span></div>
+      </div>
+      <div class="run-controls">
+        <select id="task-select" aria-label="Scenario"></select>
+        <input id="model-input" value="gpt-5.4-mini-2026-03-17" aria-label="User simulator model" />
+        <select id="reasoning-select" aria-label="User simulator reasoning">
+          <option value="">Default reasoning</option><option value="low">Low</option>
+          <option value="medium">Medium</option><option value="high">High</option><option value="xhigh">X-high</option>
+        </select>
+        <button class="primary" id="start-button">Start fresh task</button>
+      </div>
+      <div class="run-state" id="run-state"><i></i><span>Not started</span></div>
+    </header>
+
+    <main class="workspace-shell">
+      <nav class="app-dock" id="app-dock" aria-label="Workplace apps">
+        <button class="dock-app active" data-app="home"><span class="app-icon home-icon">⌂</span><em>Home</em></button>
+        <button class="dock-app" data-app="knowledge"><span class="app-icon drive-icon">▰</span><em>Drive</em></button>
+        <div class="dock-divider"></div>
+        <div id="dynamic-apps"></div>
+        <div class="dock-spacer"></div>
+        <button class="dock-app" data-app="evaluation"><span class="app-icon grade-icon">✓</span><em>Grade</em></button>
+        <button class="dock-app" data-app="prompts"><span class="app-icon prompt-icon">Aa</span><em>Prompts</em></button>
+      </nav>
+
+      <section class="app-window">
+        <header class="window-bar">
+          <div class="window-title">
+            <span class="app-icon home-icon" id="window-icon">⌂</span>
+            <div><div class="eyebrow" id="window-kicker">Workspace</div><h1 id="window-title">Welcome</h1></div>
+          </div>
+          <div class="window-actions" id="window-actions"></div>
+        </header>
+        <div class="app-content" id="app-content">
+          <section class="welcome-card">
+            <div class="welcome-art">⌘</div>
+            <h2>Your simulated work computer</h2>
+            <p>Start a task to open the employee's chat, workplace apps, records, calendars, and knowledge folders.</p>
+            <button class="primary" id="welcome-start">Start selected task</button>
+          </section>
+        </div>
+      </section>
+
+      <aside class="chat-panel">
+        <header class="chat-head">
+          <div class="avatar">ME</div>
+          <div><strong>Employee request</strong><span id="chat-subtitle">Simulated workplace chat</span></div>
+          <button class="icon-button" id="finish-button" title="Grade now" disabled>✓</button>
+        </header>
+        <div class="transcript empty" id="transcript">
+          <div class="empty-state"><div class="empty-glyph">◌</div><h2>No conversation yet</h2><p>The user simulator will send the first request after you start.</p></div>
+        </div>
+        <form class="chat-composer" id="composer">
+          <textarea id="message-input" rows="2" placeholder="Reply as the AI employee…" disabled></textarea>
+          <div><span id="composer-hint">Start a task to reply</span><button class="primary" id="send-button" disabled>Send</button></div>
+        </form>
+      </aside>
+    </main>
+
+    <div class="modal-backdrop" id="action-modal" hidden>
+      <section class="action-modal" role="dialog" aria-modal="true" aria-labelledby="action-title">
+        <header><div><div class="eyebrow">App action</div><h2 id="action-title">Action</h2></div><button class="icon-button" id="close-action">×</button></header>
+        <p id="action-description"></p>
+        <form id="action-form"><div class="action-fields" id="action-fields"></div><footer><button type="button" class="ghost" id="cancel-action">Cancel</button><button class="primary" id="run-action">Run action</button></footer></form>
+      </section>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+    <script src="/static/app.js?v=5" defer></script>
+  </body>
+</html>

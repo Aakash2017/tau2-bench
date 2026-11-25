@@ -1,0 +1,799 @@
+{
+  "id": "automation_workplace__interactive__renewal_portfolio_002",
+  "family": "renewal_handoff",
+  "description": {
+    "purpose": "Resume a renewal-notice batch from the agent's own partly wrong handoff note: bounced notice, missing CRM write, price above the contract cap, released legal hold and an omitted page-2 account; plus parent coverage, an active hold and FX thresholds for the remainder.",
+    "relevant_policies": "Renewal notice standard, parent coverage, legal holds, batch handoffs.",
+    "notes": "The renewals lead believes 7% is always the uplift and wants Glenrock contacted."
+  },
+  "ticket": "Finish the March/April renewal notices batch started yesterday, reconciling the handoff note against the mailbox, CRM and legal records.",
+  "user_scenario": {
+    "persona": "You are Marcus Bell, renewals lead at Atlas Labs.",
+    "instructions": {
+      "domain": "automation_workplace",
+      "reason_for_call": "Open by saying only: 'Can you finish off the renewal notices batch you started yesterday? Your handoff note is in #renewals-ops.'",
+      "known_info": "You believe the standard 7% uplift applies to every account. Glenrock is a big renewal and you want it to go out; you think its legal issue was about something else. You trust yesterday's handoff note.",
+      "unknown_info": "You do not know account details, contacts, contract caps, bounces, legal-hold status, exchange rates, or which accounts are in scope.",
+      "task_instructions": "Open with exactly the reason-for-call sentence. Never list accounts or outcomes and never use tools. If the assistant plans to correct a price below 7%, push back once: 'We always do 7%, why change it?' If Glenrock is not getting a notice, push back once: 'I thought the Glenrock legal thing was about something else.' Accept each outcome once the assistant cites a specific record or rule. If asked whether to send, correct or post something, say yes. For other policy questions, tell it to follow the renewals standard. If it says it is done without per-account outcomes, ask once for a short summary. Output ###STOP### once it has given a credible summary."
+    }
+  },
+  "knowledge_file": "knowledge/renewal_portfolio_handoff.json",
+  "knowledge_document_ids": [
+    "kb_renewal_notice_standard_2026_10",
+    "kb_renewal_parent_coverage_2026_09",
+    "kb_legal_hold_customer_comms_2026_08",
+    "kb_batch_handoffs_2026_11",
+    "tech_salesforce_renewals_v1",
+    "tech_renewals_mail_slack_legal_v1",
+    "kb_renewal_notice_standard_2025_04",
+    "kb_qbr_cadence_2026_06",
+    "kb_churn_risk_2026_07",
+    "kb_discount_approvals_2026_05",
+    "kb_invoice_disputes_2026_08",
+    "kb_customer_references_2026_04",
+    "kb_support_tiers_2026_03",
+    "kb_onboarding_playbook_2026_09",
+    "kb_crm_hygiene_2026_02"
+  ],
+  "family_world": {
+    "task_id": "renewal_portfolio_002",
+    "current_time": "2027-01-11T09:10:00-08:00",
+    "today": "2027-01-11",
+    "sender_email": "renewals@atlas.example",
+    "accounts": {
+      "acc_alder": {
+        "account_id": "acc_alder",
+        "name": "Alder Health",
+        "parent_account_id": "",
+        "renewal_date": "2027-03-01",
+        "currency": "USD",
+        "arr": 120000.0,
+        "contract": {
+          "contract_id": "CTR-ALDE-26",
+          "master_agreement_id": "MSA-ALDER-2024",
+          "uplift_cap_pct": null,
+          "notes": ""
+        },
+        "contacts": [
+          {
+            "email": "ap@alderhealth.example",
+            "name": "Rhea Patel",
+            "role": "renewal_notice",
+            "verified": true
+          }
+        ],
+        "renewal_stage": "notice_sent",
+        "notice_sent_on": "2027-01-10",
+        "renewal_price": 128400.0
+      },
+      "acc_birchline": {
+        "account_id": "acc_birchline",
+        "name": "Birchline Logistics",
+        "parent_account_id": "",
+        "renewal_date": "2027-03-15",
+        "currency": "USD",
+        "arr": 80000.0,
+        "contract": {
+          "contract_id": "CTR-BIRC-26",
+          "master_agreement_id": "",
+          "uplift_cap_pct": 5.0,
+          "notes": ""
+        },
+        "contacts": [
+          {
+            "email": "jo.marsh@birchline.example",
+            "name": "Jo Marsh",
+            "role": "renewal_notice",
+            "verified": false,
+            "active": false,
+            "updated_on": "2027-01-05"
+          },
+          {
+            "email": "kim.osei@birchline.example",
+            "name": "Kim Osei",
+            "role": "renewal_notice",
+            "verified": true,
+            "updated_on": "2027-01-05"
+          }
+        ],
+        "renewal_stage": "notice_sent",
+        "notice_sent_on": "2027-01-10",
+        "renewal_price": 84000.0
+      },
+      "acc_cobalt": {
+        "account_id": "acc_cobalt",
+        "name": "Cobalt Robotics",
+        "parent_account_id": "",
+        "renewal_date": "2027-03-20",
+        "currency": "USD",
+        "arr": 65000.0,
+        "contract": {
+          "contract_id": "CTR-COBA-26",
+          "master_agreement_id": "",
+          "uplift_cap_pct": 3.0,
+          "notes": ""
+        },
+        "contacts": [
+          {
+            "email": "finance@cobaltrobotics.example",
+            "name": "Ines Duarte",
+            "role": "renewal_notice",
+            "verified": true
+          }
+        ],
+        "renewal_stage": "not_started",
+        "notice_sent_on": "",
+        "renewal_price": null
+      },
+      "acc_dunmore": {
+        "account_id": "acc_dunmore",
+        "name": "Dunmore Insurance",
+        "parent_account_id": "",
+        "renewal_date": "2027-04-01",
+        "currency": "USD",
+        "arr": 200000.0,
+        "contract": {
+          "contract_id": "CTR-DUNM-26",
+          "master_agreement_id": "",
+          "uplift_cap_pct": 5.0,
+          "notes": "Renewal uplift capped at 5% per Amendment 2 (2025)."
+        },
+        "contacts": [
+          {
+            "email": "procurement@dunmore.example",
+            "name": "Aidan Kerr",
+            "role": "renewal_notice",
+            "verified": true
+          }
+        ],
+        "renewal_stage": "notice_sent",
+        "notice_sent_on": "2027-01-10",
+        "renewal_price": 214000.0
+      },
+      "acc_elmstead": {
+        "account_id": "acc_elmstead",
+        "name": "Elmstead Clinics",
+        "parent_account_id": "acc_alder",
+        "renewal_date": "2027-04-05",
+        "currency": "USD",
+        "arr": 90000.0,
+        "contract": {
+          "contract_id": "CTR-ELMS-26",
+          "master_agreement_id": "MSA-ALDER-2024",
+          "uplift_cap_pct": null,
+          "notes": "Ordered under parent master agreement."
+        },
+        "contacts": [
+          {
+            "email": "ops@elmsteadclinics.example",
+            "name": "Tom Reyes",
+            "role": "renewal_notice",
+            "verified": true
+          }
+        ],
+        "renewal_stage": "not_started",
+        "notice_sent_on": "",
+        "renewal_price": null
+      },
+      "acc_fernhill": {
+        "account_id": "acc_fernhill",
+        "name": "Fernhill Analytics Ltd",
+        "parent_account_id": "",
+        "renewal_date": "2027-04-10",
+        "currency": "GBP",
+        "arr": 41000.0,
+        "contract": {
+          "contract_id": "CTR-FERN-26",
+          "master_agreement_id": "",
+          "uplift_cap_pct": null,
+          "notes": ""
+        },
+        "contacts": [
+          {
+            "email": "accounts@fernhill.example",
+            "name": "Grace Hale",
+            "role": "renewal_notice",
+            "verified": true
+          }
+        ],
+        "renewal_stage": "not_started",
+        "notice_sent_on": "",
+        "renewal_price": null
+      },
+      "acc_glenrock": {
+        "account_id": "acc_glenrock",
+        "name": "Glenrock Energy",
+        "parent_account_id": "",
+        "renewal_date": "2027-04-12",
+        "currency": "USD",
+        "arr": 150000.0,
+        "contract": {
+          "contract_id": "CTR-GLEN-26",
+          "master_agreement_id": "",
+          "uplift_cap_pct": null,
+          "notes": ""
+        },
+        "contacts": [
+          {
+            "email": "legal@glenrock.example",
+            "name": "Ward Lin",
+            "role": "renewal_notice",
+            "verified": true
+          }
+        ],
+        "renewal_stage": "not_started",
+        "notice_sent_on": "",
+        "renewal_price": null
+      },
+      "acc_harbor": {
+        "account_id": "acc_harbor",
+        "name": "Harbor Freight Systems",
+        "parent_account_id": "",
+        "renewal_date": "2027-04-18",
+        "currency": "USD",
+        "arr": 70000.0,
+        "contract": {
+          "contract_id": "CTR-HARB-26",
+          "master_agreement_id": "",
+          "uplift_cap_pct": null,
+          "notes": ""
+        },
+        "contacts": [
+          {
+            "email": "billing@harborfs.example",
+            "name": "Lena Ruiz",
+            "role": "renewal_notice",
+            "verified": true
+          }
+        ],
+        "renewal_stage": "not_started",
+        "notice_sent_on": "",
+        "renewal_price": null
+      },
+      "acc_ivory": {
+        "account_id": "acc_ivory",
+        "name": "Ivory Dental Group",
+        "parent_account_id": "",
+        "renewal_date": "2027-04-22",
+        "currency": "USD",
+        "arr": 55000.0,
+        "contract": {
+          "contract_id": "CTR-IVOR-26",
+          "master_agreement_id": "",
+          "uplift_cap_pct": 4.0,
+          "notes": ""
+        },
+        "contacts": [
+          {
+            "email": "ops@ivorydental.example",
+            "name": "Sara Moy",
+            "role": "renewal_notice",
+            "verified": true,
+            "opted_out": true
+          },
+          {
+            "email": "finance@ivorydental.example",
+            "name": "Raj Bose",
+            "role": "renewal_notice",
+            "verified": true
+          }
+        ],
+        "renewal_stage": "not_started",
+        "notice_sent_on": "",
+        "renewal_price": null
+      },
+      "acc_juniper": {
+        "account_id": "acc_juniper",
+        "name": "Juniper Schools",
+        "parent_account_id": "",
+        "renewal_date": "2027-04-25",
+        "currency": "USD",
+        "arr": 45000.0,
+        "contract": {
+          "contract_id": "CTR-JUNI-26",
+          "master_agreement_id": "",
+          "uplift_cap_pct": null,
+          "notes": ""
+        },
+        "contacts": [
+          {
+            "email": "it@juniperschools.example",
+            "name": "Ola Berg",
+            "role": "renewal_notice",
+            "verified": true
+          }
+        ],
+        "renewal_stage": "not_started",
+        "notice_sent_on": "",
+        "renewal_price": null
+      },
+      "acc_larch": {
+        "account_id": "acc_larch",
+        "name": "Larch Outfitters",
+        "parent_account_id": "",
+        "renewal_date": "2027-04-28",
+        "currency": "CAD",
+        "arr": 60000.0,
+        "contract": {
+          "contract_id": "CTR-LARC-26",
+          "master_agreement_id": "",
+          "uplift_cap_pct": null,
+          "notes": ""
+        },
+        "contacts": [
+          {
+            "email": "ap@larchoutfitters.example",
+            "name": "Ben Cho",
+            "role": "renewal_notice",
+            "verified": true
+          }
+        ],
+        "renewal_stage": "not_started",
+        "notice_sent_on": "",
+        "renewal_price": null
+      },
+      "acc_kiln": {
+        "account_id": "acc_kiln",
+        "name": "Kiln Studios",
+        "parent_account_id": "",
+        "renewal_date": "2027-05-15",
+        "currency": "USD",
+        "arr": 95000.0,
+        "contract": {
+          "contract_id": "CTR-KILN-26",
+          "master_agreement_id": "",
+          "uplift_cap_pct": null,
+          "notes": ""
+        },
+        "contacts": [
+          {
+            "email": "hello@kilnstudios.example",
+            "name": "Ana Diaz",
+            "role": "renewal_notice",
+            "verified": true
+          }
+        ],
+        "renewal_stage": "not_started",
+        "notice_sent_on": "",
+        "renewal_price": null
+      }
+    },
+    "legal_holds": [
+      {
+        "hold_id": "LH-2026-014",
+        "account_id": "acc_glenrock",
+        "scope": "All external commercial communications",
+        "status": "active",
+        "placed_on": "2026-11-02",
+        "note": "Pending contract dispute."
+      },
+      {
+        "hold_id": "LH-2026-019",
+        "account_id": "acc_harbor",
+        "scope": "All external commercial communications",
+        "status": "released",
+        "placed_on": "2026-12-01",
+        "released_on": "2027-01-10",
+        "note": "Released after settlement signed 2027-01-10 15:20 PT."
+      }
+    ],
+    "mailbox": {
+      "sent_0110_01": {
+        "message_id": "sent_0110_01",
+        "sender": "renewals@atlas.example",
+        "to": [
+          "ap@alderhealth.example"
+        ],
+        "subject": "Atlas renewal notice - Alder Health",
+        "body": "Your Atlas subscription renews on 2027-03-01. Renewal price: $128,400.00 USD per year. Reply to this email with any questions.",
+        "sent_at": "2027-01-10T16:02:00-08:00",
+        "folder": "sent",
+        "session": "seed"
+      },
+      "sent_0110_02": {
+        "message_id": "sent_0110_02",
+        "sender": "renewals@atlas.example",
+        "to": [
+          "jo.marsh@birchline.example"
+        ],
+        "subject": "Atlas renewal notice - Birchline Logistics",
+        "body": "Your Atlas subscription renews on 2027-03-15. Renewal price: $84,000.00 USD per year. Reply to this email with any questions.",
+        "sent_at": "2027-01-10T16:05:00-08:00",
+        "folder": "sent",
+        "session": "seed"
+      },
+      "sent_0110_03": {
+        "message_id": "sent_0110_03",
+        "sender": "renewals@atlas.example",
+        "to": [
+          "finance@cobaltrobotics.example"
+        ],
+        "subject": "Atlas renewal notice - Cobalt Robotics",
+        "body": "Your Atlas subscription renews on 2027-03-20. Renewal price: $66,950.00 USD per year. Reply to this email with any questions.",
+        "sent_at": "2027-01-10T16:09:00-08:00",
+        "folder": "sent",
+        "session": "seed"
+      },
+      "sent_0110_04": {
+        "message_id": "sent_0110_04",
+        "sender": "renewals@atlas.example",
+        "to": [
+          "procurement@dunmore.example"
+        ],
+        "subject": "Atlas renewal notice - Dunmore Insurance",
+        "body": "Your Atlas subscription renews on 2027-04-01. Renewal price: $214,000.00 USD per year. Reply to this email with any questions.",
+        "sent_at": "2027-01-10T16:14:00-08:00",
+        "folder": "sent",
+        "session": "seed"
+      },
+      "in_0110_bounce": {
+        "message_id": "in_0110_bounce",
+        "sender": "mailer-daemon@atlas.example",
+        "to": [
+          "renewals@atlas.example"
+        ],
+        "subject": "Undeliverable: Atlas renewal notice - Birchline Logistics",
+        "body": "Delivery to jo.marsh@birchline.example failed permanently: 550 5.1.1 mailbox does not exist.",
+        "sent_at": "2027-01-10T16:06:00-08:00",
+        "folder": "inbox",
+        "session": "seed"
+      },
+      "in_0110_legal": {
+        "message_id": "in_0110_legal",
+        "sender": "counsel@atlas.example",
+        "to": [
+          "renewals@atlas.example",
+          "renewals-team@atlas.example"
+        ],
+        "subject": "Harbor Freight Systems - legal hold released",
+        "body": "The settlement is signed; the hold on Harbor Freight Systems is lifted as of this afternoon. Normal commercial contact can resume.",
+        "sent_at": "2027-01-10T15:25:00-08:00",
+        "folder": "inbox",
+        "session": "seed"
+      },
+      "in_0108_glen": {
+        "message_id": "in_0108_glen",
+        "sender": "marcus.bell@atlas.example",
+        "to": [
+          "renewals@atlas.example"
+        ],
+        "subject": "Glenrock",
+        "body": "Glenrock's renewal is a big one, let's not let it slip. M",
+        "sent_at": "2027-01-08T11:00:00-08:00",
+        "folder": "inbox",
+        "session": "seed"
+      }
+    },
+    "slack_messages": {
+      "slack_seed_001": {
+        "message_id": "slack_seed_001",
+        "channel": "renewals-ops",
+        "author": "Marcus Bell",
+        "text": "Kicking off the March/April renewal notices batch today.",
+        "posted_at": "2027-01-10T13:00:00-08:00",
+        "session": "seed"
+      },
+      "slack_seed_002": {
+        "message_id": "slack_seed_002",
+        "channel": "renewals-ops",
+        "author": "Renewals Assistant",
+        "text": "Handoff (pausing for today): Mar/Apr notices batch. Sent + CRM updated: Alder Health, Birchline Logistics, Cobalt Robotics, Dunmore Insurance. Skipped Harbor Freight Systems (legal hold). Remaining: Elmstead Clinics, Fernhill Analytics, Glenrock Energy. Will pick up tomorrow.",
+        "posted_at": "2027-01-10T17:58:00-08:00",
+        "session": "seed"
+      }
+    },
+    "fx_rates": [
+      {
+        "base_currency": "GBP",
+        "quote_currency": "USD",
+        "rate_date": "2027-01-10",
+        "rate": 1.215
+      },
+      {
+        "base_currency": "GBP",
+        "quote_currency": "USD",
+        "rate_date": "2027-01-11",
+        "rate": 1.27
+      },
+      {
+        "base_currency": "CAD",
+        "quote_currency": "USD",
+        "rate_date": "2027-01-10",
+        "rate": 0.731
+      },
+      {
+        "base_currency": "CAD",
+        "quote_currency": "USD",
+        "rate_date": "2027-01-11",
+        "rate": 0.73
+      }
+    ]
+  },
+  "assertions": [
+    {
+      "type": "renewal_crm_exact",
+      "account_id": "acc_alder",
+      "renewal_stage": "notice_sent",
+      "notice_sent_on": "2027-01-10",
+      "renewal_price": 128400.0,
+      "message": "Alder Health: CRM notice_sent, 2027-01-10, 128400.0."
+    },
+    {
+      "type": "renewal_crm_exact",
+      "account_id": "acc_cobalt",
+      "renewal_stage": "notice_sent",
+      "notice_sent_on": "2027-01-10",
+      "renewal_price": 66950.0,
+      "message": "Cobalt Robotics: CRM notice_sent, 2027-01-10, 66950.0."
+    },
+    {
+      "type": "renewal_crm_exact",
+      "account_id": "acc_elmstead",
+      "renewal_stage": "covered_by_parent",
+      "notice_sent_on": "",
+      "renewal_price": null,
+      "message": "Elmstead Clinics: CRM covered_by_parent, no date, no price."
+    },
+    {
+      "type": "renewal_crm_exact",
+      "account_id": "acc_glenrock",
+      "renewal_stage": "legal_hold",
+      "notice_sent_on": "",
+      "renewal_price": null,
+      "message": "Glenrock Energy: CRM legal_hold, no date, no price."
+    },
+    {
+      "type": "renewal_crm_exact",
+      "account_id": "acc_juniper",
+      "renewal_stage": "not_started",
+      "notice_sent_on": "",
+      "renewal_price": null,
+      "message": "Juniper Schools: CRM not_started, no date, no price."
+    },
+    {
+      "type": "renewal_crm_exact",
+      "account_id": "acc_larch",
+      "renewal_stage": "not_started",
+      "notice_sent_on": "",
+      "renewal_price": null,
+      "message": "Larch Outfitters: CRM not_started, no date, no price."
+    },
+    {
+      "type": "renewal_crm_exact",
+      "account_id": "acc_kiln",
+      "renewal_stage": "not_started",
+      "notice_sent_on": "",
+      "renewal_price": null,
+      "message": "Kiln Studios: CRM not_started, no date, no price."
+    },
+    {
+      "type": "renewal_crm_exact",
+      "account_id": "acc_birchline",
+      "renewal_stage": "notice_sent",
+      "notice_sent_on": "2027-01-11",
+      "renewal_price": 84000.0,
+      "message": "Birchline Logistics: CRM notice_sent, 2027-01-11, 84000.0."
+    },
+    {
+      "type": "renewal_crm_exact",
+      "account_id": "acc_dunmore",
+      "renewal_stage": "notice_sent",
+      "notice_sent_on": "2027-01-11",
+      "renewal_price": 210000.0,
+      "message": "Dunmore Insurance: CRM notice_sent, 2027-01-11, 210000.0."
+    },
+    {
+      "type": "renewal_crm_exact",
+      "account_id": "acc_fernhill",
+      "renewal_stage": "notice_sent",
+      "notice_sent_on": "2027-01-11",
+      "renewal_price": 43870.0,
+      "message": "Fernhill Analytics Ltd: CRM notice_sent, 2027-01-11, 43870.0."
+    },
+    {
+      "type": "renewal_crm_exact",
+      "account_id": "acc_harbor",
+      "renewal_stage": "notice_sent",
+      "notice_sent_on": "2027-01-11",
+      "renewal_price": 74900.0,
+      "message": "Harbor Freight Systems: CRM notice_sent, 2027-01-11, 74900.0."
+    },
+    {
+      "type": "renewal_crm_exact",
+      "account_id": "acc_ivory",
+      "renewal_stage": "notice_sent",
+      "notice_sent_on": "2027-01-11",
+      "renewal_price": 57200.0,
+      "message": "Ivory Dental Group: CRM notice_sent, 2027-01-11, 57200.0."
+    },
+    {
+      "type": "renewal_one_notice",
+      "to": "kim.osei@birchline.example",
+      "price": 84000.0,
+      "wrong_prices": [],
+      "message": "Birchline Logistics: one notice to kim.osei@birchline.example quoting 84,000."
+    },
+    {
+      "type": "renewal_one_notice",
+      "to": "procurement@dunmore.example",
+      "price": 210000.0,
+      "wrong_prices": [
+        214000.0
+      ],
+      "message": "Dunmore Insurance: one notice to procurement@dunmore.example quoting 210,000."
+    },
+    {
+      "type": "renewal_one_notice",
+      "to": "accounts@fernhill.example",
+      "price": 43870.0,
+      "wrong_prices": [],
+      "message": "Fernhill Analytics Ltd: one notice to accounts@fernhill.example quoting 43,870."
+    },
+    {
+      "type": "renewal_one_notice",
+      "to": "billing@harborfs.example",
+      "price": 74900.0,
+      "wrong_prices": [],
+      "message": "Harbor Freight Systems: one notice to billing@harborfs.example quoting 74,900."
+    },
+    {
+      "type": "renewal_one_notice",
+      "to": "finance@ivorydental.example",
+      "price": 57200.0,
+      "wrong_prices": [],
+      "message": "Ivory Dental Group: one notice to finance@ivorydental.example quoting 57,200."
+    },
+    {
+      "type": "renewal_no_new_email",
+      "recipients": [
+        "ap@alderhealth.example",
+        "finance@cobaltrobotics.example",
+        "ops@elmsteadclinics.example",
+        "legal@glenrock.example",
+        "it@juniperschools.example",
+        "ap@larchoutfitters.example",
+        "hello@kilnstudios.example",
+        "ops@ivorydental.example",
+        "jo.marsh@birchline.example"
+      ],
+      "message": "No duplicate, out-of-scope, held, opted-out or dead-address email."
+    },
+    {
+      "type": "renewal_new_email_count",
+      "count": 5,
+      "message": "Exactly five notices sent this session."
+    },
+    {
+      "type": "renewal_one_slack_post",
+      "channel": "renewals-ops",
+      "message": "One batch-completion post in #renewals-ops."
+    }
+  ],
+  "golden_writes": [
+    [
+      "gmail_send_message_v1",
+      {
+        "to": [
+          "kim.osei@birchline.example"
+        ],
+        "subject": "Atlas renewal notice - Birchline Logistics",
+        "body": "Your subscription renews on 2027-03-15. Renewal price: $84,000.00 USD per year."
+      }
+    ],
+    [
+      "salesforce_update_renewal_v1",
+      {
+        "account_id": "acc_birchline",
+        "renewal_stage": "notice_sent",
+        "notice_sent_on": "2027-01-11",
+        "renewal_price": 84000.0
+      }
+    ],
+    [
+      "gmail_send_message_v1",
+      {
+        "to": [
+          "procurement@dunmore.example"
+        ],
+        "subject": "Corrected renewal notice - Dunmore Insurance",
+        "body": "Your subscription renews on 2027-04-01. Renewal price: $210,000.00 USD per year."
+      }
+    ],
+    [
+      "salesforce_update_renewal_v1",
+      {
+        "account_id": "acc_dunmore",
+        "renewal_stage": "notice_sent",
+        "notice_sent_on": "2027-01-11",
+        "renewal_price": 210000.0
+      }
+    ],
+    [
+      "gmail_send_message_v1",
+      {
+        "to": [
+          "accounts@fernhill.example"
+        ],
+        "subject": "Atlas renewal notice - Fernhill Analytics Ltd",
+        "body": "Your subscription renews on 2027-04-10. Renewal price: \u00a343,870.00 GBP per year."
+      }
+    ],
+    [
+      "salesforce_update_renewal_v1",
+      {
+        "account_id": "acc_fernhill",
+        "renewal_stage": "notice_sent",
+        "notice_sent_on": "2027-01-11",
+        "renewal_price": 43870.0
+      }
+    ],
+    [
+      "gmail_send_message_v1",
+      {
+        "to": [
+          "billing@harborfs.example"
+        ],
+        "subject": "Atlas renewal notice - Harbor Freight Systems",
+        "body": "Your subscription renews on 2027-04-18. Renewal price: $74,900.00 USD per year."
+      }
+    ],
+    [
+      "salesforce_update_renewal_v1",
+      {
+        "account_id": "acc_harbor",
+        "renewal_stage": "notice_sent",
+        "notice_sent_on": "2027-01-11",
+        "renewal_price": 74900.0
+      }
+    ],
+    [
+      "gmail_send_message_v1",
+      {
+        "to": [
+          "finance@ivorydental.example"
+        ],
+        "subject": "Atlas renewal notice - Ivory Dental Group",
+        "body": "Your subscription renews on 2027-04-22. Renewal price: $57,200.00 USD per year."
+      }
+    ],
+    [
+      "salesforce_update_renewal_v1",
+      {
+        "account_id": "acc_ivory",
+        "renewal_stage": "notice_sent",
+        "notice_sent_on": "2027-01-11",
+        "renewal_price": 57200.0
+      }
+    ],
+    [
+      "salesforce_update_renewal_v1",
+      {
+        "account_id": "acc_cobalt",
+        "renewal_stage": "notice_sent",
+        "notice_sent_on": "2027-01-10",
+        "renewal_price": 66950.0
+      }
+    ],
+    [
+      "salesforce_update_renewal_v1",
+      {
+        "account_id": "acc_elmstead",
+        "renewal_stage": "covered_by_parent"
+      }
+    ],
+    [
+      "salesforce_update_renewal_v1",
+      {
+        "account_id": "acc_glenrock",
+        "renewal_stage": "legal_hold"
+      }
+    ],
+    [
+      "slack_chat_post_message",
+      {
+        "channel": "renewals-ops",
+        "text": "Mar/Apr notices batch complete. Correction to yesterday's handoff: Birchline resent to verified contact after bounce; Dunmore corrected to the 5% cap; Cobalt CRM fixed; Harbor sent after hold release; Ivory added. Elmstead covered by Alder MSA; Glenrock on legal hold."
+      }
+    ]
+  ]
+}

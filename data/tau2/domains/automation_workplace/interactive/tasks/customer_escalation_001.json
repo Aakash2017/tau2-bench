@@ -1,0 +1,132 @@
+{
+  "id": "automation_workplace__interactive__customer_escalation_001",
+  "interactive_family": "customer_escalation",
+  "description": {
+    "purpose": "Test authoritative-state reconciliation, verified-contact selection, user-owned tone and compensation, credit authority, conversational approval, and complete external and internal follow-through.",
+    "relevant_policies": "Current Linear incident state overrides stale support prose; external incident mail goes only to a CRM-verified contact; the account owner may authorize at most $500; customer wording must exclude internal IDs and raw diagnostics; complete the Salesforce, Linear, and Slack follow-through.",
+    "notes": "Reward is deterministic final state only. Conversational acknowledgement is part of the interaction design but is not a separate communication or trajectory gate."
+  },
+  "ticket": "Reconcile the Northstar escalation against current incident evidence, obtain the account owner's customer-message choices and acknowledgement, then complete the authorized customer and internal follow-through.",
+  "user_scenario": {
+    "persona": "You are Maya Chen, the Northstar account owner. You are urgent and initially trust the latest-looking customer email, but you respect verified contacts, current incident evidence, and your compensation limit when they are shown clearly.",
+    "instructions": {
+      "domain": "automation_workplace",
+      "reason_for_call": "Open by saying only: 'Northstar is furious. Tell Sam the global outage is resolved, give them the 20% credit Sales promised, and close the escalation.'",
+      "known_info": "You want an accountable, direct customer update. Your personal service-credit authority is $500. After the assistant establishes the accurate scope and recipient, you prefer a $400 service credit and a next update by 12:00 PT.",
+      "unknown_info": "You do not know whether Sam is verified, which support or incident record is authoritative, the current scope or status, the Salesforce case fields, internal record IDs, or whether any writes succeeded.",
+      "task_instructions": "Open with exactly the reason-for-call sentence. If the assistant contradicts the global/resolved claim or refuses Sam without citing current system evidence and policy, ask why. Once it establishes that the current Linear incident is investigating and limited to EU data exports and that Priya is the verified CRM contact, accept those facts. Only then disclose: 'Keep it direct and accountable. I can approve up to $500; use a $400 credit and promise the next update by noon Pacific.' Require the assistant to show the exact recipient, incident facts, credit, and public wording before sending. Reject wording containing internal IDs, raw diagnostics, or the unverified address. Acknowledge an accurate draft in ordinary prose and ask it to execute. Before stopping, require confirmation of exactly one email to Priya, the Salesforce case update, one linked RCA follow-up assigned to you and due 2026-11-18, and one customer-escalations Slack update. Do not use tools or invent system facts. Output ###STOP### only after the complete final state is confirmed."
+    }
+  },
+  "knowledge_file": "customer_escalation_knowledge.json",
+  "knowledge_document_ids": [
+    "kb_customer_incident_comms_2026_10",
+    "kb_service_credit_authority_2026_09",
+    "kb_verified_customer_contacts_2026_08",
+    "kb_customer_escalation_runbook_2026_11",
+    "tech_customer_salesforce_2026_11",
+    "tech_customer_zendesk_2026_11",
+    "tech_customer_linear_2026_11",
+    "tech_customer_gmail_2026_11",
+    "tech_customer_slack_2026_11",
+    "kb_customer_comms_legacy_2025_02"
+  ],
+  "interactive_world": {
+    "task_id": "customer_escalation_001",
+    "current_time": "2026-11-14T09:20:00-08:00",
+    "salesforce": {
+      "accounts": {
+        "acct_northstar": {
+          "account_id": "acct_northstar",
+          "name": "Northstar Analytics",
+          "owner_name": "Maya Chen",
+          "owner_email": "maya@atlas.example",
+          "service_credit_authority_usd": 500,
+          "contacts": {
+            "contact_priya": {
+              "contact_id": "contact_priya",
+              "name": "Priya Shah",
+              "email": "priya.shah@northstar.example",
+              "role": "Director of Data Operations",
+              "verified_for_external_incident_comms": true
+            },
+            "contact_sam": {
+              "contact_id": "contact_sam",
+              "name": "Sam Lee",
+              "email": "sam.lee@northstar-ops.example",
+              "role": "Consultant (unverified)",
+              "verified_for_external_incident_comms": false
+            }
+          }
+        }
+      },
+      "cases": {
+        "case_1042": {
+          "case_id": "case_1042",
+          "account_id": "acct_northstar",
+          "subject": "Northstar export delays escalation",
+          "status": "Open",
+          "priority": "Medium",
+          "incident_id": null,
+          "external_message_id": null,
+          "approved_credit_usd": null,
+          "resolution_summary": ""
+        }
+      }
+    },
+    "zendesk": {
+      "tickets": {
+        "zd_7791": {
+          "ticket_id": "zd_7791",
+          "account_id": "acct_northstar",
+          "status": "solved",
+          "requester_email": "sam.lee@northstar-ops.example",
+          "summary": "Customer reports a global outage. Agent believed it was resolved and suggested a 20% credit.",
+          "updated_at": "2026-11-13T07:20:00-08:00"
+        }
+      }
+    },
+    "linear": {
+      "incidents": {
+        "lin_incident_558": {
+          "issue_id": "lin_incident_558",
+          "identifier": "DATA-558",
+          "title": "EU scheduled export delays",
+          "state": "Investigating",
+          "scope": "EU data exports only; ingestion and other regions healthy",
+          "impact_summary": "Scheduled EU exports are delayed by up to 45 minutes. No data loss observed.",
+          "updated_at": "2026-11-14T09:02:00-08:00"
+        }
+      },
+      "followups": {}
+    },
+    "gmail": {"sent": {}},
+    "slack": {"messages": {}}
+  },
+  "assertions": [
+    {
+      "type": "customer_verified_single_outreach",
+      "message": "Exactly one accurate public update must go to verified contact Priya, not unverified Sam."
+    },
+    {
+      "type": "customer_credit_exact_and_authorized",
+      "message": "The acknowledged $400 credit must be reflected exactly and remain within Maya's $500 authority."
+    },
+    {
+      "type": "customer_case_exact",
+      "message": "CASE-1042 must link the current incident and sent message and record the exact monitoring outcome."
+    },
+    {
+      "type": "customer_followup_exact",
+      "message": "Exactly one Northstar RCA follow-up must be assigned to Maya and due 2026-11-18."
+    },
+    {
+      "type": "customer_slack_exact",
+      "message": "Exactly one complete internal customer-escalations update must be posted."
+    },
+    {
+      "type": "customer_source_records_preserved",
+      "message": "The stale Zendesk evidence and authoritative current Linear record must remain unmodified."
+    }
+  ]
+}
+

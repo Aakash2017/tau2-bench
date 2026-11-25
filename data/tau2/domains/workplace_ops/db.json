@@ -1,0 +1,89 @@
+{
+  "documents": {
+    "doc_nimbus_brief_v1": {
+      "document_id": "doc_nimbus_brief_v1",
+      "title": "Nimbus Project Brief",
+      "version": 1,
+      "status": "superseded",
+      "updated_at": "2026-10-20T16:00:00-07:00",
+      "external_pilot": "pending",
+      "required_functions": ["Product", "Engineering", "Design"]
+    },
+    "doc_nimbus_brief_v2": {
+      "document_id": "doc_nimbus_brief_v2",
+      "title": "Nimbus Project Brief",
+      "version": 2,
+      "status": "current",
+      "updated_at": "2026-11-07T14:30:00-08:00",
+      "external_pilot": "confirmed",
+      "required_functions": ["Product", "Engineering", "Design", "Legal"]
+    }
+  },
+  "employees": {
+    "emp_maya": {
+      "employee_id": "emp_maya",
+      "name": "Maya Chen",
+      "email": "maya@atlas.example",
+      "function": "Product"
+    },
+    "emp_priya": {
+      "employee_id": "emp_priya",
+      "name": "Priya Raman",
+      "email": "priya@atlas.example",
+      "function": "Engineering"
+    },
+    "emp_mateo": {
+      "employee_id": "emp_mateo",
+      "name": "Mateo Silva",
+      "email": "mateo@atlas.example",
+      "function": "Design"
+    },
+    "emp_jordan": {
+      "employee_id": "emp_jordan",
+      "name": "Jordan Lee",
+      "email": "jordan@atlas.example",
+      "function": "Legal"
+    },
+    "external_pilot": {
+      "employee_id": "external_pilot",
+      "name": "Taylor Brooks",
+      "email": "taylor@pilot.example",
+      "function": "External"
+    }
+  },
+  "calendar_busy": {
+    "maya@atlas.example": [
+      {
+        "start": "2026-11-11T09:00:00-08:00",
+        "end": "2026-11-11T10:00:00-08:00"
+      }
+    ],
+    "priya@atlas.example": [
+      {
+        "start": "2026-11-11T11:00:00-08:00",
+        "end": "2026-11-11T12:00:00-08:00"
+      }
+    ],
+    "mateo@atlas.example": [],
+    "jordan@atlas.example": [
+      {
+        "start": "2026-11-11T08:00:00-08:00",
+        "end": "2026-11-11T09:30:00-08:00"
+      }
+    ],
+    "taylor@pilot.example": []
+  },
+  "meeting_approval_rules": {
+    "Nimbus Project Kickoff": {
+      "title": "Nimbus Project Kickoff",
+      "window_start": "2026-11-11T08:00:00-08:00",
+      "window_end": "2026-11-11T12:00:00-08:00",
+      "duration_minutes": 45,
+      "forbidden_attendees": ["taylor@pilot.example"]
+    }
+  },
+  "meeting_proposals": {},
+  "calendar_events": {},
+  "project_tasks": {},
+  "chat_messages": []
+}

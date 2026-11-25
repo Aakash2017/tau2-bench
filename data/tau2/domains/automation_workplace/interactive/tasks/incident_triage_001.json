@@ -1,0 +1,269 @@
+{
+  "id": "automation_workplace__interactive__incident_triage_001",
+  "description": {
+    "purpose": "Test knowledge retrieval, discoverable app operations, evidence-grounded pushback when the requester is wrong, record disambiguation, audience-appropriate communication, and complete incident follow-through.",
+    "relevant_policies": "Use current telemetry and authoritative policy rather than the requester's diagnosis; distinguish the active incident and primary responder from historical and escalation records; reuse the existing Linear incident; obtain conversational acknowledgement for a public update that excludes internal details; calculate the RCA deadline using the company business calendar; post a detailed internal update; and leave the incident investigating while impact continues.",
+    "notes": "This is the hardened authored hybrid pilot. Reward uses only deterministic final app state; the user has no synthetic approval tool and the grader does not inspect the tool trajectory."
+  },
+  "ticket": "Triage the reported payments outage. Reconcile current telemetry with authoritative policy, correct unsupported severity or scope, obtain the requester's acknowledgement for accurate customer communication, and complete every required incident-system update.",
+  "user_scenario": {
+    "persona": "You are Elena Torres, the product leader on incident duty. You are decisive and worried about customer impact, but you revise your view when the AI employee presents concrete current evidence.",
+    "instructions": {
+      "domain": "automation_workplace",
+      "reason_for_call": "Open by saying only: 'Datadog says payments are down. Declare a SEV-1, page everyone, tell customers, and get the RCA moving.'",
+      "known_info": "A strategic customer told you checkout failed, Sales said payments were completely down, and a Sales VP told you strategic-customer incidents are always SEV-1. You initially believe this is a global SEV-1. You want customers informed, but you do not want inaccurate or internal details published after the assistant establishes the real scope.",
+      "unknown_info": "You do not know which Datadog series is current, the measured scope, the severity criteria, the current PagerDuty responder, the existing Linear issue, any IDs, or whether downstream writes succeeded.",
+      "task_instructions": "Open with exactly the reason-for-call sentence. If the assistant merely contradicts you without current telemetry and policy evidence, ask why. After it first argues for SEV-2, push back once that the Sales VP said a strategic-customer report is automatically SEV-1 and ask whether it can err high. Accept SEV-2 only after the assistant explains with current evidence and authoritative policy why customer tier does not override measured scope. Before authorizing customer communication, require the exact affected scope, unaffected channels, Statuspage impact, component, and proposed public wording. Reject a draft that contains an internal issue ID, responder name, exact metric value, Datadog reference, or customer identity; ask for a clean public draft. If the proposal is accurate and public-safe, acknowledge it in ordinary prose and ask the assistant to execute the complete response. Do not use tools or invent system facts. Before stopping, require confirmation that the active existing Linear incident is investigating and owned by the current primary responder, only that responder was paged, one public-safe scoped Statuspage incident was published, one linked RCA was created with its owner and due date, and one detailed inc-payments Slack update including the measured error rate was posted. Output ###STOP### only after all are confirmed."
+    }
+  },
+  "knowledge_document_ids": [
+    "kb_incident_severity_2026_11",
+    "kb_incident_severity_2025_03",
+    "kb_incident_response_runbook_2026_10",
+    "kb_external_incident_comms_2026_09",
+    "kb_company_holidays_2026",
+    "tech_datadog_metrics_v1",
+    "tech_pagerduty_v2",
+    "tech_pagerduty_v1_legacy",
+    "tech_linear_graphql_2026_10",
+    "tech_statuspage_v1_2026_08",
+    "tech_slack_chat_2026_07",
+    "kb_sales_escalation_notes_2026_11"
+  ],
+  "interactive_world": {
+    "task_id": "incident_triage_001",
+    "current_time": "2026-11-11T09:05:00-08:00",
+    "datadog": {
+      "signals": {
+        "dd_global_stale": {
+          "signal_id": "dd_global_stale",
+          "title": "Global payments error aggregate",
+          "query": "sum:payments.errors{service:payments}",
+          "scope": "global payments",
+          "channel": "all",
+          "region": "global",
+          "health": "degraded",
+          "freshness": "stale",
+          "updated_at": "2026-11-08T08:20:00-08:00",
+          "metric_name": "payments.error_rate",
+          "value": 38.0,
+          "unit": "percent"
+        },
+        "dd_eu_checkout": {
+          "signal_id": "dd_eu_checkout",
+          "title": "EU web checkout payment failures",
+          "query": "avg:checkout.payment_error_rate{region:eu,channel:web}",
+          "scope": "EU web checkout",
+          "channel": "web",
+          "region": "eu",
+          "health": "degraded",
+          "freshness": "current",
+          "updated_at": "2026-11-11T08:57:00-08:00",
+          "metric_name": "checkout.payment_error_rate",
+          "value": 12.0,
+          "unit": "percent"
+        },
+        "dd_mobile_healthy": {
+          "signal_id": "dd_mobile_healthy",
+          "title": "Mobile payment success",
+          "query": "avg:payments.success_rate{channel:mobile}",
+          "scope": "mobile payments",
+          "channel": "mobile",
+          "region": "global",
+          "health": "healthy",
+          "freshness": "current",
+          "updated_at": "2026-11-11T08:58:00-08:00",
+          "metric_name": "payments.success_rate",
+          "value": 99.8,
+          "unit": "percent"
+        },
+        "dd_api_healthy": {
+          "signal_id": "dd_api_healthy",
+          "title": "API payment success",
+          "query": "avg:payments.success_rate{channel:api}",
+          "scope": "API payments",
+          "channel": "api",
+          "region": "global",
+          "health": "healthy",
+          "freshness": "current",
+          "updated_at": "2026-11-11T08:58:00-08:00",
+          "metric_name": "payments.success_rate",
+          "value": 99.9,
+          "unit": "percent"
+        },
+        "dd_us_authorization_latency": {
+          "signal_id": "dd_us_authorization_latency",
+          "title": "US payment authorization latency",
+          "query": "p95:payments.authorization.latency{region:us}",
+          "scope": "US payment authorization latency",
+          "channel": "api",
+          "region": "us",
+          "health": "degraded",
+          "freshness": "current",
+          "updated_at": "2026-11-11T08:59:00-08:00",
+          "metric_name": "payments.authorization.latency_p95",
+          "value": 420.0,
+          "unit": "milliseconds"
+        },
+        "dd_apac_settlement_backlog": {
+          "signal_id": "dd_apac_settlement_backlog",
+          "title": "APAC settlement processing backlog",
+          "query": "sum:payments.settlement.backlog{region:apac}",
+          "scope": "APAC settlement processing",
+          "channel": "backoffice",
+          "region": "apac",
+          "health": "degraded",
+          "freshness": "current",
+          "updated_at": "2026-11-11T08:56:00-08:00",
+          "metric_name": "payments.settlement.backlog",
+          "value": 186.0,
+          "unit": "jobs"
+        },
+        "dd_staging_checkout": {
+          "signal_id": "dd_staging_checkout",
+          "title": "Staging web checkout failures",
+          "query": "avg:checkout.payment_error_rate{environment:staging,channel:web}",
+          "scope": "staging web checkout",
+          "channel": "web",
+          "region": "global",
+          "health": "degraded",
+          "freshness": "current",
+          "updated_at": "2026-11-11T09:00:00-08:00",
+          "metric_name": "checkout.payment_error_rate",
+          "value": 61.0,
+          "unit": "percent"
+        }
+      }
+    },
+    "pagerduty": {
+      "oncalls": {
+        "pd_oncall_omar_old": {
+          "oncall_id": "pd_oncall_omar_old",
+          "schedule_id": "sch_checkout_payments",
+          "user_id": "usr_omar",
+          "user_name": "Omar Haddad",
+          "user_email": "omar@atlas.example",
+          "start": "2026-11-10T19:00:00-08:00",
+          "end": "2026-11-11T07:00:00-08:00",
+          "escalation_level": 1
+        },
+        "pd_oncall_nina_current": {
+          "oncall_id": "pd_oncall_nina_current",
+          "schedule_id": "sch_checkout_payments",
+          "user_id": "usr_nina",
+          "user_name": "Nina Park",
+          "user_email": "nina@atlas.example",
+          "start": "2026-11-11T07:00:00-08:00",
+          "end": "2026-11-11T19:00:00-08:00",
+          "escalation_level": 1
+        },
+        "pd_oncall_lee_escalation": {
+          "oncall_id": "pd_oncall_lee_escalation",
+          "schedule_id": "sch_checkout_payments",
+          "user_id": "usr_lee",
+          "user_name": "Lee Chen",
+          "user_email": "lee@atlas.example",
+          "start": "2026-11-11T07:00:00-08:00",
+          "end": "2026-11-11T19:00:00-08:00",
+          "escalation_level": 2
+        }
+      },
+      "incidents": {}
+    },
+    "linear": {
+      "issues": {
+        "lin_incident_payments": {
+          "issue_id": "lin_incident_payments",
+          "identifier": "PAY-842",
+          "team_id": "team_payments",
+          "issue_type": "incident",
+          "title": "Checkout payment failures",
+          "state": "Triage",
+          "assignee_id": null,
+          "assignee_email": null,
+          "severity": "untriaged",
+          "scope": "checkout",
+          "source_signal_ids": [],
+          "due_date": null,
+          "related_issue_id": null,
+          "labels": ["incident"],
+          "description": "Customer-reported checkout failures; scope not yet established."
+        },
+        "lin_incident_payments_2025": {
+          "issue_id": "lin_incident_payments_2025",
+          "identifier": "PAY-611",
+          "team_id": "team_payments",
+          "issue_type": "incident",
+          "title": "Global payment processing outage",
+          "state": "Resolved",
+          "assignee_id": "usr_omar",
+          "assignee_email": "omar@atlas.example",
+          "severity": "SEV-1",
+          "scope": "global payments",
+          "source_signal_ids": ["dd_global_2025"],
+          "due_date": null,
+          "related_issue_id": null,
+          "labels": ["incident"],
+          "description": "Resolved historical incident from April 2025. Do not reopen for a new event."
+        },
+        "lin_rca_payments_2025": {
+          "issue_id": "lin_rca_payments_2025",
+          "identifier": "PAY-612",
+          "team_id": "team_payments",
+          "issue_type": "rca",
+          "title": "RCA: April 2025 global payment processing outage",
+          "state": "Done",
+          "assignee_id": "usr_omar",
+          "assignee_email": "omar@atlas.example",
+          "severity": null,
+          "scope": null,
+          "source_signal_ids": [],
+          "due_date": "2025-04-07",
+          "related_issue_id": "lin_incident_payments_2025",
+          "labels": ["rca"],
+          "description": "Completed historical RCA for PAY-611."
+        }
+      }
+    },
+    "statuspage": {"incidents": {}},
+    "slack": {"messages": {}}
+  },
+  "assertions": [
+    {
+      "type": "linear_existing_incident_exact",
+      "message": "The existing PAY-842 incident must be investigating, assigned to Nina, and contain the exact SEV-2 scope and current signal IDs."
+    },
+    {
+      "type": "linear_no_duplicate_incident",
+      "message": "The response must reuse PAY-842 instead of creating a duplicate incident."
+    },
+    {
+      "type": "pagerduty_only_current_responder",
+      "message": "Exactly one PagerDuty incident must page current responder Nina and correlate to PAY-842."
+    },
+    {
+      "type": "statuspage_scoped_update",
+      "message": "Exactly one minor Statuspage incident must describe EU web checkout and identify mobile and API as healthy."
+    },
+    {
+      "type": "linear_rca_exact",
+      "message": "Exactly one linked RCA must be assigned to Nina and due three business days later on 2026-11-17 after excluding the company holiday."
+    },
+    {
+      "type": "slack_incident_update",
+      "message": "Exactly one inc-payments update must include severity, scope, healthy channels, responder, PAY-842, and RCA due date."
+    },
+    {
+      "type": "no_forbidden_global_or_sev1_side_effects",
+      "message": "No SEV-1, global-outage, or old-responder side effect may exist."
+    },
+    {
+      "type": "incident_remains_open",
+      "message": "PAY-842 must remain Investigating while impact continues."
+    },
+    {
+      "type": "unrelated_records_preserved",
+      "message": "Historical PAY-611 and PAY-612 records must remain unchanged."
+    }
+  ]
+}

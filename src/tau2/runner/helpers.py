@@ -186,6 +186,18 @@ def get_info(
             from tau2.domains.intake.spell_events import SPELL_EVENT_DETECTION_VERSION
 
             spell_detection_version = SPELL_EVENT_DETECTION_VERSION
+    elif config.domain == "workplace_ops":
+        from tau2.domains.workplace_ops.prompts import (
+            USER_SIMULATION_GUIDELINES,
+        )
+
+        global_user_sim_guidelines = USER_SIMULATION_GUIDELINES
+    elif config.domain == "automation_workplace":
+        from tau2.domains.automation_workplace.prompts import (
+            USER_SIMULATION_GUIDELINES,
+        )
+
+        global_user_sim_guidelines = USER_SIMULATION_GUIDELINES
 
     if config.elicitation is not None and config.language not in {None, "en"}:
         from tau2.domains.intake.localized import (

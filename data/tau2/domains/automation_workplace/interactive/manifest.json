@@ -1,0 +1,50 @@
+{
+  "schema_version": "0.1.0",
+  "benchmark_layer": "authored_interactive_workplace",
+  "task_count": 19,
+  "knowledge_document_count": 94,
+  "knowledge_bundle_count": 7,
+  "pilot_task_id": "automation_workplace__interactive__incident_triage_001",
+  "planned_dataset": {
+    "family_count": 6,
+    "logical_tasks_per_family": 8,
+    "logical_task_count": 48,
+    "surface_instances_per_logical_task": 2,
+    "planned_episode_count": 96,
+    "primary_aggregation": "macro_average_over_families"
+  },
+  "retrieval": {
+    "tool": "knowledge_search",
+    "method": "BM25",
+    "default_top_k": 5,
+    "document_types": [
+      "authoritative policy",
+      "runbook",
+      "technical app documentation",
+      "superseded distractor",
+      "business evidence"
+    ]
+  },
+  "capability_discovery": {
+    "unlock_tool": "unlock_discoverable_tool",
+    "call_tool": "call_discoverable_tool",
+    "operation_names_are_documented_in_kb": true,
+    "state_backend": "Pydantic"
+  },
+  "evaluation": {
+    "reward_basis": [
+      "ENV_ASSERTION"
+    ],
+    "requires_exact_action_sequence": false,
+    "communication_gate": false,
+    "user_approval_mode": "natural-language acknowledgement",
+    "assertion_count_by_family": {
+      "incident_triage": 9,
+      "vendor_invoice": 8,
+      "customer_escalation": 6,
+      "access_provisioning": 18,
+      "renewal_portfolio": 7,
+      "meeting_coordination": 6
+    }
+  }
+}

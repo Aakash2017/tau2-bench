@@ -21,6 +21,15 @@ from tau2.domains.airline.environment import get_tasks as airline_domain_get_tas
 from tau2.domains.airline.environment import (
     get_tasks_split as airline_domain_get_tasks_split,
 )
+from tau2.domains.automation_workplace.environment import (
+    get_environment as automation_workplace_get_environment,
+)
+from tau2.domains.automation_workplace.environment import (
+    get_tasks as automation_workplace_get_tasks,
+)
+from tau2.domains.automation_workplace.environment import (
+    get_tasks_split as automation_workplace_get_tasks_split,
+)
 from tau2.domains.banking_knowledge.environment import (
     get_environment as knowledge_domain_get_environment,
 )
@@ -58,6 +67,13 @@ from tau2.domains.telecom.environment import (
 )
 from tau2.domains.telecom.environment import (
     get_tasks_split as telecom_domain_get_tasks_split,
+)
+from tau2.domains.workplace_ops.environment import (
+    get_environment as workplace_ops_get_environment,
+)
+from tau2.domains.workplace_ops.environment import get_tasks as workplace_ops_get_tasks
+from tau2.domains.workplace_ops.environment import (
+    get_tasks_split as workplace_ops_get_tasks_split,
 )
 from tau2.environment.environment import Environment
 from tau2.user.user_simulator import DummyUser, UserSimulator
@@ -357,6 +373,23 @@ try:
         intake_get_tasks,
         "intake",
         get_task_splits=intake_get_tasks_split,
+    )
+
+    registry.register_domain(workplace_ops_get_environment, "workplace_ops")
+    registry.register_tasks(
+        workplace_ops_get_tasks,
+        "workplace_ops",
+        get_task_splits=workplace_ops_get_tasks_split,
+    )
+
+    registry.register_domain(
+        automation_workplace_get_environment,
+        "automation_workplace",
+    )
+    registry.register_tasks(
+        automation_workplace_get_tasks,
+        "automation_workplace",
+        get_task_splits=automation_workplace_get_tasks_split,
     )
 
 

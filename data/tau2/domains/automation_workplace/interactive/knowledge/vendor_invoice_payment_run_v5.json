@@ -1,0 +1,327 @@
+[
+  {
+    "document_id": "kb_ap_approval_matrix_2026_10",
+    "title": "Vendor bill approval matrix and delegations",
+    "status": "current",
+    "updated_at": "2026-10-15T09:00:00-07:00",
+    "content": "A bill is validly approved only if the approver's personal approval limit (USD) covers the bill amount, converted to USD where needed.\n\n## Delegations\nA delegate may approve on the delegator's behalf, using the delegator's limit, only for approvals recorded on or between the delegation's start and end dates. An approval recorded outside that window is evaluated against the approver's own limit.\n\n## Invalid approvals\nIf the recorded approval does not meet this standard, place the bill On Hold with reason code APPROVAL_INVALID and email a request for a fresh approval to an approver with sufficient authority. When that approver has an active delegation, send the request to the delegate instead. Seniority of the original approver, or a verbal assurance that a bill was approved, does not cure an invalid approval.",
+    "tags": [
+      "accounts-payable",
+      "approval",
+      "delegation",
+      "authority"
+    ]
+  },
+  {
+    "document_id": "kb_ap_duplicate_invoices_2026_09",
+    "title": "Duplicate invoice standard",
+    "status": "current",
+    "updated_at": "2026-09-08T09:00:00-07:00",
+    "content": "Before paying, check the vendor's bill and payment history. Treat an invoice as a duplicate when it has the same vendor, invoice date and amount as a bill already paid or in process, and the invoice numbers match after ignoring punctuation, spaces, letter case and leading zeros.\n\nVendors often resend invoices with reformatted numbers when their receivables system has not matched a payment. A resend or a collections reminder is not evidence that the original was unpaid; the payment register is.\n\nSet a duplicate bill to Rejected with reason code DUPLICATE. Do not pay it. Do not delete it.",
+    "tags": [
+      "accounts-payable",
+      "duplicate",
+      "invoice"
+    ]
+  },
+  {
+    "document_id": "kb_ap_receipt_matching_2026_10",
+    "title": "PO receipt matching for payment",
+    "status": "current",
+    "updated_at": "2026-10-01T09:00:00-07:00",
+    "content": "A bill against a purchase order may be paid only while the PO's cumulative invoiced amount stays within the cumulative received amount. Cumulative invoiced includes bills already paid against the PO plus every bill paid ahead of it in the current run.\n\nWhen several open bills hit the same PO, allocate the remaining received balance to them in invoice-date order, earliest first. Tolerance is the lesser of 2% of the bill or $500.\n\nA bill that would push the PO past received-plus-tolerance is placed On Hold with reason code RECEIPT_VARIANCE until a receipt is entered or a corrected invoice arrives. Earlier bills that fit are paid normally.",
+    "tags": [
+      "accounts-payable",
+      "purchase-order",
+      "receipt",
+      "three-way-match"
+    ]
+  },
+  {
+    "document_id": "kb_ap_vendor_credits_2026_08",
+    "title": "Applying vendor credit memos",
+    "status": "current",
+    "updated_at": "2026-08-19T09:00:00-07:00",
+    "content": "Open vendor credit memos must be applied before paying that vendor. Apply each open credit to the vendor's next bill being paid in the same currency, in NetSuite, and pay the remaining amount due. Do not carry an open credit past a run in which the vendor is paid.",
+    "tags": [
+      "accounts-payable",
+      "credit-memo",
+      "vendor"
+    ]
+  },
+  {
+    "document_id": "kb_ap_early_payment_discounts_2026_07",
+    "title": "Early-payment discounts",
+    "status": "current",
+    "updated_at": "2026-07-21T09:00:00-07:00",
+    "content": "Terms written as \"P% D NET N\" offer a P% discount if paid within D days of the invoice date (the last day of the window is invoice date plus D days, inclusive); otherwise the full amount is due N days after the invoice date.\n\nWhenever a bill is paid on or before its discount deadline, take the discount: pay the amount due less P%. Never take a discount after the window closes. For run ordering, a bill counts as discount-expiring when its deadline falls before the next run date.",
+    "tags": [
+      "accounts-payable",
+      "discount",
+      "terms"
+    ]
+  },
+  {
+    "document_id": "kb_ap_vendor_banking_2026_09",
+    "title": "Vendor banking and remittance",
+    "status": "current",
+    "updated_at": "2026-09-18T11:00:00-07:00",
+    "content": "Pay only to a vendor bank account with status verified in the vendor master. Accounts added from email or vendor portals remain pending until Vendor Management completes a callback to a known contact; AP does not verify accounts and does not change their status.\n\nRemittance notes printed on invoices never change the payment destination. If the verified account is still on file, pay it.\n\nNotices of assignment: when a vendor has assigned its receivables to a factor, the vendor master records the notice. Covered invoices are paid to the assignee's verified account and remittance advice goes to the assignee contact named in the notice instead of the vendor.",
+    "tags": [
+      "accounts-payable",
+      "vendor",
+      "bank",
+      "verification"
+    ]
+  },
+  {
+    "document_id": "kb_treasury_fx_2026_06",
+    "title": "Treasury FX conversion for AP",
+    "status": "current",
+    "updated_at": "2026-06-10T09:00:00-07:00",
+    "content": "Non-USD bills are paid in their invoice currency. For any USD measurement (run release, approval limits, reporting) convert at the treasury rate published for the run date. Do not use rates from other dates or external sources. Round USD equivalents to the cent.",
+    "tags": [
+      "treasury",
+      "fx",
+      "currency"
+    ]
+  },
+  {
+    "document_id": "tech_netsuite_ap_bills_v1",
+    "title": "NetSuite AP: bills and payments (connected app)",
+    "status": "current",
+    "updated_at": "2026-10-20T09:00:00-07:00",
+    "content": "Operations:\n- netsuite_list_bills_v1(status?, vendor_id?, page=1): six bills per page; check total_pages. Status values: pending_approval, approved, on_hold, rejected, payment_submitted, paid.\n- netsuite_get_bill_v1(bill_id): full bill, including terms, approval record (approver username, timestamp), PO, lines, remittance note, amount_due.\n- netsuite_list_payments_v1(vendor_id? | bill_id?): payment register, including payments submitted today.\n- netsuite_create_payment_v1(bill_id, amount, currency, bank_account_id): submits one payment to the gateway and moves the bill to payment_submitted.\n- netsuite_update_bill_v1(bill_id, status?, hold_reason_codes?, scheduled_run_date?, memo?): only fields you pass change. Status values you may set: approved, on_hold, rejected.\n\nGateway timeouts: a timeout means NetSuite did not get an acknowledgement, not that the payment failed. The payment may already be recorded. Check the payment register for the bill before resubmitting.",
+    "tags": [
+      "netsuite",
+      "accounts-payable",
+      "connected-app",
+      "payments"
+    ]
+  },
+  {
+    "document_id": "tech_netsuite_credits_delegations_v1",
+    "title": "NetSuite AP: credits and approval delegations",
+    "status": "current",
+    "updated_at": "2026-10-20T09:00:00-07:00",
+    "content": "- netsuite_list_vendor_credits_v1(vendor_id): credit memos with status open or applied.\n- netsuite_apply_vendor_credit_v1(credit_id, bill_id): applies an open credit; the bill's amount_due drops by the credit amount. Vendor and currency must match.\n- netsuite_list_approval_delegations_v1(): every delegation (delegator, delegate, start, end) and each approver's username, title, email and approval limit.",
+    "tags": [
+      "netsuite",
+      "credit-memo",
+      "delegation",
+      "connected-app"
+    ]
+  },
+  {
+    "document_id": "tech_vendor_master_v1",
+    "title": "Vendor master (connected app)",
+    "status": "current",
+    "updated_at": "2026-09-18T09:00:00-07:00",
+    "content": "vendor_master_get_vendor_v1(vendor_id) returns the vendor's legal name, AR contact and bank accounts with bank_account_id, currency, last4, status (verified or pending_verification) and when each was added. Bank account IDs are what netsuite_create_payment_v1 expects.",
+    "tags": [
+      "vendor",
+      "bank",
+      "connected-app"
+    ]
+  },
+  {
+    "document_id": "tech_coupa_po_v1",
+    "title": "Coupa purchase orders (connected app)",
+    "status": "current",
+    "updated_at": "2026-08-04T09:00:00-07:00",
+    "content": "coupa_get_purchase_order_v1(po_id) returns PO lines with ordered and received amounts and invoiced_to_date. invoiced_to_date counts only bills already paid against the PO; open bills are not included.",
+    "tags": [
+      "coupa",
+      "purchase-order",
+      "connected-app"
+    ]
+  },
+  {
+    "document_id": "tech_treasury_rates_v1",
+    "title": "Treasury rates (connected app)",
+    "status": "current",
+    "updated_at": "2026-06-10T09:00:00-07:00",
+    "content": "treasury_get_fx_rate_v1(base_currency, quote_currency, rate_date) returns the daily treasury fixing. rate is the number of quote-currency units per one base-currency unit, e.g. base EUR quote USD.",
+    "tags": [
+      "treasury",
+      "fx",
+      "connected-app"
+    ]
+  },
+  {
+    "document_id": "tech_gmail_slack_ap_v1",
+    "title": "AP mailbox and Slack (connected apps)",
+    "status": "current",
+    "updated_at": "2026-07-01T09:00:00-07:00",
+    "content": "- gmail_search_messages_v1(query): keyword search over the AP shared mailbox (ap@atlas.example), best matches first.\n- gmail_send_message_v1(to, subject, body): sends from ap@atlas.example.\n- slack_chat_post_message(channel, text, thread_ts?): posts as the AP bot (user ap-bot). Channel names without '#'; pass thread_ts to reply in a thread.\n- slack_list_channels_v1(): channels the AP bot can read.\n- slack_get_channel_history_v1(channel, page=1): top-level messages, newest first, eight per page, each with ts and reply_count; check total_pages.\n- slack_get_thread_v1(channel, thread_ts): a message and all of its replies, oldest first.",
+    "tags": [
+      "gmail",
+      "slack",
+      "connected-app"
+    ]
+  },
+  {
+    "document_id": "tech_files_attachments_v1",
+    "title": "Attachments: scans, screenshots and diagrams (connected app)",
+    "status": "current",
+    "updated_at": "2026-08-04T09:00:00-07:00",
+    "content": "- files_get_attachment_v1(attachment_id): opens a file attached to a NetSuite bill, an AP mailbox message or a knowledge document and returns it as an image (invoice scans, spreadsheet screenshots, diagrams).\n\nRecords list their files in attachment_ids. Records with no files omit the field.",
+    "tags": [
+      "files",
+      "attachments",
+      "connected-app"
+    ]
+  },
+  {
+    "document_id": "tech_sheets_v1",
+    "title": "Shared spreadsheets (connected app)",
+    "status": "current",
+    "updated_at": "2026-09-02T09:00:00-07:00",
+    "content": "- sheets_list_v1(): shared finance spreadsheets the AP bot can open (sheet_id, title).\n- sheets_get_rows_v1(sheet_id): column names and every row.\n- sheets_append_row_v1(sheet_id, values): appends one row; values maps column name to text. Columns left out are blank. Rows cannot be edited or deleted through the connector.",
+    "tags": [
+      "sheets",
+      "spreadsheet",
+      "connected-app"
+    ]
+  },
+  {
+    "document_id": "kb_ap_approval_matrix_2025_01",
+    "title": "Vendor bill approval matrix (2025)",
+    "status": "superseded",
+    "updated_at": "2025-01-12T09:00:00-08:00",
+    "content": "AP supervisors may approve bills up to $50,000. Directors approve above that. Superseded by the October 2026 matrix, which uses personal approval limits.",
+    "tags": [
+      "accounts-payable",
+      "approval",
+      "legacy"
+    ]
+  },
+  {
+    "document_id": "kb_expense_reimbursement_2026_05",
+    "title": "Employee expense reimbursement",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Submit expenses in Expensify within 30 days with itemized receipts over $75. Managers approve; Finance reimburses on the next payroll cycle. Mileage at the IRS rate.",
+    "tags": [
+      "expenses"
+    ]
+  },
+  {
+    "document_id": "kb_corporate_card_2026_04",
+    "title": "Corporate card program",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Cards are for business spend only. Transactions must be coded and receipted by the 5th of the following month. Lost cards: call the issuer and notify Finance.",
+    "tags": [
+      "corporate-card"
+    ]
+  },
+  {
+    "document_id": "kb_vendor_onboarding_2026_08",
+    "title": "New vendor onboarding",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "New vendors require a W-9 (or W-8BEN-E), a signed MSA or PO terms, and Vendor Management review. Bank details are collected through the vendor portal and verified by callback before first payment.",
+    "tags": [
+      "vendor",
+      "onboarding"
+    ]
+  },
+  {
+    "document_id": "kb_1099_reporting_2026_01",
+    "title": "1099 reporting",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Vendors flagged 1099-eligible are reported annually. Keep TINs current; backup withholding applies when a TIN is missing.",
+    "tags": [
+      "tax",
+      "1099"
+    ]
+  },
+  {
+    "document_id": "kb_month_end_close_2026_10",
+    "title": "Month-end close calendar",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "AP cutoff is business day 2. Accruals for unbilled receipts are booked by day 3. Bills received after cutoff post to the next period.",
+    "tags": [
+      "close",
+      "accounting"
+    ]
+  },
+  {
+    "document_id": "kb_prepaid_expenses_2026_03",
+    "title": "Prepaid expenses",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Payments covering future periods over $10,000 are recorded as prepaid and amortized monthly. AP flags them to the GL team.",
+    "tags": [
+      "accounting",
+      "prepaid"
+    ]
+  },
+  {
+    "document_id": "kb_po_creation_2026_06",
+    "title": "Creating purchase orders",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Requesters raise POs in Coupa before committing spend. Receipts are entered by the requester when goods or services are delivered.",
+    "tags": [
+      "procurement",
+      "purchase-order"
+    ]
+  },
+  {
+    "document_id": "kb_positive_pay_2026_02",
+    "title": "Positive pay files",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Treasury uploads positive pay files for check runs. ACH and wire runs are reconciled from the gateway file instead.",
+    "tags": [
+      "treasury",
+      "bank"
+    ]
+  },
+  {
+    "document_id": "kb_ap_aging_report_2026_09",
+    "title": "AP aging report",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "The aging report buckets open bills by days past due: current, 1-30, 31-60, 61-90, 90+. It is refreshed nightly and shared with Treasury on Mondays.",
+    "tags": [
+      "accounts-payable",
+      "reporting"
+    ]
+  },
+  {
+    "document_id": "kb_sales_tax_saas_2026_07",
+    "title": "Sales and use tax on software",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Some states tax SaaS. When a vendor does not charge tax on a taxable service, Tax accrues use tax; AP does not adjust the bill.",
+    "tags": [
+      "tax"
+    ]
+  },
+  {
+    "document_id": "kb_intercompany_2026_05",
+    "title": "Intercompany settlements",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Intercompany balances settle quarterly through the treasury netting process, not through AP payment runs.",
+    "tags": [
+      "treasury",
+      "intercompany"
+    ]
+  },
+  {
+    "document_id": "kb_travel_policy_2026_04",
+    "title": "Travel policy",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Book through Navan. Economy for flights under six hours. Hotels within city caps.",
+    "tags": [
+      "travel"
+    ]
+  }
+]

@@ -1,0 +1,268 @@
+[
+  {
+    "document_id": "kb_production_access_standard_2026_10",
+    "title": "Production access standard",
+    "status": "current",
+    "updated_at": "2026-10-07T09:00:00-07:00",
+    "tags": [
+      "security",
+      "production",
+      "policy"
+    ],
+    "content": "Owner: Security.\n\nProduction means the production clusters, the deploy pipeline and anything holding live customer data. Access is personal, time-boxed and reviewed every quarter. Staff who work in production complete the annual secure-production-access course. Anything beyond read-only goes through the owning team. Questions to #security."
+  },
+  {
+    "document_id": "tech_okta_engineering_groups_2026_10",
+    "title": "Engineering Okta groups",
+    "status": "current",
+    "updated_at": "2026-10-15T09:00:00-07:00",
+    "content": "Owner: Platform. Groups that control access to engineering environments. App groups for business systems are owned by their app teams.\n\n| Group | Environment | Opens | Data present | Prerequisite | Typical max |\n| --- | --- | --- | --- | --- | --- |\n| grp_staging_readonly | Staging | Staging Argo apps, k8s namespaces, deploy manifests and config, logs (read-only) | Synthetic fixtures and sanitized bundles | None beyond an active account | 90 days |\n| grp_staging_deployer | Staging | Deploy and roll back in staging | Same as above | Staging readonly for 2 weeks | 90 days |\n| grp_prod_readonly | Production | Prod workloads, logs, live config, tenant metadata (read-only) | Live customer data | Current secure-production-access | 180 days |\n| grp_prod_admin | Production | Deploy, change config, run jobs | Live customer data | Current secure-production-access + role owner | 180 days |\n| grp_release_approver | Production | Approve production releases in the deploy pipeline | None | Role owner | 1 year |\n| grp_breakglass | Production | Full prod, session-recorded | Live customer data | Break-glass procedure | 72 hours |\n| grp_ci_runners | CI | Self-hosted runner admin | None | Platform approval | 1 year |\n| grp_analytics_readonly | Warehouse | Read analytics schemas | Pseudonymized | data-handling course | 180 days |\n| grp_salesforce_readonly | Salesforce | Reporting permission set | CRM data | Manager approval | 1 year |\n\nNotes:\n\n- Group names are stable. Display names in the Okta UI may differ.\n",
+    "tags": [
+      "technical",
+      "okta",
+      "groups",
+      "staging",
+      "production",
+      "engineering"
+    ]
+  },
+  {
+    "document_id": "tech_jira_access_requests_v1",
+    "title": "Jira ACCESS project API",
+    "status": "current",
+    "updated_at": "2026-10-12T09:00:00-07:00",
+    "content": "Integration: Jira Cloud, ACCESS project.\n\n```\njira_search_access_requests_v1\n    Arguments: {\"worker_id\": string, \"approver_id\": string}\n               (either or both; at least one is required)\n    Returns:   {\"issues\": [...], \"count\": n}\n    Each issue: request_id, worker_id, requested_groups, granted_groups,\n    status, blocked_reason, access_expiration, approver_id, description.\n\njira_update_access_request_v1\n    Arguments (all fields are written; send the full intended state):\n      request_id         string, required\n      status             string, required (the project's workflow statuses)\n      granted_groups     string[], required (may be empty)\n      blocked_reason     string, required (\"\" when nothing is blocked)\n      access_expiration  YYYY-MM-DD or null\n      description        string, required\n    Returns: {\"issue\": {...}}\n```\n\nRequests are created from the intake form; the integration only searches and updates existing ones. Every update emails the requester and the person the request is for with the new status and description.",
+    "tags": [
+      "technical",
+      "jira",
+      "access",
+      "api"
+    ]
+  },
+  {
+    "document_id": "tech_rippling_people_v1",
+    "title": "Rippling people API",
+    "status": "current",
+    "updated_at": "2026-10-10T09:00:00-07:00",
+    "content": "Integration: Rippling HRIS (read-only). Rippling is the system of record for worker type, manager and contract dates.\n\n### rippling_search_people_v1\n\nArguments:\n\n| Name | Type | Notes |\n| --- | --- | --- |\n| query | string | Matched against name, email, worker ID, manager ID, department, title, status |\n\nResponse:\n\n```json\n{\n  \"company\": \"Atlas Labs\",\n  \"company_people_count\": 100,\n  \"count\": 1,\n  \"people\": [\n    {\n      \"worker_id\": \"worker_robin_achebe\",\n      \"legal_name\": \"Robin Achebe\",\n      \"worker_type\": \"employee\",\n      \"status\": \"active\",\n      \"manager_id\": \"worker_casey_lindqvist\",\n      \"manager_name\": \"Casey Lindqvist\",\n      \"primary_email\": \"robin.achebe@atlas.example\",\n      \"department\": \"Engineering\",\n      \"job_title\": \"Specialist\",\n      \"contract_end_date\": null\n    }\n  ]\n}\n```\n\nworker_type is one of employee, contractor, intern; status is active or inactive. contract_end_date is set for contractors and interns and null for employees. worker_id is the key that Okta, LMS and Jira use.",
+    "tags": [
+      "technical",
+      "rippling",
+      "directory",
+      "api"
+    ]
+  },
+  {
+    "document_id": "tech_okta_groups_v1",
+    "title": "Okta users and groups API",
+    "status": "current",
+    "updated_at": "2026-10-11T09:00:00-07:00",
+    "content": "Integration: Okta (read/write).\n\n**okta_search_users_v1** - `{\"query\": string}`. The query matches the Okta user ID, parts of the email address, or status. Searching by person name works through the email. Returns `users[]` with user_id, email, worker_id (the linked Rippling worker, or null if unlinked), status (active | suspended), groups, group_expirations and group_history (one entry per membership: group_id, added_on, removed_on).\n\n**okta_add_user_to_group_v1** - `{\"user_id\", \"group_id\", \"expires_on\"}`. All required; expires_on is YYYY-MM-DD. Adding a group the user already has overwrites its expiry. Fails on suspended users.\n\n**okta_remove_user_from_group_v1** - `{\"user_id\", \"group_id\"}`. Removes the membership and its expiry. No-op if the user is not in the group.\n\nExample:\n\n```json\nPOST okta_add_user_to_group_v1\n{\"user_id\": \"okta_r_achebe\", \"group_id\": \"grp_ci_runners\", \"expires_on\": \"2026-12-31\"}\n-> {\"user\": {\"user_id\": \"okta_r_achebe\", \"groups\": [\"grp_ci_runners\"],\n             \"group_expirations\": {\"grp_ci_runners\": \"2026-12-31\"}, ...}}\n```\n\nGroup IDs are listed in Engineering Okta groups.",
+    "tags": [
+      "technical",
+      "okta",
+      "identity",
+      "api"
+    ]
+  },
+  {
+    "document_id": "tech_lms_training_v1",
+    "title": "LMS API and course catalog",
+    "status": "current",
+    "updated_at": "2026-10-11T09:00:00-07:00",
+    "content": "Integration: Atlas Learning (LMS).\n\n## Operations\n\n- `lms_get_training_status_v1` (args: `worker_id`). Returns `records[]` with course_id, status (not_started | assigned | complete | expired), assigned_at, completed_at. Old course versions stay in the list.\n- `lms_assign_training_v1` (args: `worker_id`, `course_id`). Creates an assignment with status assigned and sends the learner the standard assignment email (course link, 14-day due date, reminders at 7 and 2 days). If the worker already completed that course_id, returns the existing record unchanged.\n\n## Course catalog (2026)\n\n| course_id | Audience | Length | Renewal |\n| --- | --- | --- | --- |\n| security-awareness-2026 | Everyone | 30 min | Annual |\n| secure-production-access-2026 | Anyone holding a production role | 90 min + quiz | Annual; replaces secure-production-access-2025 |\n| data-handling-2026 | Warehouse and export users | 45 min | Annual |\n| support-tools-2026 | Support and success | 40 min | Annual |\n| manager-essentials-2026 | New people managers | 3 h | Once |\n\nRetired versions show as expired on learner records after the new version is released.",
+    "tags": [
+      "technical",
+      "lms",
+      "training",
+      "api",
+      "catalog"
+    ]
+  },
+  {
+    "document_id": "tech_slack_chat_access_2026_07",
+    "title": "Slack API notes",
+    "status": "current",
+    "updated_at": "2026-07-14T09:00:00-07:00",
+    "content": "Integration: Slack (bot user atlas-ops).\n\n- `slack_list_channels_v1` - optional `limit` (default 20, max 50), `cursor`. Returns channels with name, topic, purpose and num_members.\n- `slack_get_channel_history_v1` - `channel`; optional `limit` (default 10, max 15), `cursor`, `oldest`, `latest` (dates). Top-level messages, newest first. A message with replies shows `reply_count`. `next_cursor` is returned while more remain.\n- `slack_get_thread_replies_v1` - `channel`, `thread_id` (the parent's message_id). Returns the parent and its replies, oldest first.\n- `slack_search_messages_v1` - `query` (required). Every word must match. Operators: `in:#channel`, `from:name`, `after:YYYY-MM-DD`, `before:YYYY-MM-DD`. Optional `count` (default 10, max 15) and `page`. Newest first.\n- `slack_chat_post_message` - `channel`, `text`, optional `thread_id` to reply in a thread. The bot can post only in channels it has been added to.\n- `slack_chat_update_message_v1` - `channel`, `message_id`, `text`. Replaces the text of a message the bot posted.\n\nRate limit: about one post per second per channel. Formatting is Slack mrkdwn.",
+    "tags": [
+      "technical",
+      "slack",
+      "api"
+    ]
+  },
+  {
+    "document_id": "kb_deploy_pipeline_overview_2026_09",
+    "title": "Deploy pipeline overview",
+    "status": "current",
+    "updated_at": "2026-09-03T09:00:00-07:00",
+    "content": "How code gets from a merged PR to customers. Maintained by Platform.\n\n## Stages\n\n1. **Build** - CI builds images on merge to main and pushes to the registry.\n2. **Staging** - Argo CD syncs the `staging` app set within ten minutes. Smoke tests run against staging tenants seeded from fixtures.\n3. **Canary** - 5% of production traffic for 30 minutes, watched in Datadog.\n4. **Production** - full rollout, region by region.\n\n## Where config lives\n\n- Base manifests: `deploy/base/`\n- Environment overlays: `deploy/overlays/staging/`, `deploy/overlays/prod/`\n- Customer-specific settings: the tenant config service in production. These are not in git and are not synced to staging.\n\n## Who can do what\n\nAnyone in Engineering can read the repo. Staging and production permissions are Okta groups; see Engineering Okta groups.\n\n## Freezes\n\nProduction deploys pause during announced change freezes. Staging stays open.\n\n## Rollback\n\n`argo rollback <app> --to-revision N` in the right environment, then post in\n#incidents if customers were affected.",
+    "tags": [
+      "engineering",
+      "platform",
+      "deploy",
+      "staging",
+      "production"
+    ]
+  },
+  {
+    "document_id": "kb_oncall_handbook_2026_10",
+    "title": "On-call handbook",
+    "status": "current",
+    "updated_at": "2026-10-21T09:00:00-07:00",
+    "content": "Rotations are weekly, Monday 10:00 to Monday 10:00 Pacific. Primary and secondary for each service group.\n\n**When you get paged** Acknowledge within 5 minutes. Join #incidents and say you are on it. If it is customer-facing, open an incident with `/incident new`.\n\n**Severity**\n- SEV1: outage or data exposure. Page the incident commander.\n- SEV2: degraded for many customers.\n- SEV3: degraded for one customer or internal only.\n\n**Escalation** Secondary after 15 minutes without progress. Engineering manager after 30. If you need production access you do not normally have, follow the Break-glass procedure.\n\n**Handover** Write a handover note in #oncall-handover on Monday before 10:00.\n\n**Comp time** One day off per week of primary on-call, to be taken within the month.",
+    "tags": [
+      "sre",
+      "on-call",
+      "incident",
+      "production"
+    ]
+  },
+  {
+    "document_id": "kb_holiday_change_freeze_2026_11",
+    "title": "Holiday change freeze 2026",
+    "status": "current",
+    "updated_at": "2026-11-10T09:00:00-08:00",
+    "content": "The end-of-year production change freeze runs from Friday, December 18 at 17:00 PT to Monday, January 4 at 09:00 PT.\n\nDuring the freeze, production deploys need a director's approval in\n#change-freeze. Staging is not frozen. Access requests are still processed as\nusual. Please land risky migrations before December 11.",
+    "tags": [
+      "engineering",
+      "freeze",
+      "production",
+      "announcement"
+    ]
+  },
+  {
+    "document_id": "kb_customer_sandbox_access_2026_09",
+    "title": "Customer sandbox and demo tenants",
+    "status": "current",
+    "updated_at": "2026-09-15T09:00:00-07:00",
+    "content": "Sales engineers and solutions consultants can create demo tenants for prospects.\n\n**Creating one:** `/demo-tenant create <prospect>` in #sales-eng. Your manager gets a one-click approval.\n\n**Data:** generated by the fixtures service. Pick a vertical (retail, fintech, health) for realistic shapes. Never import a prospect's real data.\n\n**Lifetime:** 45 days, then archived. Extend once by 30 days with `/demo-tenant extend`.\n\n**Reset:** demo tenants reset every Sunday night unless pinned.",
+    "tags": [
+      "sales",
+      "sandbox",
+      "demo",
+      "customer"
+    ]
+  },
+  {
+    "document_id": "kb_vendor_portal_access_2026_04",
+    "title": "Vendor portal access",
+    "status": "current",
+    "updated_at": "2026-04-17T09:00:00-07:00",
+    "content": "Vendors use the supplier portal to submit invoices and update banking details.\n\nProcurement sponsors each vendor contact. The contact verifies identity through the portal's ID check, then sets up MFA. Banking detail changes trigger a call back to the number on file before they take effect.\n\nVendor contacts never get an Okta account.",
+    "tags": [
+      "procurement",
+      "vendor",
+      "portal"
+    ]
+  },
+  {
+    "document_id": "kb_vpn_access_2026_03",
+    "title": "VPN setup",
+    "status": "current",
+    "updated_at": "2026-03-30T09:00:00-07:00",
+    "content": "1. Install the client from the IT portal.\n2. Sign in with Okta and approve the push.\n3. Pick the nearest gateway (us-west, us-east, eu-central).\n\nSplit tunnel is on: only internal ranges go through the VPN. Video calls go direct. If you cannot reach an internal host, try `atlas-vpn diag` and paste the output in #it-help.",
+    "tags": [
+      "it",
+      "vpn",
+      "network"
+    ]
+  },
+  {
+    "document_id": "kb_data_export_approval_2026_10",
+    "title": "Customer data export requests",
+    "status": "current",
+    "updated_at": "2026-10-26T09:00:00-07:00",
+    "content": "Bulk exports of customer data need Privacy approval before anything leaves the system it lives in.\n\nSubmit the Privacy export form with:\n- Customer(s) and fields\n- Destination (must be on the approved destinations list)\n- Purpose and retention\n\nLead time is five business days. Exports to personal drives, email or unapproved SaaS tools are never approved.",
+    "tags": [
+      "privacy",
+      "customer-data",
+      "export"
+    ]
+  },
+  {
+    "document_id": "kb_customer_support_impersonation_2026_09",
+    "title": "Support impersonation sessions",
+    "status": "current",
+    "updated_at": "2026-09-30T09:00:00-07:00",
+    "content": "Support agents can view a customer's workspace as the customer to reproduce a ticket. Start a session from the ticket sidebar; the customer is notified.\n\nSessions last 30 minutes and are read-only. Every session is logged with the ticket number. Only employees on the Support team with support-tools-2026 complete can start one.",
+    "tags": [
+      "support",
+      "customer",
+      "impersonation"
+    ]
+  },
+  {
+    "document_id": "tech_connected_apps_catalog_2026_10",
+    "title": "Connected apps catalog",
+    "status": "current",
+    "updated_at": "2026-10-20T09:00:00-07:00",
+    "content": "Apps connected to the automation workspace:\n\n| App | Access | Discovery |\n| --- | --- | --- |\n| Rippling | Read | Rippling people API |\n| Okta | Read/write | Okta users and groups API |\n| Atlas Learning (LMS) | Read/write | LMS API and course catalog |\n| Jira | Read/write | Jira ACCESS project API |\n| Slack | Read/write | Slack API notes |\n| Gmail | Read/write | api_search |\n| Drive | Read/write | api_search |\n| Google Sheets | Read/write | api_search |\n| GitHub | Read | api_search |\n| Salesforce | Read/write | api_search |\n| Datadog | Read | api_search |\n| Zendesk | Read | api_search |\n| NetSuite | Read | api_search |\n\nGeneric apps are reached with api_search to find an endpoint and api_fetch to call it.",
+    "tags": [
+      "technical",
+      "api",
+      "catalog"
+    ]
+  },
+  {
+    "document_id": "tech_gmail_connected_app_2026_09",
+    "title": "Gmail connected app",
+    "status": "current",
+    "updated_at": "2026-09-12T09:00:00-07:00",
+    "content": "Endpoints for messages, drafts and labels are available through api_search (\"gmail send\", \"gmail drafts\"). Message bodies must be base64url-encoded. Sends go out from the connected mailbox and cannot be recalled.",
+    "tags": [
+      "technical",
+      "gmail",
+      "api"
+    ]
+  },
+  {
+    "document_id": "tech_salesforce_connected_app_2026_09",
+    "title": "Salesforce connected app",
+    "status": "current",
+    "updated_at": "2026-09-18T09:00:00-07:00",
+    "content": "SOQL query and record update endpoints are available through api_search. Common objects: Account, Opportunity, Contact, Case. Updates run as the integration user and show up in field history.",
+    "tags": [
+      "technical",
+      "salesforce",
+      "api"
+    ]
+  },
+  {
+    "document_id": "tech_datadog_connected_app_2026_10",
+    "title": "Datadog connected app",
+    "status": "current",
+    "updated_at": "2026-10-09T09:00:00-07:00",
+    "content": "Read-only endpoints for monitors, dashboards and metric queries, found through api_search. Metric queries use the standard Datadog query syntax, for example `avg:http.latency{env:prod,service:api}`. Queries over more than 7 days are downsampled.",
+    "tags": [
+      "technical",
+      "datadog",
+      "api",
+      "monitoring"
+    ]
+  },
+  {
+    "document_id": "tech_github_connected_app_2026_10",
+    "title": "GitHub connected app",
+    "status": "current",
+    "updated_at": "2026-10-13T09:00:00-07:00",
+    "content": "Read-only endpoints for repositories, pull requests, issues and file contents. Search with api_search (\"github pulls\", \"github contents\"). Private repository contents are visible only for repos the integration has been granted.",
+    "tags": [
+      "technical",
+      "github",
+      "api"
+    ]
+  },
+  {
+    "document_id": "tech_drive_connected_app_2026_08",
+    "title": "Drive connected app",
+    "status": "current",
+    "updated_at": "2026-08-25T09:00:00-07:00",
+    "content": "File search, metadata and permission endpoints are available through api_search. Permission changes run as the integration user and notify the file owner.",
+    "tags": [
+      "technical",
+      "drive",
+      "api"
+    ]
+  }
+]

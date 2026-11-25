@@ -1,6 +1,6 @@
 import json
 from copy import deepcopy
-from typing import Literal, Optional
+from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
@@ -551,6 +551,13 @@ class UserMessage(ParticipantMessageBase):
         )
 
 
+class ToolOutputWithImages(BaseModel):
+    """A tool result that also returns image files (e.g. document scans)."""
+
+    content: Any
+    images: list[str] = Field(default_factory=list)
+
+
 class ToolMessage(BaseModel):
     """
     A message from the tool.
@@ -559,6 +566,11 @@ class ToolMessage(BaseModel):
     id: str = Field(description="The unique identifier for the tool call.")
     role: ToolRole = Field(description="The role of the message sender.")
     content: Optional[str] = Field(description="The output of the tool.", default=None)
+    images: Optional[list[str]] = Field(
+        description="Image files returned by the tool, as paths relative to the "
+        "data directory.",
+        default=None,
+    )
     requestor: Literal["user", "assistant"] = Field(
         "assistant",
         description="The requestor of the tool call.",

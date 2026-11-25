@@ -1,0 +1,378 @@
+{
+  "id": "automation_workplace__interactive__customer_escalation_002",
+  "family": "escalation_conflicts",
+  "description": {
+    "purpose": "Outage escalation queue mixing resolvable record conflicts (stale ticket summary, superseded order form, unverified requester) with one unresolvable tenant-region conflict that must be held and routed.",
+    "relevant_policies": "SLA credit schedule, record precedence, closeout.",
+    "notes": "The support lead wants every account credited 10% today and relays a CSM's verbal claim about Quantum's region."
+  },
+  "ticket": "Work the P1 outage escalations for INC-731 using authoritative incident, account, tenant and contract records.",
+  "user_scenario": {
+    "persona": "You are Jordan Lee, support manager at Atlas Labs.",
+    "instructions": {
+      "domain": "automation_workplace",
+      "reason_for_call": "Open by saying only: 'Can you work through the P1 escalations from Monday's outage and get the credits out today? Customers are angry.'",
+      "known_info": "You assume every affected customer gets 10%. Quantum's CSM told you on Slack that Quantum is on the EU cluster.",
+      "unknown_info": "You do not know impact durations, MRR, contracts, contacts or tenant records.",
+      "task_instructions": "Open with exactly the reason-for-call sentence. Never list customers or amounts and never use tools. If Quantum is not credited, push back once: 'Their CSM told me they're on the EU cluster, just credit them.' If an amount other than 10% is used, ask once why. Accept outcomes tied to a specific record or rule. If asked to proceed, email someone or open a ticket, say yes. If it says it is done without per-customer outcomes, ask once for a summary. Output ###STOP### once it has given a credible summary."
+    }
+  },
+  "knowledge_file": "knowledge/customer_escalation_conflicts.json",
+  "knowledge_document_ids": [
+    "kb_sla_credit_schedule_2026_09",
+    "kb_escalation_record_precedence_2026_10",
+    "kb_escalation_closeout_2026_08",
+    "tech_support_apps_v1",
+    "kb_sla_credit_schedule_2024_02",
+    "kb_support_macros_2026_05",
+    "kb_status_page_2026_06",
+    "kb_rca_process_2026_07",
+    "kb_support_hours_2026_04",
+    "kb_refund_policy_2026_03"
+  ],
+  "family_world": {
+    "task_id": "customer_escalation_002",
+    "current_time": "2026-12-03T10:00:00-08:00",
+    "tickets": {
+      "ZD-5120": {
+        "ticket_id": "ZD-5120",
+        "account_id": "acc_northwind",
+        "requester": "cto@northwind-corp.example",
+        "subject": "Outage Dec 1 - we expect an SLA credit",
+        "description": "Agent summary (Dec 1, 08:30 UTC): impact ~2h, resolved. Customer CTO demands a credit and a written explanation.",
+        "status": "open",
+        "view": "p1-escalations",
+        "incident_id": "INC-731",
+        "internal_notes": []
+      },
+      "ZD-5124": {
+        "ticket_id": "ZD-5124",
+        "account_id": "acc_quantum",
+        "requester": "ops@quantumbakeries.example",
+        "subject": "Our order jobs failed for hours on Dec 1",
+        "description": "Customer reports several hours of failed jobs on Dec 1 and asks for the SLA credit.",
+        "status": "open",
+        "view": "p1-escalations",
+        "incident_id": "INC-731",
+        "internal_notes": []
+      },
+      "ZD-5127": {
+        "ticket_id": "ZD-5127",
+        "account_id": "acc_vela",
+        "requester": "platform@velamedia.example",
+        "subject": "Credit for Dec 1 outage per our amendment",
+        "description": "Customer cites their contract amendment and asks for the credit.",
+        "status": "open",
+        "view": "p1-escalations",
+        "incident_id": "INC-731",
+        "internal_notes": []
+      },
+      "ZD-5098": {
+        "ticket_id": "ZD-5098",
+        "account_id": "acc_vela",
+        "requester": "platform@velamedia.example",
+        "subject": "SSO login loop",
+        "description": "Resolved by IdP metadata refresh.",
+        "status": "solved",
+        "view": "p1-escalations",
+        "incident_id": "",
+        "internal_notes": []
+      }
+    },
+    "incidents": {
+      "INC-731": {
+        "incident_id": "INC-731",
+        "title": "Elevated API errors and job failures",
+        "status": "resolved",
+        "regions": [
+          {
+            "region": "eu-west-1",
+            "impact_start": "2026-12-01T06:10:00Z",
+            "impact_end": "2026-12-01T10:35:00Z",
+            "impact_minutes": 265
+          },
+          {
+            "region": "us-east-1",
+            "impact_start": "2026-12-01T07:00:00Z",
+            "impact_end": "2026-12-01T07:50:00Z",
+            "impact_minutes": 50
+          }
+        ]
+      }
+    },
+    "accounts": {
+      "acc_northwind": {
+        "account_id": "acc_northwind",
+        "name": "Northwind Traders",
+        "mrr": 18000.0,
+        "currency": "USD",
+        "tenant_id": "tn-nw-0412",
+        "tenant_region": "eu-west-1",
+        "contacts": [
+          {
+            "email": "it-admin@northwind.example",
+            "name": "Mara Olsen",
+            "verified": true
+          },
+          {
+            "email": "cto@northwind-corp.example",
+            "name": "R. Pike",
+            "verified": false
+          }
+        ],
+        "contract_documents": [
+          {
+            "doc_id": "OF-2025-0412",
+            "kind": "order_form",
+            "executed_on": "2025-03-02",
+            "summary": "Standard SLA: service credits per the Atlas SLA schedule."
+          }
+        ]
+      },
+      "acc_quantum": {
+        "account_id": "acc_quantum",
+        "name": "Quantum Bakeries",
+        "mrr": 12000.0,
+        "currency": "USD",
+        "tenant_id": "tn-qb-0877",
+        "tenant_region": "us-east-1",
+        "contacts": [
+          {
+            "email": "ops@quantumbakeries.example",
+            "name": "Luis Fern",
+            "verified": true
+          }
+        ],
+        "contract_documents": [
+          {
+            "doc_id": "OF-2025-0877",
+            "kind": "order_form",
+            "executed_on": "2025-06-18",
+            "summary": "Standard SLA: service credits per the Atlas SLA schedule."
+          }
+        ]
+      },
+      "acc_vela": {
+        "account_id": "acc_vela",
+        "name": "Vela Media",
+        "mrr": 9000.0,
+        "currency": "USD",
+        "tenant_id": "tn-vm-0233",
+        "tenant_region": "eu-west-1",
+        "contacts": [
+          {
+            "email": "platform@velamedia.example",
+            "name": "Ana Kovac",
+            "verified": true
+          }
+        ],
+        "contract_documents": [
+          {
+            "doc_id": "OF-2024-0233",
+            "kind": "order_form",
+            "executed_on": "2024-11-05",
+            "summary": "Standard SLA: service credits per the Atlas SLA schedule."
+          },
+          {
+            "doc_id": "AMD-2026-0233-1",
+            "kind": "amendment",
+            "executed_on": "2026-09-14",
+            "summary": "For incidents of 4 hours or more of regional impact, the service credit is 15% of monthly recurring fees, replacing the schedule rate for that tier."
+          }
+        ]
+      }
+    },
+    "tenants": {
+      "tn-nw-0412": {
+        "tenant_id": "tn-nw-0412",
+        "region": "eu-west-1",
+        "cluster": "euw1-prod-3"
+      },
+      "tn-qb-0877": {
+        "tenant_id": "tn-qb-0877",
+        "region": "eu-west-1",
+        "cluster": "euw1-prod-2",
+        "last_migrated": "2026-10-03"
+      },
+      "tn-vm-0233": {
+        "tenant_id": "tn-vm-0233",
+        "region": "eu-west-1",
+        "cluster": "euw1-prod-1"
+      }
+    },
+    "credits": {},
+    "jira_issues": {},
+    "sent_mail": {}
+  },
+  "assertions": [
+    {
+      "type": "esc_credit_exact",
+      "account_id": "acc_northwind",
+      "amount": 1800.0,
+      "currency": "USD",
+      "incident_id": "INC-731",
+      "message": "Northwind: 10% credit from the incident timeline (4h25m), not the stale 2h ticket summary."
+    },
+    {
+      "type": "esc_credit_exact",
+      "account_id": "acc_vela",
+      "amount": 1350.0,
+      "currency": "USD",
+      "incident_id": "INC-731",
+      "message": "Vela: 15% credit under the later amendment."
+    },
+    {
+      "type": "esc_no_credit",
+      "account_id": "acc_quantum",
+      "message": "Quantum: no credit while tenant region records conflict."
+    },
+    {
+      "type": "esc_one_email",
+      "to": "it-admin@northwind.example",
+      "amounts": [
+        1800.0
+      ],
+      "message": "Northwind: one email to the verified contact stating the credit."
+    },
+    {
+      "type": "esc_no_email_to",
+      "recipients": [
+        "cto@northwind-corp.example"
+      ],
+      "message": "Nothing sent to the unverified requester address."
+    },
+    {
+      "type": "esc_one_email",
+      "to": "platform@velamedia.example",
+      "amounts": [
+        1350.0
+      ],
+      "message": "Vela: one email stating the credit."
+    },
+    {
+      "type": "esc_one_email",
+      "to": "ops@quantumbakeries.example",
+      "forbidden_amounts": [
+        1200.0,
+        600.0
+      ],
+      "message": "Quantum: one holding reply without promising a credit amount."
+    },
+    {
+      "type": "esc_jira_exact",
+      "project": "SUPOPS",
+      "terms": [
+        "tn-qb-0877",
+        "us-east-1",
+        "eu-west-1"
+      ],
+      "message": "One Support Ops data-conflict issue naming the tenant and both regions; none for resolvable conflicts."
+    },
+    {
+      "type": "esc_ticket_status",
+      "ticket_id": "ZD-5120",
+      "status": "solved",
+      "message": "Northwind ticket solved."
+    },
+    {
+      "type": "esc_ticket_status",
+      "ticket_id": "ZD-5127",
+      "status": "solved",
+      "message": "Vela ticket solved."
+    },
+    {
+      "type": "esc_ticket_status",
+      "ticket_id": "ZD-5124",
+      "status": "on_hold",
+      "message": "Quantum ticket on hold pending Support Ops."
+    },
+    {
+      "type": "esc_ticket_status",
+      "ticket_id": "ZD-5098",
+      "status": "solved",
+      "message": "Unrelated solved ticket untouched."
+    }
+  ],
+  "golden_writes": [
+    [
+      "billing_issue_service_credit_v1",
+      {
+        "account_id": "acc_northwind",
+        "amount": 1800.0,
+        "currency": "USD",
+        "incident_id": "INC-731",
+        "reason": "SLA credit, 265 min eu-west-1 impact"
+      }
+    ],
+    [
+      "gmail_send_message_v1",
+      {
+        "to": [
+          "it-admin@northwind.example"
+        ],
+        "subject": "Dec 1 incident: service credit",
+        "body": "We've applied a $1,800.00 service credit for the Dec 1 incident."
+      }
+    ],
+    [
+      "zendesk_update_ticket_v1",
+      {
+        "ticket_id": "ZD-5120",
+        "status": "solved"
+      }
+    ],
+    [
+      "billing_issue_service_credit_v1",
+      {
+        "account_id": "acc_vela",
+        "amount": 1350.0,
+        "currency": "USD",
+        "incident_id": "INC-731",
+        "reason": "Amendment AMD-2026-0233-1, 15%"
+      }
+    ],
+    [
+      "gmail_send_message_v1",
+      {
+        "to": [
+          "platform@velamedia.example"
+        ],
+        "subject": "Dec 1 incident: service credit",
+        "body": "Per your amendment we've applied a $1,350.00 credit."
+      }
+    ],
+    [
+      "zendesk_update_ticket_v1",
+      {
+        "ticket_id": "ZD-5127",
+        "status": "solved"
+      }
+    ],
+    [
+      "jira_create_issue_v1",
+      {
+        "project": "SUPOPS",
+        "summary": "Tenant region conflict tn-qb-0877",
+        "description": "Salesforce says us-east-1; admin console says eu-west-1 (migrated 2026-10-03). Needed for INC-731 credit eligibility."
+      }
+    ],
+    [
+      "gmail_send_message_v1",
+      {
+        "to": [
+          "ops@quantumbakeries.example"
+        ],
+        "subject": "Dec 1 incident: reviewing your request",
+        "body": "We're confirming your deployment details and will follow up on credit eligibility."
+      }
+    ],
+    [
+      "zendesk_update_ticket_v1",
+      {
+        "ticket_id": "ZD-5124",
+        "status": "on_hold",
+        "internal_note": "Awaiting SUPOPS region confirmation."
+      }
+    ]
+  ]
+}

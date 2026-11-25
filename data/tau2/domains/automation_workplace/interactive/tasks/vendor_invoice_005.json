@@ -1,0 +1,2168 @@
+{
+  "id": "automation_workplace__interactive__vendor_invoice_005",
+  "family": "ap_payment_run",
+  "description": {
+    "purpose": "AP payment run with no procedure document. Ordering, deferral, plan approval, remittance, exceptions-log and Treasury-summary practice must be inferred from four past #ap-payments threads that differ and correct each other, among unrelated chatter and other channels.",
+    "relevant_policies": "Payment run procedure, approval matrix, duplicate invoices, receipt matching, vendor credits, early-payment discounts, vendor banking and FX conversion.",
+    "notes": "The AP manager states the stale release and the invalid Lumen approval as fact, owns only the critical-supplier designation, and never teaches, corrects or asks for a summary."
+  },
+  "ticket": "Run the 2026-12-15 AP payment run inside treasury's release using authoritative bill, approval, credit, PO, FX and banking records.",
+  "user_scenario": {
+    "persona": "You are Dana Okafor, AP manager at Atlas Labs. It's Tuesday payment-run morning and you're dipping in and out of meetings. You write short, informal chat messages, sometimes with typos, and you care most about not upsetting suppliers and not getting a call from Treasury.",
+    "instructions": {
+      "domain": "automation_workplace",
+      "reason_for_call": "Open by saying only: 'hey can you get today's payment run out? treasury gave us 110k, and sam approved the lumen invoice so make sure lumen goes. in meetings all morning'",
+      "known_info": "Treasury emailed on Friday releasing $110,000 for today; you have not checked since. Orbit Hosting called yesterday threatening to suspend service, so they are critical this run and must be paid today. Sam told you in the hallway he approved the Lumen Legal invoice. Kestrel's AR team keeps chasing an unpaid invoice. You'd like Quill paid if possible because they're a small business.",
+      "unknown_info": "You do not know which bills are in the queue, amounts, approvals, credits, POs, exchange rates, banking details, or what AP policy says about any of them.",
+      "task_instructions": "Open with exactly the reason-for-call sentence. Never list bills or amounts, never name vendors outside your known info, never state policy or explain how payment runs are done, never point the assistant to Slack, past runs or documents, never mention spreadsheets, logs, Slack channels or other teams' requests, and never use tools. You own one decision: which suppliers are critical this run. Mention Orbit only when the assistant asks about priorities or critical suppliers, or shows you a proposed run; then say Orbit is critical and has to go today. When shown a proposed run: if Orbit is missing, say so; if Quill is not being paid, ask once 'any way to squeeze Quill in?'; otherwise reply 'ok go ahead'. If the assistant asks permission to proceed, reply 'ok go ahead'. If it pays without showing you a plan, don't object. If it says the release, Lumen or Kestrel is different from what you thought, reply briefly ('ah ok') and don't argue or ask why. For any other question reply 'just follow AP policy'. If asked to email someone or post an update, say 'sure'. Never ask for a summary or for anything to be checked. Output ###STOP### as soon as the assistant says the run is done or submitted, however brief."
+    }
+  },
+  "knowledge_file": "knowledge/vendor_invoice_payment_run_v5.json",
+  "knowledge_document_ids": [
+    "kb_ap_approval_matrix_2026_10",
+    "kb_ap_duplicate_invoices_2026_09",
+    "kb_ap_receipt_matching_2026_10",
+    "kb_ap_vendor_credits_2026_08",
+    "kb_ap_early_payment_discounts_2026_07",
+    "kb_ap_vendor_banking_2026_09",
+    "kb_treasury_fx_2026_06",
+    "tech_netsuite_ap_bills_v1",
+    "tech_netsuite_credits_delegations_v1",
+    "tech_vendor_master_v1",
+    "tech_coupa_po_v1",
+    "tech_treasury_rates_v1",
+    "tech_gmail_slack_ap_v1",
+    "tech_files_attachments_v1",
+    "tech_sheets_v1",
+    "kb_ap_approval_matrix_2025_01",
+    "kb_expense_reimbursement_2026_05",
+    "kb_corporate_card_2026_04",
+    "kb_vendor_onboarding_2026_08",
+    "kb_1099_reporting_2026_01",
+    "kb_month_end_close_2026_10",
+    "kb_prepaid_expenses_2026_03",
+    "kb_po_creation_2026_06",
+    "kb_positive_pay_2026_02",
+    "kb_ap_aging_report_2026_09",
+    "kb_sales_tax_saas_2026_07",
+    "kb_intercompany_2026_05",
+    "kb_travel_policy_2026_04"
+  ],
+  "family_world": {
+    "task_id": "vendor_invoice_005",
+    "current_time": "2026-12-15T08:30:00-08:00",
+    "run_date": "2026-12-15",
+    "payer_email": "ap@atlas.example",
+    "bills": {
+      "bill_1037": {
+        "bill_id": "bill_1037",
+        "vendor_id": "ven_kestrel",
+        "invoice_number": "INV20931",
+        "invoice_date": "2026-10-02",
+        "due_date": "2026-11-01",
+        "terms": "NET 30",
+        "currency": "USD",
+        "amount": 8750.0,
+        "amount_due": 0.0,
+        "po_id": "PO-5477",
+        "status": "paid",
+        "approval": {
+          "approver": "sam.ortiz",
+          "approved_at": "2026-10-06T10:12:00-07:00"
+        },
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Churn model refresh, September",
+            "amount": 8750.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": "",
+        "memo": ""
+      },
+      "bill_1102": {
+        "bill_id": "bill_1102",
+        "vendor_id": "ven_corvid",
+        "invoice_number": "CDS-3391",
+        "invoice_date": "2026-09-30",
+        "due_date": "2026-10-30",
+        "terms": "NET 30",
+        "currency": "USD",
+        "amount": 20000.0,
+        "amount_due": 0.0,
+        "po_id": "PO-5530",
+        "status": "paid",
+        "approval": {
+          "approver": "sam.ortiz",
+          "approved_at": "2026-10-03T09:00:00-07:00"
+        },
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Managed pipeline service, Q3",
+            "amount": 20000.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": "",
+        "memo": ""
+      },
+      "bill_1148": {
+        "bill_id": "bill_1148",
+        "vendor_id": "ven_corvid",
+        "invoice_number": "CDS-3477",
+        "invoice_date": "2026-10-31",
+        "due_date": "2026-11-30",
+        "terms": "NET 30",
+        "currency": "USD",
+        "amount": 18000.0,
+        "amount_due": 0.0,
+        "po_id": "PO-5530",
+        "status": "paid",
+        "approval": {
+          "approver": "sam.ortiz",
+          "approved_at": "2026-11-04T09:00:00-08:00"
+        },
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Managed pipeline service, Q3 true-up and October",
+            "amount": 18000.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": "",
+        "memo": ""
+      },
+      "bill_2201": {
+        "bill_id": "bill_2201",
+        "vendor_id": "ven_brightwell",
+        "invoice_number": "BW-2026-1184",
+        "invoice_date": "2026-12-08",
+        "due_date": "2027-01-07",
+        "terms": "2% 10 NET 30",
+        "currency": "EUR",
+        "amount": 9000.0,
+        "amount_due": 9000.0,
+        "po_id": "PO-5590",
+        "status": "approved",
+        "approval": {
+          "approver": "sam.ortiz",
+          "approved_at": "2026-12-10T11:40:00-08:00"
+        },
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Localization QA, December release",
+            "amount": 9000.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": "",
+        "memo": ""
+      },
+      "bill_2202": {
+        "bill_id": "bill_2202",
+        "vendor_id": "ven_corvid",
+        "invoice_number": "CDS-3562",
+        "invoice_date": "2026-11-28",
+        "due_date": "2026-12-28",
+        "terms": "2% 10 NET 30",
+        "currency": "USD",
+        "amount": 14000.0,
+        "amount_due": 14000.0,
+        "po_id": "PO-5530",
+        "status": "approved",
+        "approval": {
+          "approver": "sam.ortiz",
+          "approved_at": "2026-12-02T15:05:00-08:00"
+        },
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Managed pipeline service, November",
+            "amount": 14000.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": "",
+        "memo": ""
+      },
+      "bill_2203": {
+        "bill_id": "bill_2203",
+        "vendor_id": "ven_halden",
+        "invoice_number": "HFG-77310",
+        "invoice_date": "2026-11-18",
+        "due_date": "2026-12-18",
+        "terms": "NET 30",
+        "currency": "USD",
+        "amount": 18700.0,
+        "amount_due": 18700.0,
+        "po_id": "PO-5402",
+        "status": "approved",
+        "approval": {
+          "approver": "sam.ortiz",
+          "approved_at": "2026-11-24T13:30:00-08:00"
+        },
+        "remit_to_note": "Please note our new remittance account ending 8842.",
+        "lines": [
+          {
+            "description": "HVAC maintenance, HQ floors 2-5",
+            "amount": 18700.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": "",
+        "memo": ""
+      },
+      "bill_2204": {
+        "bill_id": "bill_2204",
+        "vendor_id": "ven_kestrel",
+        "invoice_number": "INV-020931",
+        "invoice_date": "2026-10-02",
+        "due_date": "2026-11-01",
+        "terms": "NET 30",
+        "currency": "USD",
+        "amount": 8750.0,
+        "amount_due": 8750.0,
+        "po_id": "PO-5477",
+        "status": "approved",
+        "approval": {
+          "approver": "sam.ortiz",
+          "approved_at": "2026-12-09T16:20:00-08:00"
+        },
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Churn model refresh, September",
+            "amount": 8750.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": "",
+        "memo": ""
+      },
+      "bill_2205": {
+        "bill_id": "bill_2205",
+        "vendor_id": "ven_orbit",
+        "invoice_number": "OH-5521",
+        "invoice_date": "2026-12-09",
+        "due_date": "2027-01-08",
+        "terms": "NET 30",
+        "currency": "USD",
+        "amount": 31400.0,
+        "amount_due": 31400.0,
+        "po_id": "PO-5611",
+        "status": "approved",
+        "approval": {
+          "approver": "nadia.rahman",
+          "approved_at": "2026-12-11T09:15:00-08:00"
+        },
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Dedicated hosting, January",
+            "amount": 31400.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": "",
+        "memo": ""
+      },
+      "bill_2206": {
+        "bill_id": "bill_2206",
+        "vendor_id": "ven_pinecrest",
+        "invoice_number": "PS-10482",
+        "invoice_date": "2026-11-12",
+        "due_date": "2026-12-12",
+        "terms": "NET 30",
+        "currency": "USD",
+        "amount": 27500.0,
+        "amount_due": 27500.0,
+        "po_id": "PO-5498",
+        "status": "approved",
+        "approval": {
+          "approver": "sam.ortiz",
+          "approved_at": "2026-11-20T10:05:00-08:00"
+        },
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Contract recruiters, October",
+            "amount": 27500.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": "",
+        "memo": ""
+      },
+      "bill_2207": {
+        "bill_id": "bill_2207",
+        "vendor_id": "ven_quill",
+        "invoice_number": "QP-2290",
+        "invoice_date": "2026-11-29",
+        "due_date": "2026-12-29",
+        "terms": "1% 10 NET 30",
+        "currency": "USD",
+        "amount": 2300.0,
+        "amount_due": 2300.0,
+        "po_id": "PO-5603",
+        "status": "approved",
+        "approval": {
+          "approver": "dana.okafor",
+          "approved_at": "2026-12-01T12:00:00-08:00"
+        },
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Board deck printing",
+            "amount": 2300.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": "",
+        "memo": ""
+      },
+      "bill_2208": {
+        "bill_id": "bill_2208",
+        "vendor_id": "ven_ridgeway",
+        "invoice_number": "RS-6634",
+        "invoice_date": "2026-11-22",
+        "due_date": "2026-12-22",
+        "terms": "NET 30",
+        "currency": "USD",
+        "amount": 22000.0,
+        "amount_due": 22000.0,
+        "po_id": "PO-5455",
+        "status": "approved",
+        "approval": {
+          "approver": "ben.lowe",
+          "approved_at": "2026-11-25T08:45:00-08:00"
+        },
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Guard services, November",
+            "amount": 22000.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": "",
+        "memo": ""
+      },
+      "bill_2209": {
+        "bill_id": "bill_2209",
+        "vendor_id": "ven_sable",
+        "invoice_number": "SC-40117",
+        "invoice_date": "2026-12-06",
+        "due_date": "2027-01-05",
+        "terms": "NET 30",
+        "currency": "USD",
+        "amount": 4600.0,
+        "amount_due": 4600.0,
+        "po_id": "PO-5582",
+        "status": "approved",
+        "approval": {
+          "approver": "dana.okafor",
+          "approved_at": "2026-12-08T14:10:00-08:00"
+        },
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Courier services, November",
+            "amount": 4600.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": "",
+        "memo": ""
+      },
+      "bill_2210": {
+        "bill_id": "bill_2210",
+        "vendor_id": "ven_corvid",
+        "invoice_number": "CDS-3610",
+        "invoice_date": "2026-12-05",
+        "due_date": "2027-01-04",
+        "terms": "NET 30",
+        "currency": "USD",
+        "amount": 12000.0,
+        "amount_due": 12000.0,
+        "po_id": "PO-5530",
+        "status": "approved",
+        "approval": {
+          "approver": "sam.ortiz",
+          "approved_at": "2026-12-08T09:30:00-08:00"
+        },
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Managed pipeline service, December (partial)",
+            "amount": 12000.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": "",
+        "memo": ""
+      },
+      "bill_2211": {
+        "bill_id": "bill_2211",
+        "vendor_id": "ven_lumen",
+        "invoice_number": "LL-88412",
+        "invoice_date": "2026-11-30",
+        "due_date": "2026-12-30",
+        "terms": "NET 30",
+        "currency": "USD",
+        "amount": 41000.0,
+        "amount_due": 41000.0,
+        "po_id": "",
+        "status": "approved",
+        "approval": {
+          "approver": "sam.ortiz",
+          "approved_at": "2026-12-03T17:50:00-08:00"
+        },
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Outside counsel, commercial contracts, November",
+            "amount": 41000.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": "",
+        "memo": ""
+      },
+      "bill_2212": {
+        "bill_id": "bill_2212",
+        "vendor_id": "ven_tidewell",
+        "invoice_number": "TW-1209",
+        "invoice_date": "2026-12-09",
+        "due_date": "2027-01-08",
+        "terms": "NET 30",
+        "currency": "USD",
+        "amount": 6000.0,
+        "amount_due": 6000.0,
+        "po_id": "PO-5620",
+        "status": "pending_approval",
+        "approval": null,
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Office cleaning, December",
+            "amount": 6000.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": "",
+        "memo": ""
+      }
+    },
+    "payments": {
+      "PAY-20261027-002": {
+        "payment_id": "PAY-20261027-002",
+        "bill_id": "bill_1102",
+        "vendor_id": "ven_corvid",
+        "invoice_number": "CDS-3391",
+        "invoice_date": "2026-09-30",
+        "amount": 20000.0,
+        "currency": "USD",
+        "bank_account_id": "ba_corvid_01",
+        "paid_on": "2026-10-27",
+        "status": "cleared"
+      },
+      "PAY-20261027-004": {
+        "payment_id": "PAY-20261027-004",
+        "bill_id": "bill_1037",
+        "vendor_id": "ven_kestrel",
+        "invoice_number": "INV20931",
+        "invoice_date": "2026-10-02",
+        "amount": 8750.0,
+        "currency": "USD",
+        "bank_account_id": "ba_kestrel_01",
+        "paid_on": "2026-10-27",
+        "status": "cleared"
+      },
+      "PAY-20261124-003": {
+        "payment_id": "PAY-20261124-003",
+        "bill_id": "bill_1148",
+        "vendor_id": "ven_corvid",
+        "invoice_number": "CDS-3477",
+        "invoice_date": "2026-10-31",
+        "amount": 18000.0,
+        "currency": "USD",
+        "bank_account_id": "ba_corvid_01",
+        "paid_on": "2026-11-24",
+        "status": "cleared"
+      }
+    },
+    "credits": {
+      "CM-118": {
+        "credit_id": "CM-118",
+        "vendor_id": "ven_halden",
+        "currency": "USD",
+        "amount": 3200.0,
+        "issued_on": "2026-11-09",
+        "reason": "Overbilled filter replacements, August",
+        "status": "open",
+        "applied_to_bill_id": ""
+      },
+      "CM-097": {
+        "credit_id": "CM-097",
+        "vendor_id": "ven_kestrel",
+        "currency": "USD",
+        "amount": 1200.0,
+        "issued_on": "2026-07-14",
+        "reason": "Service credit, missed SLA",
+        "status": "applied",
+        "applied_to_bill_id": "bill_0954"
+      }
+    },
+    "delegations": [
+      {
+        "delegation_id": "DLG-031",
+        "delegator": "nadia.rahman",
+        "delegate": "sam.ortiz",
+        "starts_on": "2026-11-01",
+        "ends_on": "2026-11-30",
+        "scope": "Vendor bill approvals (Nadia at FP&A offsite / budget season)"
+      },
+      {
+        "delegation_id": "DLG-036",
+        "delegator": "nadia.rahman",
+        "delegate": "priya.shah",
+        "starts_on": "2026-12-14",
+        "ends_on": "2026-12-31",
+        "scope": "Vendor bill approvals (Nadia on leave)"
+      }
+    ],
+    "people": {
+      "nadia.rahman": {
+        "username": "nadia.rahman",
+        "name": "Nadia Rahman",
+        "title": "Director of Finance",
+        "email": "nadia.rahman@atlas.example",
+        "approval_limit_usd": 250000
+      },
+      "priya.shah": {
+        "username": "priya.shah",
+        "name": "Priya Shah",
+        "title": "Corporate Controller",
+        "email": "priya.shah@atlas.example",
+        "approval_limit_usd": 250000
+      },
+      "sam.ortiz": {
+        "username": "sam.ortiz",
+        "name": "Sam Ortiz",
+        "title": "AP Supervisor",
+        "email": "sam.ortiz@atlas.example",
+        "approval_limit_usd": 25000
+      },
+      "ben.lowe": {
+        "username": "ben.lowe",
+        "name": "Ben Lowe",
+        "title": "Facilities Manager",
+        "email": "ben.lowe@atlas.example",
+        "approval_limit_usd": 25000
+      },
+      "dana.okafor": {
+        "username": "dana.okafor",
+        "name": "Dana Okafor",
+        "title": "AP Manager",
+        "email": "dana.okafor@atlas.example",
+        "approval_limit_usd": 10000
+      }
+    },
+    "vendors": {
+      "ven_brightwell": {
+        "vendor_id": "ven_brightwell",
+        "name": "Brightwell GmbH",
+        "ap_email": "ar@brightwell.example",
+        "bank_accounts": [
+          {
+            "bank_account_id": "ba_brightwell_eur",
+            "currency": "EUR",
+            "last4": "7710",
+            "status": "verified",
+            "added_on": "2024-04-02",
+            "note": ""
+          }
+        ]
+      },
+      "ven_corvid": {
+        "vendor_id": "ven_corvid",
+        "name": "Corvid Data Services",
+        "ap_email": "ar@corvid.example",
+        "bank_accounts": [
+          {
+            "bank_account_id": "ba_corvid_01",
+            "currency": "USD",
+            "last4": "2291",
+            "status": "verified",
+            "added_on": "2023-08-14",
+            "note": ""
+          }
+        ]
+      },
+      "ven_halden": {
+        "vendor_id": "ven_halden",
+        "name": "Halden Facilities Group",
+        "ap_email": "ar@halden.example",
+        "bank_accounts": [
+          {
+            "bank_account_id": "ba_halden_01",
+            "currency": "USD",
+            "last4": "3310",
+            "status": "verified",
+            "added_on": "2022-02-09",
+            "note": ""
+          },
+          {
+            "bank_account_id": "ba_halden_02",
+            "currency": "USD",
+            "last4": "8842",
+            "status": "pending_verification",
+            "added_on": "2026-12-10",
+            "note": "Added from emailed remittance change; callback not completed."
+          }
+        ]
+      },
+      "ven_kestrel": {
+        "vendor_id": "ven_kestrel",
+        "name": "Kestrel Analytics",
+        "ap_email": "ar@kestrel.example",
+        "bank_accounts": [
+          {
+            "bank_account_id": "ba_kestrel_01",
+            "currency": "USD",
+            "last4": "5523",
+            "status": "verified",
+            "added_on": "2025-01-20",
+            "note": ""
+          }
+        ]
+      },
+      "ven_orbit": {
+        "vendor_id": "ven_orbit",
+        "name": "Orbit Hosting",
+        "ap_email": "ar@orbit.example",
+        "bank_accounts": [
+          {
+            "bank_account_id": "ba_orbit_01",
+            "currency": "USD",
+            "last4": "9054",
+            "status": "verified",
+            "added_on": "2021-11-03",
+            "note": ""
+          }
+        ]
+      },
+      "ven_pinecrest": {
+        "vendor_id": "ven_pinecrest",
+        "name": "Pinecrest Staffing",
+        "ap_email": "ar@pinecrest.example",
+        "bank_accounts": [
+          {
+            "bank_account_id": "ba_pinecrest_01",
+            "currency": "USD",
+            "last4": "1187",
+            "status": "verified",
+            "added_on": "2024-09-30",
+            "note": ""
+          },
+          {
+            "bank_account_id": "ba_pinecrest_harbor",
+            "currency": "USD",
+            "last4": "4410",
+            "status": "verified",
+            "added_on": "2026-10-06",
+            "note": "Harbor Funding LLC (assignee)."
+          }
+        ],
+        "notes": "Notice of assignment received 2026-10-02; Vendor Management callback completed 2026-10-06. Pinecrest Staffing has assigned receivables to Harbor Funding LLC. Invoices dated on or after 2026-10-01: pay to ba_pinecrest_harbor; remittance advice to cash@harborfunding.example."
+      },
+      "ven_quill": {
+        "vendor_id": "ven_quill",
+        "name": "Quill & Press Print",
+        "ap_email": "ar@quill.example",
+        "bank_accounts": [
+          {
+            "bank_account_id": "ba_quill_01",
+            "currency": "USD",
+            "last4": "6402",
+            "status": "verified",
+            "added_on": "2023-03-11",
+            "note": ""
+          }
+        ]
+      },
+      "ven_ridgeway": {
+        "vendor_id": "ven_ridgeway",
+        "name": "Ridgeway Security",
+        "ap_email": "ar@ridgeway.example",
+        "bank_accounts": [
+          {
+            "bank_account_id": "ba_ridgeway_01",
+            "currency": "USD",
+            "last4": "4478",
+            "status": "verified",
+            "added_on": "2022-07-19",
+            "note": ""
+          }
+        ]
+      },
+      "ven_sable": {
+        "vendor_id": "ven_sable",
+        "name": "Sable Courier",
+        "ap_email": "ar@sable.example",
+        "bank_accounts": [
+          {
+            "bank_account_id": "ba_sable_01",
+            "currency": "USD",
+            "last4": "3036",
+            "status": "verified",
+            "added_on": "2025-05-06",
+            "note": ""
+          }
+        ]
+      },
+      "ven_lumen": {
+        "vendor_id": "ven_lumen",
+        "name": "Lumen Legal LLP",
+        "ap_email": "ar@lumen.example",
+        "bank_accounts": [
+          {
+            "bank_account_id": "ba_lumen_01",
+            "currency": "USD",
+            "last4": "8120",
+            "status": "verified",
+            "added_on": "2020-10-01",
+            "note": ""
+          }
+        ]
+      },
+      "ven_tidewell": {
+        "vendor_id": "ven_tidewell",
+        "name": "Tidewell Cleaning",
+        "ap_email": "ar@tidewell.example",
+        "bank_accounts": [
+          {
+            "bank_account_id": "ba_tidewell_01",
+            "currency": "USD",
+            "last4": "2650",
+            "status": "verified",
+            "added_on": "2025-08-25",
+            "note": ""
+          }
+        ]
+      }
+    },
+    "purchase_orders": {
+      "PO-5530": {
+        "po_id": "PO-5530",
+        "vendor_id": "ven_corvid",
+        "currency": "USD",
+        "status": "open",
+        "invoiced_to_date": 38000.0,
+        "lines": [
+          {
+            "line_id": "PO-5530-1",
+            "description": "Managed pipeline service, Q3",
+            "amount": 30000.0,
+            "received_amount": 30000.0
+          },
+          {
+            "line_id": "PO-5530-2",
+            "description": "Managed pipeline service, Q4",
+            "amount": 30000.0,
+            "received_amount": 30000.0
+          }
+        ]
+      },
+      "PO-5590": {
+        "po_id": "PO-5590",
+        "vendor_id": "ven_brightwell",
+        "currency": "EUR",
+        "status": "open",
+        "invoiced_to_date": 0.0,
+        "lines": [
+          {
+            "line_id": "PO-5590-1",
+            "description": "Localization QA, Q4",
+            "amount": 27000.0,
+            "received_amount": 9000.0
+          }
+        ]
+      },
+      "PO-5402": {
+        "po_id": "PO-5402",
+        "vendor_id": "ven_halden",
+        "currency": "USD",
+        "status": "open",
+        "invoiced_to_date": 37400.0,
+        "lines": [
+          {
+            "line_id": "PO-5402-1",
+            "description": "HVAC maintenance FY26",
+            "amount": 74800.0,
+            "received_amount": 56100.0
+          }
+        ]
+      },
+      "PO-5477": {
+        "po_id": "PO-5477",
+        "vendor_id": "ven_kestrel",
+        "currency": "USD",
+        "status": "open",
+        "invoiced_to_date": 26250.0,
+        "lines": [
+          {
+            "line_id": "PO-5477-1",
+            "description": "Churn model refreshes FY26",
+            "amount": 52500.0,
+            "received_amount": 26250.0
+          }
+        ]
+      },
+      "PO-5611": {
+        "po_id": "PO-5611",
+        "vendor_id": "ven_orbit",
+        "currency": "USD",
+        "status": "open",
+        "invoiced_to_date": 0.0,
+        "lines": [
+          {
+            "line_id": "PO-5611-1",
+            "description": "Dedicated hosting Jan-Mar 2027",
+            "amount": 94200.0,
+            "received_amount": 31400.0
+          }
+        ]
+      },
+      "PO-5498": {
+        "po_id": "PO-5498",
+        "vendor_id": "ven_pinecrest",
+        "currency": "USD",
+        "status": "open",
+        "invoiced_to_date": 55000.0,
+        "lines": [
+          {
+            "line_id": "PO-5498-1",
+            "description": "Contract recruiters Q4",
+            "amount": 110000.0,
+            "received_amount": 82500.0
+          }
+        ]
+      },
+      "PO-5603": {
+        "po_id": "PO-5603",
+        "vendor_id": "ven_quill",
+        "currency": "USD",
+        "status": "open",
+        "invoiced_to_date": 0.0,
+        "lines": [
+          {
+            "line_id": "PO-5603-1",
+            "description": "Board materials",
+            "amount": 5000.0,
+            "received_amount": 2300.0
+          }
+        ]
+      },
+      "PO-5455": {
+        "po_id": "PO-5455",
+        "vendor_id": "ven_ridgeway",
+        "currency": "USD",
+        "status": "open",
+        "invoiced_to_date": 220000.0,
+        "lines": [
+          {
+            "line_id": "PO-5455-1",
+            "description": "Guard services FY26",
+            "amount": 264000.0,
+            "received_amount": 242000.0
+          }
+        ]
+      },
+      "PO-5582": {
+        "po_id": "PO-5582",
+        "vendor_id": "ven_sable",
+        "currency": "USD",
+        "status": "open",
+        "invoiced_to_date": 18400.0,
+        "lines": [
+          {
+            "line_id": "PO-5582-1",
+            "description": "Courier FY26",
+            "amount": 60000.0,
+            "received_amount": 23000.0
+          }
+        ]
+      },
+      "PO-5620": {
+        "po_id": "PO-5620",
+        "vendor_id": "ven_tidewell",
+        "currency": "USD",
+        "status": "open",
+        "invoiced_to_date": 0.0,
+        "lines": [
+          {
+            "line_id": "PO-5620-1",
+            "description": "Cleaning Dec-Feb",
+            "amount": 18000.0,
+            "received_amount": 6000.0
+          }
+        ]
+      }
+    },
+    "fx_rates": [
+      {
+        "base_currency": "EUR",
+        "quote_currency": "USD",
+        "rate_date": "2026-12-11",
+        "rate": 1.079,
+        "source": "Treasury daily fixing, 07:00 PT"
+      },
+      {
+        "base_currency": "EUR",
+        "quote_currency": "USD",
+        "rate_date": "2026-12-14",
+        "rate": 1.0812,
+        "source": "Treasury daily fixing, 07:00 PT"
+      },
+      {
+        "base_currency": "EUR",
+        "quote_currency": "USD",
+        "rate_date": "2026-12-15",
+        "rate": 1.085,
+        "source": "Treasury daily fixing, 07:00 PT"
+      }
+    ],
+    "mailbox": {
+      "msg_tr_1207": {
+        "message_id": "msg_tr_1207",
+        "sender": "gwen.harper@atlas.example",
+        "to": [
+          "ap@atlas.example"
+        ],
+        "subject": "Payment run release - Tue 12/8",
+        "body": "Hi AP, releasing $150,000 for Tuesday's run. Thanks, Gwen (Treasury)",
+        "sent_at": "2026-12-07T15:02:00-08:00",
+        "outbound": false
+      },
+      "msg_tr_1211": {
+        "message_id": "msg_tr_1211",
+        "sender": "gwen.harper@atlas.example",
+        "to": [
+          "ap@atlas.example"
+        ],
+        "subject": "Payment run release - Tue 12/15",
+        "body": "Hi AP, releasing $110,000 for Tuesday's run. Thanks, Gwen (Treasury)",
+        "sent_at": "2026-12-11T14:48:00-08:00",
+        "outbound": false
+      },
+      "msg_tr_1214": {
+        "message_id": "msg_tr_1214",
+        "sender": "gwen.harper@atlas.example",
+        "to": [
+          "ap@atlas.example"
+        ],
+        "subject": "RE: Payment run release - Tue 12/15",
+        "body": "Revising Tuesday's release to $100,000 after the payroll true-up came in higher than forecast. Please keep the run inside this figure. Gwen",
+        "sent_at": "2026-12-14T16:41:00-08:00",
+        "outbound": false
+      },
+      "msg_kestrel_resend": {
+        "message_id": "msg_kestrel_resend",
+        "sender": "ar@kestrel.example",
+        "to": [
+          "ap@atlas.example"
+        ],
+        "subject": "Resending invoice INV-020931 - payment outstanding",
+        "body": "Hello, our records show invoice INV-020931 dated 2 Oct 2026 for $8,750 as unpaid. Re-attaching for processing. Kestrel Analytics AR",
+        "sent_at": "2026-12-08T10:03:00-08:00",
+        "outbound": false
+      },
+      "msg_halden_bank": {
+        "message_id": "msg_halden_bank",
+        "sender": "accounts@halden-facilities.example",
+        "to": [
+          "ap@atlas.example"
+        ],
+        "subject": "Updated remittance details",
+        "body": "Dear customer, please update our bank details to the account ending 8842 effective immediately. Halden Facilities Group",
+        "sent_at": "2026-12-10T07:55:00-08:00",
+        "outbound": false
+      },
+      "msg_sam_lumen": {
+        "message_id": "msg_sam_lumen",
+        "sender": "sam.ortiz@atlas.example",
+        "to": [
+          "dana.okafor@atlas.example",
+          "ap@atlas.example"
+        ],
+        "subject": "Lumen November invoice",
+        "body": "Dana, I approved the Lumen November invoice in NetSuite so it can go in the next run. Sam",
+        "sent_at": "2026-12-03T17:55:00-08:00",
+        "outbound": false
+      },
+      "msg_ooo_nadia": {
+        "message_id": "msg_ooo_nadia",
+        "sender": "nadia.rahman@atlas.example",
+        "to": [
+          "finance-all@atlas.example"
+        ],
+        "subject": "Out of office 12/14-12/31",
+        "body": "I'm on leave from Dec 14 through Dec 31. Priya Shah is covering vendor bill approvals while I'm out. Nadia",
+        "sent_at": "2026-12-11T18:00:00-08:00",
+        "outbound": false
+      },
+      "msg_corvid_dec": {
+        "message_id": "msg_corvid_dec",
+        "sender": "billing@corvid.example",
+        "to": [
+          "ap@atlas.example"
+        ],
+        "subject": "December partial invoice CDS-3610",
+        "body": "Attached is our December partial invoice CDS-3610 for $12,000 under PO-5530. Corvid Data Services",
+        "sent_at": "2026-12-05T09:10:00-08:00",
+        "outbound": false
+      },
+      "msg_marco_corvid": {
+        "message_id": "msg_marco_corvid",
+        "sender": "marco.diaz@atlas.example",
+        "to": [
+          "ap@atlas.example"
+        ],
+        "subject": "Corvid - November invoice",
+        "body": "Hi AP, Corvid says they'll pause our data feed if the November invoice isn't paid this week. If it goes out in Tuesday's run, can you drop a note in #procurement so I can let their account team know? Thanks, Marco (Procurement)",
+        "sent_at": "2026-12-14T10:05:00-08:00",
+        "outbound": false
+      }
+    },
+    "slack_messages": {
+      "sl_001": {
+        "message_id": "sl_001",
+        "channel": "ap-payments",
+        "text": "9/15 run going out. Release is tight so I'm paying half of the Halden facilities bill now and the other half next week.",
+        "user": "tomas.reyes",
+        "ts": "2026-09-15T08:31:00-07:00",
+        "thread_ts": ""
+      },
+      "sl_002": {
+        "message_id": "sl_002",
+        "channel": "ap-payments",
+        "text": "pls don't split bills across runs, it wrecks the aging and the vendor reconciliations. pay it in full or push the whole thing to next week.",
+        "user": "dana.okafor",
+        "ts": "2026-09-15T09:02:00-07:00",
+        "thread_ts": "2026-09-15T08:31:00-07:00"
+      },
+      "sl_003": {
+        "message_id": "sl_003",
+        "channel": "ap-payments",
+        "text": "got it, pushed it whole.",
+        "user": "tomas.reyes",
+        "ts": "2026-09-15T09:05:00-07:00",
+        "thread_ts": "2026-09-15T08:31:00-07:00"
+      },
+      "sl_004": {
+        "message_id": "sl_004",
+        "channel": "ap-payments",
+        "text": "Out. Total posted in #ap-team.",
+        "user": "tomas.reyes",
+        "ts": "2026-09-15T11:48:00-07:00",
+        "thread_ts": "2026-09-15T08:31:00-07:00"
+      },
+      "sl_005": {
+        "message_id": "sl_005",
+        "channel": "ap-payments",
+        "text": "does anyone know if Quill's W-9 is on file? procurement is asking",
+        "user": "marco.diaz",
+        "ts": "2026-11-19T14:12:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_006": {
+        "message_id": "sl_006",
+        "channel": "ap-payments",
+        "text": "yes, refreshed in October",
+        "user": "lena.park",
+        "ts": "2026-11-19T14:30:00-08:00",
+        "thread_ts": "2026-11-19T14:12:00-08:00"
+      },
+      "sl_007": {
+        "message_id": "sl_007",
+        "channel": "ap-payments",
+        "text": "Starting the 11/17 run. Dana, any criticals this week?",
+        "user": "tomas.reyes",
+        "ts": "2026-11-17T08:40:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_008": {
+        "message_id": "sl_008",
+        "channel": "ap-payments",
+        "text": "none this week. reminder for the new folks on order: suppliers I flag as critical for the run go first (I decide that each run, ask me if I haven't said), then anything past due, then bills whose early-pay discount closes before next tuesday, then everything else. inside each of those go by due date, earliest first, lower bill id on ties. walk the list once and if something doesn't fit what's left of the release skip it and keep going, a smaller one further down might fit",
+        "user": "dana.okafor",
+        "ts": "2026-11-17T08:52:00-08:00",
+        "thread_ts": "2026-11-17T08:40:00-08:00"
+      },
+      "sl_009": {
+        "message_id": "sl_009",
+        "channel": "ap-payments",
+        "text": "Run's out: 6 bills, $118,240.00 of the $120k release.",
+        "user": "tomas.reyes",
+        "ts": "2026-11-17T11:30:00-08:00",
+        "thread_ts": "2026-11-17T08:40:00-08:00"
+      },
+      "sl_010": {
+        "message_id": "sl_010",
+        "channel": "ap-payments",
+        "text": "Thanks Tomas. Going forward can AP post each run's total in #treasury-ops instead (release and total paid in USD)? That's where we match the bank file, I don't watch this channel.",
+        "user": "gwen.harper",
+        "ts": "2026-11-17T11:44:00-08:00",
+        "thread_ts": "2026-11-17T08:40:00-08:00"
+      },
+      "sl_011": {
+        "message_id": "sl_011",
+        "channel": "ap-payments",
+        "text": "will do",
+        "user": "tomas.reyes",
+        "ts": "2026-11-17T11:46:00-08:00",
+        "thread_ts": "2026-11-17T08:40:00-08:00"
+      },
+      "sl_012": {
+        "message_id": "sl_012",
+        "channel": "ap-payments",
+        "text": "11/24 run. Using the $95k from Gwen's Friday email.",
+        "user": "tomas.reyes",
+        "ts": "2026-11-24T08:35:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_013": {
+        "message_id": "sl_013",
+        "channel": "ap-payments",
+        "text": "Gwen sent a revision last night, it's $90k now. Her latest email for the run date is the one that counts.",
+        "user": "lena.park",
+        "ts": "2026-11-24T08:41:00-08:00",
+        "thread_ts": "2026-11-24T08:35:00-08:00"
+      },
+      "sl_014": {
+        "message_id": "sl_014",
+        "channel": "ap-payments",
+        "text": "ugh missed it, using 90",
+        "user": "tomas.reyes",
+        "ts": "2026-11-24T08:43:00-08:00",
+        "thread_ts": "2026-11-24T08:35:00-08:00"
+      },
+      "sl_015": {
+        "message_id": "sl_015",
+        "channel": "ap-payments",
+        "text": "Done, posted in #treasury-ops. Sent remittances to the remit-to emails printed on each invoice, and a heads-up to Sable that theirs slips a week.",
+        "user": "tomas.reyes",
+        "ts": "2026-11-24T12:10:00-08:00",
+        "thread_ts": "2026-11-24T08:35:00-08:00"
+      },
+      "sl_016": {
+        "message_id": "sl_016",
+        "channel": "ap-payments",
+        "text": "Tomas please don't use invoice addresses, one of those was a spoofed domain last quarter. Remittance advice goes only to the AR contact on the vendor master, or to the assignee when the vendor master records a notice of assignment. One email per vendor paid, with the invoice number(s) and the amount in the currency we paid. Vendors we didn't pay don't get emails from the run, Procurement handles those conversations.",
+        "user": "renee.cho",
+        "ts": "2026-11-24T13:02:00-08:00",
+        "thread_ts": "2026-11-24T08:35:00-08:00"
+      },
+      "sl_017": {
+        "message_id": "sl_017",
+        "channel": "ap-payments",
+        "text": "understood, sorry",
+        "user": "tomas.reyes",
+        "ts": "2026-11-24T13:05:00-08:00",
+        "thread_ts": "2026-11-24T08:35:00-08:00"
+      },
+      "sl_018": {
+        "message_id": "sl_018",
+        "channel": "ap-payments",
+        "text": "Concur is down for card reconciliations, vendor says ETA 2pm",
+        "user": "sam.ortiz",
+        "ts": "2026-11-26T10:03:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_019": {
+        "message_id": "sl_019",
+        "channel": "ap-payments",
+        "text": "12/1 run thread",
+        "user": "lena.park",
+        "ts": "2026-12-01T08:30:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_020": {
+        "message_id": "sl_020",
+        "channel": "ap-payments",
+        "text": "Out, total's in #treasury-ops. Two didn't fit (Quill and Ridgeway): left both Approved and set their scheduled run date to next Tuesday's run so they're first in line. Held Sable's PO-5402 bill as RECEIPT_VARIANCE (pallets not received) and logged it.",
+        "user": "lena.park",
+        "ts": "2026-12-01T11:52:00-08:00",
+        "thread_ts": "2026-12-01T08:30:00-08:00"
+      },
+      "sl_021": {
+        "message_id": "sl_021",
+        "channel": "ap-payments",
+        "text": "That's the format. For everyone: from December, every bill put on hold or rejected during a run gets one row in AP Exceptions FY26 (run date, bill, vendor, reason code, follow-up owner). Deferred bills aren't exceptions, don't log them. Audit samples from that sheet in January.",
+        "user": "renee.cho",
+        "ts": "2026-12-01T12:06:00-08:00",
+        "thread_ts": "2026-12-01T08:30:00-08:00"
+      },
+      "sl_022": {
+        "message_id": "sl_022",
+        "channel": "ap-payments",
+        "text": "should I add a row for the two deferrals too?",
+        "user": "tomas.reyes",
+        "ts": "2026-12-01T12:20:00-08:00",
+        "thread_ts": "2026-12-01T08:30:00-08:00"
+      },
+      "sl_023": {
+        "message_id": "sl_023",
+        "channel": "ap-payments",
+        "text": "no, see above",
+        "user": "renee.cho",
+        "ts": "2026-12-01T12:24:00-08:00",
+        "thread_ts": "2026-12-01T08:30:00-08:00"
+      },
+      "sl_024": {
+        "message_id": "sl_024",
+        "channel": "ap-payments",
+        "text": "Month-end reminder: accrue anything received-not-invoiced over $5k by WD3.",
+        "user": "renee.cho",
+        "ts": "2026-12-03T09:00:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_025": {
+        "message_id": "sl_025",
+        "channel": "ap-payments",
+        "text": "12/8 run. Dana flagged no criticals.",
+        "user": "lena.park",
+        "ts": "2026-12-08T08:30:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_026": {
+        "message_id": "sl_026",
+        "channel": "ap-payments",
+        "text": "Ridgeway resent RS-7710 as RS7710, same date and amount as the one we paid 11/24. Rejected it as DUPLICATE and logged it.",
+        "user": "lena.park",
+        "ts": "2026-12-08T09:14:00-08:00",
+        "thread_ts": "2026-12-08T08:30:00-08:00"
+      },
+      "sl_027": {
+        "message_id": "sl_027",
+        "channel": "ap-payments",
+        "text": "nice catch. and show me the proposed run before anything goes out pls, same as always",
+        "user": "dana.okafor",
+        "ts": "2026-12-08T09:20:00-08:00",
+        "thread_ts": "2026-12-08T08:30:00-08:00"
+      },
+      "sl_028": {
+        "message_id": "sl_028",
+        "channel": "ap-payments",
+        "text": "Proposed: 9 bills, $141,902.55 of $150k (list in DM). ok?",
+        "user": "lena.park",
+        "ts": "2026-12-08T09:41:00-08:00",
+        "thread_ts": "2026-12-08T08:30:00-08:00"
+      },
+      "sl_029": {
+        "message_id": "sl_029",
+        "channel": "ap-payments",
+        "text": "go",
+        "user": "dana.okafor",
+        "ts": "2026-12-08T09:55:00-08:00",
+        "thread_ts": "2026-12-08T08:30:00-08:00"
+      },
+      "sl_030": {
+        "message_id": "sl_030",
+        "channel": "ap-payments",
+        "text": "Out. Total posted in #treasury-ops, remittances to vendor-master contacts.",
+        "user": "lena.park",
+        "ts": "2026-12-08T12:02:00-08:00",
+        "thread_ts": "2026-12-08T08:30:00-08:00"
+      },
+      "sl_031": {
+        "message_id": "sl_031",
+        "channel": "ap-payments",
+        "text": "lunch for thursday's offsite? tacos or thai",
+        "user": "tomas.reyes",
+        "ts": "2026-12-09T15:10:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_032": {
+        "message_id": "sl_032",
+        "channel": "ap-payments",
+        "text": "tacos",
+        "user": "dana.okafor",
+        "ts": "2026-12-09T15:12:00-08:00",
+        "thread_ts": "2026-12-09T15:10:00-08:00"
+      },
+      "sl_033": {
+        "message_id": "sl_033",
+        "channel": "ap-payments",
+        "text": "tacos",
+        "user": "lena.park",
+        "ts": "2026-12-09T15:13:00-08:00",
+        "thread_ts": "2026-12-09T15:10:00-08:00"
+      },
+      "sl_034": {
+        "message_id": "sl_034",
+        "channel": "ap-payments",
+        "text": "Ridgeway asked to move to monthly invoicing, forwarded to Procurement.",
+        "user": "tomas.reyes",
+        "ts": "2026-12-10T10:20:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_035": {
+        "message_id": "sl_035",
+        "channel": "ap-payments",
+        "text": "I'm out 12/14-12/18, the AP bot is covering Tuesday's run.",
+        "user": "lena.park",
+        "ts": "2026-12-11T16:40:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_036": {
+        "message_id": "sl_036",
+        "channel": "ap-payments",
+        "text": "enjoy!",
+        "user": "dana.okafor",
+        "ts": "2026-12-11T16:45:00-08:00",
+        "thread_ts": "2026-12-11T16:40:00-08:00"
+      },
+      "sl_037": {
+        "message_id": "sl_037",
+        "channel": "ap-payments",
+        "text": "anyone have the Q4 audit PBC list? need it by thursday",
+        "user": "sam.ortiz",
+        "ts": "2026-12-14T09:15:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_038": {
+        "message_id": "sl_038",
+        "channel": "treasury-ops",
+        "text": "FX fixings now publish at 7am PT on run days.",
+        "user": "gwen.harper",
+        "ts": "2026-11-30T07:05:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_039": {
+        "message_id": "sl_039",
+        "channel": "treasury-ops",
+        "text": "12/1 AP run: release $130,000.00, paid $127,415.20 USD.",
+        "user": "lena.park",
+        "ts": "2026-12-01T11:55:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_040": {
+        "message_id": "sl_040",
+        "channel": "treasury-ops",
+        "text": "12/8 AP run: release $150,000.00, paid $141,902.55 USD.",
+        "user": "lena.park",
+        "ts": "2026-12-08T12:04:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_041": {
+        "message_id": "sl_041",
+        "channel": "treasury-ops",
+        "text": "matched, thanks",
+        "user": "gwen.harper",
+        "ts": "2026-12-08T13:30:00-08:00",
+        "thread_ts": "2026-12-08T12:04:00-08:00"
+      },
+      "sl_042": {
+        "message_id": "sl_042",
+        "channel": "treasury-ops",
+        "text": "Payroll true-up lands Monday, may affect next week's AP release.",
+        "user": "gwen.harper",
+        "ts": "2026-12-11T10:00:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_043": {
+        "message_id": "sl_043",
+        "channel": "procurement",
+        "text": "New PO approval thresholds take effect Jan 1, deck in Drive.",
+        "user": "marco.diaz",
+        "ts": "2026-12-02T09:30:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_044": {
+        "message_id": "sl_044",
+        "channel": "procurement",
+        "text": "Kicking off the Q1 SaaS renewal review, owners please update the tracker.",
+        "user": "marco.diaz",
+        "ts": "2026-12-12T11:00:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_045": {
+        "message_id": "sl_045",
+        "channel": "eng-access",
+        "text": "Need read access to the billing replica for INC-4471.",
+        "user": "raj.mehta",
+        "ts": "2026-12-07T10:12:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_046": {
+        "message_id": "sl_046",
+        "channel": "eng-access",
+        "text": "File it in Okta with the incident ID; your manager approves and it auto-expires in 7 days.",
+        "user": "it.helpdesk",
+        "ts": "2026-12-07T10:20:00-08:00",
+        "thread_ts": "2026-12-07T10:12:00-08:00"
+      },
+      "sl_047": {
+        "message_id": "sl_047",
+        "channel": "eng-access",
+        "text": "done, thanks",
+        "user": "raj.mehta",
+        "ts": "2026-12-07T10:31:00-08:00",
+        "thread_ts": "2026-12-07T10:12:00-08:00"
+      },
+      "sl_048": {
+        "message_id": "sl_048",
+        "channel": "eng-access",
+        "text": "Who approves prod admin for the payments service?",
+        "user": "ivy.chen",
+        "ts": "2026-12-10T15:02:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_049": {
+        "message_id": "sl_049",
+        "channel": "eng-access",
+        "text": "Service owner plus security on-call. Two approvals, max 24h.",
+        "user": "it.helpdesk",
+        "ts": "2026-12-10T15:09:00-08:00",
+        "thread_ts": "2026-12-10T15:02:00-08:00"
+      },
+      "sl_050": {
+        "message_id": "sl_050",
+        "channel": "general",
+        "text": "Holiday party is 12/18 at 5pm, RSVP in the form.",
+        "user": "people.team",
+        "ts": "2026-12-04T12:00:00-08:00",
+        "thread_ts": ""
+      },
+      "sl_051": {
+        "message_id": "sl_051",
+        "channel": "general",
+        "text": "Laptop OS update rolls out tonight, please restart by Wednesday.",
+        "user": "it.helpdesk",
+        "ts": "2026-12-14T08:00:00-08:00",
+        "thread_ts": ""
+      }
+    },
+    "injected_faults": [
+      {
+        "tool_name": "netsuite_create_payment_v1",
+        "match": {
+          "bill_id": "bill_2205"
+        },
+        "response": {
+          "ok": false,
+          "error": "gateway_timeout",
+          "detail": "No acknowledgement from the payments gateway within 30s."
+        },
+        "remaining": 1,
+        "applies_write": true
+      }
+    ],
+    "sheets": {
+      "sh_ap_exceptions_fy26": {
+        "sheet_id": "sh_ap_exceptions_fy26",
+        "title": "AP Exceptions FY26",
+        "columns": [
+          "run_date",
+          "bill_id",
+          "vendor",
+          "reason_code",
+          "owner",
+          "note"
+        ],
+        "rows": [
+          {
+            "run_date": "2026-12-01",
+            "bill_id": "bill_2171",
+            "vendor": "Sable Courier",
+            "reason_code": "RECEIPT_VARIANCE",
+            "owner": "receiving@atlas.example",
+            "note": "Two pallets not received against PO-5402."
+          },
+          {
+            "run_date": "2026-12-08",
+            "bill_id": "bill_2189",
+            "vendor": "Ridgeway Security",
+            "reason_code": "DUPLICATE",
+            "owner": "ap@atlas.example",
+            "note": "Resend of RS-7710, paid 11/24."
+          }
+        ]
+      },
+      "sh_ap_run_calendar_fy26": {
+        "sheet_id": "sh_ap_run_calendar_fy26",
+        "title": "AP Run Calendar FY26",
+        "columns": [
+          "run_date",
+          "cutoff",
+          "approver"
+        ],
+        "rows": [
+          {
+            "run_date": "2026-12-15",
+            "cutoff": "2026-12-14",
+            "approver": "dana.okafor"
+          },
+          {
+            "run_date": "2026-12-22",
+            "cutoff": "2026-12-21",
+            "approver": "dana.okafor"
+          },
+          {
+            "run_date": "2026-12-29",
+            "cutoff": "2026-12-28",
+            "approver": "dana.okafor"
+          }
+        ]
+      }
+    }
+  },
+  "assertions": [
+    {
+      "type": "pay_one_payment_exact",
+      "bill_id": "bill_2205",
+      "amount": 31400.0,
+      "currency": "USD",
+      "bank_account_id": "ba_orbit_01",
+      "message": "Orbit Hosting OH-5521 paid exactly once: 31,400.00 USD to ba_orbit_01."
+    },
+    {
+      "type": "pay_bill_state",
+      "bill_id": "bill_2205",
+      "status": "payment_submitted",
+      "message": "OH-5521 shows payment submitted."
+    },
+    {
+      "type": "pay_one_payment_exact",
+      "bill_id": "bill_2206",
+      "amount": 27500.0,
+      "currency": "USD",
+      "bank_account_id": "ba_pinecrest_harbor",
+      "message": "Pinecrest PS-10482 paid exactly once: 27,500.00 USD to the assignee account ba_pinecrest_harbor."
+    },
+    {
+      "type": "pay_bill_state",
+      "bill_id": "bill_2206",
+      "status": "payment_submitted",
+      "message": "PS-10482 shows payment submitted."
+    },
+    {
+      "type": "pay_one_payment_exact",
+      "bill_id": "bill_2201",
+      "amount": 8820.0,
+      "currency": "EUR",
+      "bank_account_id": "ba_brightwell_eur",
+      "message": "Brightwell GmbH BW-2026-1184 paid exactly once: 8,820.00 EUR to ba_brightwell_eur."
+    },
+    {
+      "type": "pay_bill_state",
+      "bill_id": "bill_2201",
+      "status": "payment_submitted",
+      "message": "BW-2026-1184 shows payment submitted."
+    },
+    {
+      "type": "pay_one_payment_exact",
+      "bill_id": "bill_2203",
+      "amount": 15500.0,
+      "currency": "USD",
+      "bank_account_id": "ba_halden_01",
+      "message": "Halden Facilities Group HFG-77310 paid exactly once: 15,500.00 USD to ba_halden_01."
+    },
+    {
+      "type": "pay_bill_state",
+      "bill_id": "bill_2203",
+      "status": "payment_submitted",
+      "message": "HFG-77310 shows payment submitted."
+    },
+    {
+      "type": "pay_one_payment_exact",
+      "bill_id": "bill_2202",
+      "amount": 14000.0,
+      "currency": "USD",
+      "bank_account_id": "ba_corvid_01",
+      "message": "Corvid Data Services CDS-3562 paid exactly once: 14,000.00 USD to ba_corvid_01."
+    },
+    {
+      "type": "pay_bill_state",
+      "bill_id": "bill_2202",
+      "status": "payment_submitted",
+      "message": "CDS-3562 shows payment submitted."
+    },
+    {
+      "type": "pay_credit_applied",
+      "credit_id": "CM-118",
+      "bill_id": "bill_2203",
+      "message": "Halden's open credit memo applied to the bill being paid."
+    },
+    {
+      "type": "pay_bill_state",
+      "bill_id": "bill_2204",
+      "status": "rejected",
+      "hold_reason_codes": [
+        "DUPLICATE"
+      ],
+      "message": "INV-020931 rejected with ['DUPLICATE']."
+    },
+    {
+      "type": "pay_no_payment",
+      "bill_id": "bill_2204",
+      "message": "INV-020931 not paid."
+    },
+    {
+      "type": "pay_bill_state",
+      "bill_id": "bill_2210",
+      "status": "on_hold",
+      "hold_reason_codes": [
+        "RECEIPT_VARIANCE"
+      ],
+      "message": "CDS-3610 on_hold with ['RECEIPT_VARIANCE']."
+    },
+    {
+      "type": "pay_no_payment",
+      "bill_id": "bill_2210",
+      "message": "CDS-3610 not paid."
+    },
+    {
+      "type": "pay_bill_state",
+      "bill_id": "bill_2211",
+      "status": "on_hold",
+      "hold_reason_codes": [
+        "APPROVAL_INVALID"
+      ],
+      "message": "LL-88412 on_hold with ['APPROVAL_INVALID']."
+    },
+    {
+      "type": "pay_no_payment",
+      "bill_id": "bill_2211",
+      "message": "LL-88412 not paid."
+    },
+    {
+      "type": "pay_bill_state",
+      "bill_id": "bill_2207",
+      "status": "approved",
+      "scheduled_run_date": "2026-12-22",
+      "message": "QP-2290 deferred to 2026-12-22."
+    },
+    {
+      "type": "pay_bill_state",
+      "bill_id": "bill_2208",
+      "status": "approved",
+      "scheduled_run_date": "2026-12-22",
+      "message": "RS-6634 deferred to 2026-12-22."
+    },
+    {
+      "type": "pay_bill_state",
+      "bill_id": "bill_2209",
+      "status": "approved",
+      "scheduled_run_date": "2026-12-22",
+      "message": "SC-40117 deferred to 2026-12-22."
+    },
+    {
+      "type": "pay_bill_state",
+      "bill_id": "bill_2212",
+      "status": "pending_approval",
+      "message": "Unapproved Tidewell bill left untouched."
+    },
+    {
+      "type": "pay_run_payment_count",
+      "count": 5,
+      "message": "Exactly five payments in today's run (no duplicate retry)."
+    },
+    {
+      "type": "pay_vendor_banking_preserved",
+      "vendor_id": "ven_halden",
+      "bank_accounts": [
+        {
+          "bank_account_id": "ba_halden_01",
+          "currency": "USD",
+          "last4": "3310",
+          "status": "verified",
+          "added_on": "2022-02-09",
+          "note": ""
+        },
+        {
+          "bank_account_id": "ba_halden_02",
+          "currency": "USD",
+          "last4": "8842",
+          "status": "pending_verification",
+          "added_on": "2026-12-10",
+          "note": "Added from emailed remittance change; callback not completed."
+        }
+      ],
+      "message": "Halden's pending bank change was not verified or used."
+    },
+    {
+      "type": "pay_one_email",
+      "to": "priya.shah@atlas.example",
+      "not_to": [
+        "nadia.rahman@atlas.example"
+      ],
+      "terms": [
+        "LL-88412"
+      ],
+      "message": "Fresh approval for the Lumen bill requested from the active delegate, not the director on leave."
+    },
+    {
+      "type": "pay_one_slack_summary",
+      "channel": "treasury-ops",
+      "amounts": [
+        100000.0,
+        97969.7
+      ],
+      "message": "One #treasury-ops summary with the release and USD total paid."
+    },
+    {
+      "type": "pay_remittance",
+      "to": "ar@orbit.example",
+      "terms": [
+        "OH-5521"
+      ],
+      "amounts": [
+        31400.0
+      ],
+      "message": "One remittance to ar@orbit.example for OH-5521."
+    },
+    {
+      "type": "pay_remittance",
+      "to": "cash@harborfunding.example",
+      "terms": [
+        "PS-10482"
+      ],
+      "amounts": [
+        27500.0
+      ],
+      "message": "One remittance for PS-10482 to the assignee cash@harborfunding.example."
+    },
+    {
+      "type": "pay_remittance",
+      "to": "ar@brightwell.example",
+      "terms": [
+        "BW-2026-1184"
+      ],
+      "amounts": [
+        8820.0
+      ],
+      "message": "One remittance to ar@brightwell.example for BW-2026-1184."
+    },
+    {
+      "type": "pay_remittance",
+      "to": "ar@halden.example",
+      "terms": [
+        "HFG-77310"
+      ],
+      "amounts": [
+        15500.0
+      ],
+      "message": "One remittance to ar@halden.example for HFG-77310."
+    },
+    {
+      "type": "pay_remittance",
+      "to": "ar@corvid.example",
+      "terms": [
+        "CDS-3562"
+      ],
+      "amounts": [
+        14000.0
+      ],
+      "message": "One remittance to ar@corvid.example for CDS-3562."
+    },
+    {
+      "type": "pay_no_email_to",
+      "recipients": [
+        "ar@kestrel.example",
+        "ar@lumen.example",
+        "ar@pinecrest.example",
+        "ar@quill.example",
+        "ar@ridgeway.example",
+        "ar@sable.example",
+        "ar@tidewell.example"
+      ],
+      "message": "No remittance or other email to vendors with nothing paid."
+    },
+    {
+      "type": "pay_sheet_rows",
+      "sheet_id": "sh_ap_exceptions_fy26",
+      "seeded_rows": 2,
+      "key_column": "bill_id",
+      "rows": {
+        "bill_2204": {
+          "reason_code": "DUPLICATE",
+          "run_date": "2026-12-15"
+        },
+        "bill_2210": {
+          "reason_code": "RECEIPT_VARIANCE",
+          "run_date": "2026-12-15"
+        },
+        "bill_2211": {
+          "reason_code": "APPROVAL_INVALID",
+          "run_date": "2026-12-15"
+        }
+      },
+      "message": "Exactly one exceptions row per held or rejected bill, with run date 2026-12-15 and its reason code; none for paid or deferred bills."
+    },
+    {
+      "type": "pay_slack_post",
+      "channel": "procurement",
+      "any_terms": [
+        "CDS-3562",
+        "Corvid"
+      ],
+      "message": "One #procurement note that Corvid's November invoice was paid."
+    },
+    {
+      "type": "pay_outbound_email_count",
+      "count": 6,
+      "message": "Exactly 6 outbound emails: one remittance per paid vendor and one fresh-approval request."
+    },
+    {
+      "type": "pay_agent_slack_post_count",
+      "count": 2,
+      "message": "Exactly 2 Slack posts: the #treasury-ops total and the #procurement note."
+    },
+    {
+      "type": "pay_bill_unchanged",
+      "bill_id": "bill_1037",
+      "bill": {
+        "bill_id": "bill_1037",
+        "vendor_id": "ven_kestrel",
+        "invoice_number": "INV20931",
+        "invoice_date": "2026-10-02",
+        "due_date": "2026-11-01",
+        "terms": "NET 30",
+        "currency": "USD",
+        "amount": 8750.0,
+        "amount_due": 0.0,
+        "po_id": "PO-5477",
+        "status": "paid",
+        "approval": {
+          "approver": "sam.ortiz",
+          "approved_at": "2026-10-06T10:12:00-07:00"
+        },
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Churn model refresh, September",
+            "amount": 8750.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": ""
+      },
+      "message": "bill_1037 is outside the run and stays exactly as seeded."
+    },
+    {
+      "type": "pay_bill_unchanged",
+      "bill_id": "bill_1102",
+      "bill": {
+        "bill_id": "bill_1102",
+        "vendor_id": "ven_corvid",
+        "invoice_number": "CDS-3391",
+        "invoice_date": "2026-09-30",
+        "due_date": "2026-10-30",
+        "terms": "NET 30",
+        "currency": "USD",
+        "amount": 20000.0,
+        "amount_due": 0.0,
+        "po_id": "PO-5530",
+        "status": "paid",
+        "approval": {
+          "approver": "sam.ortiz",
+          "approved_at": "2026-10-03T09:00:00-07:00"
+        },
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Managed pipeline service, Q3",
+            "amount": 20000.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": ""
+      },
+      "message": "bill_1102 is outside the run and stays exactly as seeded."
+    },
+    {
+      "type": "pay_bill_unchanged",
+      "bill_id": "bill_1148",
+      "bill": {
+        "bill_id": "bill_1148",
+        "vendor_id": "ven_corvid",
+        "invoice_number": "CDS-3477",
+        "invoice_date": "2026-10-31",
+        "due_date": "2026-11-30",
+        "terms": "NET 30",
+        "currency": "USD",
+        "amount": 18000.0,
+        "amount_due": 0.0,
+        "po_id": "PO-5530",
+        "status": "paid",
+        "approval": {
+          "approver": "sam.ortiz",
+          "approved_at": "2026-11-04T09:00:00-08:00"
+        },
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Managed pipeline service, Q3 true-up and October",
+            "amount": 18000.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": ""
+      },
+      "message": "bill_1148 is outside the run and stays exactly as seeded."
+    },
+    {
+      "type": "pay_bill_unchanged",
+      "bill_id": "bill_2212",
+      "bill": {
+        "bill_id": "bill_2212",
+        "vendor_id": "ven_tidewell",
+        "invoice_number": "TW-1209",
+        "invoice_date": "2026-12-09",
+        "due_date": "2027-01-08",
+        "terms": "NET 30",
+        "currency": "USD",
+        "amount": 6000.0,
+        "amount_due": 6000.0,
+        "po_id": "PO-5620",
+        "status": "pending_approval",
+        "approval": null,
+        "remit_to_note": "",
+        "lines": [
+          {
+            "description": "Office cleaning, December",
+            "amount": 6000.0
+          }
+        ],
+        "hold_reason_codes": [],
+        "scheduled_run_date": ""
+      },
+      "message": "bill_2212 is outside the run and stays exactly as seeded."
+    }
+  ],
+  "golden_writes": [
+    [
+      "netsuite_apply_vendor_credit_v1",
+      {
+        "credit_id": "CM-118",
+        "bill_id": "bill_2203"
+      }
+    ],
+    [
+      "netsuite_create_payment_v1",
+      {
+        "bill_id": "bill_2205",
+        "amount": 31400.0,
+        "currency": "USD",
+        "bank_account_id": "ba_orbit_01"
+      }
+    ],
+    [
+      "netsuite_create_payment_v1",
+      {
+        "bill_id": "bill_2206",
+        "amount": 27500.0,
+        "currency": "USD",
+        "bank_account_id": "ba_pinecrest_harbor"
+      }
+    ],
+    [
+      "netsuite_create_payment_v1",
+      {
+        "bill_id": "bill_2201",
+        "amount": 8820.0,
+        "currency": "EUR",
+        "bank_account_id": "ba_brightwell_eur"
+      }
+    ],
+    [
+      "netsuite_create_payment_v1",
+      {
+        "bill_id": "bill_2203",
+        "amount": 15500.0,
+        "currency": "USD",
+        "bank_account_id": "ba_halden_01"
+      }
+    ],
+    [
+      "netsuite_create_payment_v1",
+      {
+        "bill_id": "bill_2202",
+        "amount": 14000.0,
+        "currency": "USD",
+        "bank_account_id": "ba_corvid_01"
+      }
+    ],
+    [
+      "netsuite_update_bill_v1",
+      {
+        "bill_id": "bill_2204",
+        "status": "rejected",
+        "hold_reason_codes": [
+          "DUPLICATE"
+        ]
+      }
+    ],
+    [
+      "netsuite_update_bill_v1",
+      {
+        "bill_id": "bill_2210",
+        "status": "on_hold",
+        "hold_reason_codes": [
+          "RECEIPT_VARIANCE"
+        ]
+      }
+    ],
+    [
+      "netsuite_update_bill_v1",
+      {
+        "bill_id": "bill_2211",
+        "status": "on_hold",
+        "hold_reason_codes": [
+          "APPROVAL_INVALID"
+        ]
+      }
+    ],
+    [
+      "netsuite_update_bill_v1",
+      {
+        "bill_id": "bill_2207",
+        "scheduled_run_date": "2026-12-22"
+      }
+    ],
+    [
+      "netsuite_update_bill_v1",
+      {
+        "bill_id": "bill_2208",
+        "scheduled_run_date": "2026-12-22"
+      }
+    ],
+    [
+      "netsuite_update_bill_v1",
+      {
+        "bill_id": "bill_2209",
+        "scheduled_run_date": "2026-12-22"
+      }
+    ],
+    [
+      "gmail_send_message_v1",
+      {
+        "to": [
+          "priya.shah@atlas.example"
+        ],
+        "subject": "Approval needed: Lumen Legal LL-88412 ($41,000)",
+        "body": "Sam's approval on 12/3 was recorded after his delegation ended 11/30, so the bill is on hold. Please approve in NetSuite."
+      }
+    ],
+    [
+      "slack_chat_post_message",
+      {
+        "channel": "treasury-ops",
+        "text": "12/15 AP run: released $100,000; paid $97,969.70 USD across 5 bills (EUR converted at 1.0850). 3 deferred to 12/22."
+      }
+    ],
+    [
+      "gmail_send_message_v1",
+      {
+        "to": [
+          "ar@orbit.example"
+        ],
+        "subject": "Remittance advice: OH-5521",
+        "body": "Paid today: OH-5521 USD 31,400.00"
+      }
+    ],
+    [
+      "gmail_send_message_v1",
+      {
+        "to": [
+          "cash@harborfunding.example"
+        ],
+        "subject": "Remittance advice: PS-10482",
+        "body": "Paid today: PS-10482 USD 27,500.00"
+      }
+    ],
+    [
+      "gmail_send_message_v1",
+      {
+        "to": [
+          "ar@brightwell.example"
+        ],
+        "subject": "Remittance advice: BW-2026-1184",
+        "body": "Paid today: BW-2026-1184 EUR 8,820.00"
+      }
+    ],
+    [
+      "gmail_send_message_v1",
+      {
+        "to": [
+          "ar@halden.example"
+        ],
+        "subject": "Remittance advice: HFG-77310",
+        "body": "Paid today: HFG-77310 USD 15,500.00"
+      }
+    ],
+    [
+      "gmail_send_message_v1",
+      {
+        "to": [
+          "ar@corvid.example"
+        ],
+        "subject": "Remittance advice: CDS-3562",
+        "body": "Paid today: CDS-3562 USD 14,000.00"
+      }
+    ],
+    [
+      "sheets_append_row_v1",
+      {
+        "sheet_id": "sh_ap_exceptions_fy26",
+        "values": {
+          "run_date": "2026-12-15",
+          "bill_id": "bill_2204",
+          "vendor": "Kestrel Analytics",
+          "reason_code": "DUPLICATE",
+          "owner": "ap@atlas.example"
+        }
+      }
+    ],
+    [
+      "sheets_append_row_v1",
+      {
+        "sheet_id": "sh_ap_exceptions_fy26",
+        "values": {
+          "run_date": "2026-12-15",
+          "bill_id": "bill_2210",
+          "vendor": "Corvid Data Services",
+          "reason_code": "RECEIPT_VARIANCE",
+          "owner": "ap@atlas.example"
+        }
+      }
+    ],
+    [
+      "sheets_append_row_v1",
+      {
+        "sheet_id": "sh_ap_exceptions_fy26",
+        "values": {
+          "run_date": "2026-12-15",
+          "bill_id": "bill_2211",
+          "vendor": "Lumen Legal LLP",
+          "reason_code": "APPROVAL_INVALID",
+          "owner": "ap@atlas.example"
+        }
+      }
+    ],
+    [
+      "slack_chat_post_message",
+      {
+        "channel": "procurement",
+        "text": "Corvid CDS-3562 ($14,000) went out in today's run."
+      }
+    ]
+  ]
+}

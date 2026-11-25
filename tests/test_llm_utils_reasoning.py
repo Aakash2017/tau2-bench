@@ -149,6 +149,20 @@ def test_non_openai_gpt5_is_not_bridged(capture_completion, messages):
     assert capture_completion.get("model") == "azure/gpt-5.5"
 
 
+def test_gpt61_sol_uses_responses_bridge_with_xhigh(
+    capture_completion, messages
+):
+    llm_utils.generate(
+        "gpt-6.1-sol",
+        messages,
+        tools=[_FAKE_TOOL],
+        reasoning_effort="xhigh",
+    )
+    assert capture_completion.get("model") == "openai/responses/gpt-6.1-sol"
+    assert capture_completion.get("reasoning_effort") == "xhigh"
+    assert capture_completion.get("tools")
+
+
 def test_older_claude_reasoning_effort_is_preserved(capture_completion, messages):
     llm_utils.generate("claude-3-7-sonnet-20250219", messages, reasoning_effort="high")
     assert capture_completion.get("reasoning_effort") == "high"

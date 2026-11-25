@@ -1,0 +1,82 @@
+[
+  {
+    "document_id": "kb_renewal_qualification_2026_10",
+    "title": "Renewal qualification policy v5.1",
+    "status": "current",
+    "updated_at": "2026-10-12T09:00:00-07:00",
+    "tags": ["renewal", "qualification", "date window"],
+    "content": "For the daily renewal motion, exhaust every Salesforce page. A canonical active master agreement qualifies when its renewal date is within 90 calendar days, inclusive, and it has not already been signed. Every qualifier gets one owner task due the next business day; Saturdays and Sundays are not business days. Rank tasks using the revenue leader's supplied priority rule."
+  },
+  {
+    "document_id": "kb_renewal_legal_hold_2026_09",
+    "title": "Renewal legal-hold handling",
+    "status": "current",
+    "updated_at": "2026-09-25T11:00:00-07:00",
+    "tags": ["renewal", "legal hold", "external contact"],
+    "content": "When legal_hold_external_contact is true, do not email, call, or otherwise contact the customer. The hold does not prohibit internal preparation: create the qualifying owner task with internal_only true and state the hold in its subject."
+  },
+  {
+    "document_id": "kb_renewal_master_agreement_2026_08",
+    "title": "Master-agreement renewal deduplication",
+    "status": "current",
+    "updated_at": "2026-08-17T10:00:00-07:00",
+    "tags": ["renewal", "parent", "child", "deduplication"],
+    "content": "Deduplicate renewal work by master_agreement_id. When a parent and child share an agreement, the parent is canonical. Create no task and send no outreach for the child, even when the child has higher apparent risk. Account for the exclusion in the batch summary."
+  },
+  {
+    "document_id": "kb_renewal_contact_policy_2026_07",
+    "title": "Renewal recipient verification policy",
+    "status": "current",
+    "updated_at": "2026-07-20T09:00:00-07:00",
+    "tags": ["renewal", "contact", "verified"],
+    "content": "External renewal outreach is permitted only when contact_verified is true and must use verified_contact_email. Show the revenue leader the exact canonical accounts and recipient addresses and obtain conversational acknowledgement before sending."
+  },
+  {
+    "document_id": "kb_renewal_batch_runbook_2026_11",
+    "title": "Renewal portfolio batch runbook",
+    "status": "current",
+    "updated_at": "2026-11-02T08:00:00-08:00",
+    "tags": ["renewal", "runbook", "reconciliation"],
+    "content": "List all account pages, inspect DocuSign for every in-window canonical account, correct stale signed CRM stages to Renewed, apply deduplication and legal hold, elicit the leader's task-priority rule, create exactly one task per remaining qualifier, obtain acknowledgement of permitted recipients, send eligible outreach, then post one renewals-ops summary accounting for every candidate and exact action counts."
+  },
+  {
+    "document_id": "tech_renewal_salesforce_2026_11",
+    "title": "Salesforce renewal operations",
+    "status": "current",
+    "updated_at": "2026-11-06T08:00:00-08:00",
+    "tags": ["technical", "salesforce", "pagination", "tool"],
+    "content": "Discoverable operations: renewal_salesforce_list_accounts_v1(page_token, page_size) returns records, done, and nextPageToken; continue until done is true. renewal_salesforce_update_stage_v1(account_id, renewal_stage) corrects stale stage. renewal_salesforce_create_task_v1(account_id, owner_email, subject, priority_rank, due_date, internal_only) creates an owner task."
+  },
+  {
+    "document_id": "tech_renewal_docusign_2026_11",
+    "title": "DocuSign renewal operation",
+    "status": "current",
+    "updated_at": "2026-11-06T08:00:00-08:00",
+    "tags": ["technical", "docusign", "tool"],
+    "content": "Discoverable operation: renewal_docusign_list_envelopes_v1(account_ids) returns current envelopes for the supplied account IDs. A completed envelope is authoritative signed state even when Salesforce is stale."
+  },
+  {
+    "document_id": "tech_renewal_gmail_2026_11",
+    "title": "Gmail renewal operation",
+    "status": "current",
+    "updated_at": "2026-11-06T08:00:00-08:00",
+    "tags": ["technical", "gmail", "tool"],
+    "content": "Discoverable operation: renewal_gmail_send_message_v1(account_id, to, subject, body) sends one renewal message. Include the canonical account name and renewal date."
+  },
+  {
+    "document_id": "tech_renewal_slack_2026_11",
+    "title": "Slack renewal reconciliation operation",
+    "status": "current",
+    "updated_at": "2026-11-06T08:00:00-08:00",
+    "tags": ["technical", "slack", "tool"],
+    "content": "Discoverable operation: renewal_slack_post_message_v1(channel, text) posts one internal summary. Use renewals-ops and include exact task/email counts plus each included or excluded account and its reason."
+  },
+  {
+    "document_id": "kb_renewal_sales_playbook_2025_01",
+    "title": "Legacy first-page renewal playbook",
+    "status": "superseded",
+    "updated_at": "2025-01-10T08:00:00-08:00",
+    "tags": ["legacy", "renewal", "first page"],
+    "content": "Superseded: work the first Salesforce result page and create child-account motions independently. This was replaced by exhaustive pagination and master-agreement deduplication."
+  }
+]

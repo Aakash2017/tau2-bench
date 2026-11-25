@@ -1,0 +1,703 @@
+[
+  {
+    "id": "workplace_kickoff_001",
+    "description": {
+      "purpose": "Exercise progressive disclosure, policy-grounded scheduling, user-controlled approval, and exhaustive cross-application follow-through while grading only the exact final state and required completion communication.",
+      "relevant_policies": "Use the current project brief, require approval of the exact meeting proposal, include internal Legal for a confirmed external pilot, exclude external participants without Legal clearance, create the preparation task, and post the internal update.",
+      "notes": "Reference actions produce the target agent and user DB states but do not prescribe the agent's trajectory."
+    },
+    "user_scenario": {
+      "persona": "You are Maya Chen, the product lead for Nimbus. This is an internal workplace chat with an AI employee assistant, not a customer-service interaction. You are concise and collaborative. You expect the agent to investigate company systems rather than asking you for facts already recorded there.",
+      "instructions": {
+        "domain": "workplace_ops",
+        "reason_for_call": "Open by saying only: 'Can you organize the Nimbus kickoff for next week and get the team ready?'",
+        "known_info": "Your preference is the earliest available Wednesday-morning Pacific slot next week. You want a 45-minute meeting. You will approve a meeting only after seeing the exact time, duration, and attendee list. You know that no external pilot participant should attend until Legal clears the pilot.",
+        "unknown_info": "You do not know which project brief is current, the team's availability, the Legal representative, or what preparation work is required. The agent must find those facts in company systems.",
+        "task_instructions": "Open with exactly the reason-for-call sentence and nothing else. Do not volunteer your Wednesday-morning preference or 45-minute duration unless the agent asks a relevant scheduling question. Do not supply employee names, email addresses, availability, brief contents, or preparation requirements; the agent must retrieve them. When the agent presents a concrete proposal and requests authorization, call get_pending_meeting_proposals to inspect pending proposals; never invent a proposal ID. If there is exactly one proposal corresponding to what the agent presented, call approve_meeting_proposal with the ID returned by that tool. The approval tool enforces your private scheduling and external-attendee constraints. If it rejects the proposal, tell the agent the exact correction from the error and do not claim approval. After approval succeeds, explicitly tell the agent that you approve that exact proposal and it may schedule it. Do not independently claim that downstream work is complete; only rely on what the agent reports. Once the agent confirms that the meeting is scheduled, the preparation task is created, and the internal project update is posted, immediately output ###STOP### without additional pleasantries."
+      }
+    },
+    "ticket": "Organize the Nimbus kickoff for next week. The requester prefers the earliest available Wednesday-morning Pacific slot and wants a 45-minute meeting. Use the current brief, follow attendance and approval policy, schedule the approved meeting, create required preparation work, and notify the internal project channel.",
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "kickoff_0",
+          "requestor": "assistant",
+          "name": "search_documents",
+          "arguments": {"query": "Nimbus Project Brief"},
+          "info": "Find the authoritative project brief."
+        },
+        {
+          "action_id": "kickoff_1",
+          "requestor": "assistant",
+          "name": "list_employees",
+          "arguments": {},
+          "info": "Resolve the required functions to employee records."
+        },
+        {
+          "action_id": "kickoff_2",
+          "requestor": "assistant",
+          "name": "get_calendar_availability",
+          "arguments": {
+            "emails": [
+              "maya@atlas.example",
+              "priya@atlas.example",
+              "mateo@atlas.example",
+              "jordan@atlas.example"
+            ],
+            "start": "2026-11-11T08:00:00-08:00",
+            "end": "2026-11-11T12:00:00-08:00"
+          },
+          "info": "Find the earliest policy-compliant Wednesday-morning slot."
+        },
+        {
+          "action_id": "kickoff_3",
+          "requestor": "assistant",
+          "name": "create_meeting_proposal",
+          "arguments": {
+            "title": "Nimbus Project Kickoff",
+            "start": "2026-11-11T10:00:00-08:00",
+            "end": "2026-11-11T10:45:00-08:00",
+            "attendees": [
+              "maya@atlas.example",
+              "priya@atlas.example",
+              "mateo@atlas.example",
+              "jordan@atlas.example"
+            ]
+          },
+          "info": "Create the exact proposal for user review."
+        },
+        {
+          "action_id": "kickoff_4",
+          "requestor": "user",
+          "name": "get_pending_meeting_proposals",
+          "arguments": {},
+          "info": "The user finds and inspects the pending proposal without inventing an opaque ID."
+        },
+        {
+          "action_id": "kickoff_5",
+          "requestor": "user",
+          "name": "approve_meeting_proposal",
+          "arguments": {"proposal_id": "proposal_1"},
+          "info": "The user records approval of the exact proposal."
+        },
+        {
+          "action_id": "kickoff_6",
+          "requestor": "assistant",
+          "name": "schedule_approved_meeting",
+          "arguments": {"proposal_id": "proposal_1"},
+          "info": "Schedule the approved proposal."
+        },
+        {
+          "action_id": "kickoff_7",
+          "requestor": "assistant",
+          "name": "create_project_task",
+          "arguments": {
+            "title": "Prepare Nimbus pilot legal review packet",
+            "assignee": "jordan@atlas.example",
+            "due_date": "2026-11-10"
+          },
+          "info": "Create the policy-triggered preparation task."
+        },
+        {
+          "action_id": "kickoff_8",
+          "requestor": "assistant",
+          "name": "post_project_update",
+          "arguments": {
+            "channel": "proj-nimbus",
+            "project": "Nimbus",
+            "meeting_event_id": "event_proposal_1",
+            "preparation_task_id": "task_1"
+          },
+          "info": "Post the canonical internal project update."
+        }
+      ],
+      "env_assertions": [
+        {
+          "env_type": "user",
+          "func_name": "assert_meeting_proposal_approved",
+          "arguments": {"proposal_id": "proposal_1"},
+          "assert_value": true,
+          "message": "The exact meeting proposal must be approved by the user."
+        },
+        {
+          "env_type": "assistant",
+          "func_name": "assert_calendar_event",
+          "arguments": {
+            "title": "Nimbus Project Kickoff",
+            "start": "2026-11-11T10:00:00-08:00",
+            "end": "2026-11-11T10:45:00-08:00",
+            "attendees": [
+              "maya@atlas.example",
+              "priya@atlas.example",
+              "mateo@atlas.example",
+              "jordan@atlas.example"
+            ]
+          },
+          "assert_value": true,
+          "message": "The approved internal kickoff must be scheduled exactly."
+        },
+        {
+          "env_type": "assistant",
+          "func_name": "assert_no_calendar_invite",
+          "arguments": {"email": "taylor@pilot.example"},
+          "assert_value": true,
+          "message": "The external pilot contact must not be invited before Legal clearance."
+        },
+        {
+          "env_type": "assistant",
+          "func_name": "assert_project_task",
+          "arguments": {
+            "task_id": "task_1",
+            "assignee": "jordan@atlas.example",
+            "due_date": "2026-11-10"
+          },
+          "assert_value": true,
+          "message": "The Legal preparation task must be created."
+        },
+        {
+          "env_type": "assistant",
+          "func_name": "assert_chat_message_contains",
+          "arguments": {
+            "channel": "proj-nimbus",
+            "required_text": ["Nimbus", "2026-11-11T10:00:00-08:00", "jordan@atlas.example", "2026-11-10"]
+          },
+          "assert_value": true,
+          "message": "The internal channel must receive the schedule and preparation owner."
+        }
+      ],
+      "communicate_info": [
+        "The Nimbus kickoff is scheduled for Wednesday, November 11, 2026 from 10:00 to 10:45 AM Pacific.",
+        "Jordan Lee owns the legal review packet due November 10."
+      ],
+      "nl_assertions": null,
+      "reward_basis": ["DB", "COMMUNICATE"]
+    },
+    "user_tools": ["get_pending_meeting_proposals", "approve_meeting_proposal"]
+  },
+  {
+    "id": "workplace_kickoff_002",
+    "description": {
+      "purpose": "Test evidence reconciliation, progressive user preference disclosure, delegated authority, exact approval, update-versus-create judgment, and exhaustive cross-application follow-through.",
+      "relevant_policies": "Use current project, delegation, and clearance records; resolve project-specific owners; obtain approval of the exact proposal; update existing work rather than duplicating it; create all missing preparation work; update the existing milestone; and post one complete internal update.",
+      "notes": "This is the harder Nimbus calibration task. Reference actions define the target end state, not a required read path. Rejected attempts and corrected drafts may still pass when the final state is exact."
+    },
+    "user_scenario": {
+      "persona": "You are Maya Chen, the product lead for Nimbus. This is an internal workplace chat with an AI employee assistant, not a customer-service interaction. You are concise and collaborative. You expect the agent to investigate company systems rather than asking you for facts already recorded there.",
+      "instructions": {
+        "domain": "workplace_ops",
+        "reason_for_call": "Open by saying only: 'Can you organize the Nimbus kickoff for next week and get the team ready?'",
+        "known_info": "You want a 45-minute meeting. You prefer Wednesday morning if the agent establishes that an authorized Nimbus Legal delegate can attend; otherwise you prefer Thursday with the primary Legal partner. You will approve only after seeing the exact time, duration, and attendee list. You will not authorize an external pilot participant while clearance is pending. Pending external clearance does not block the internal kickoff; it means the kickoff must proceed without the external participant.",
+        "unknown_info": "You do not know record IDs, employee email addresses, calendar availability, which documents or clearance records are current, the identity or validity of any delegate, the exact preparation state, or whether downstream work has been completed. The agent must retrieve those facts from company systems.",
+        "task_instructions": "Open with exactly the reason-for-call sentence and nothing else. Do not volunteer your conditional scheduling preference or 45-minute duration until the agent asks a relevant scheduling question or presents a scheduling tradeoff. When asked, say that you prefer Wednesday morning if an authorized Nimbus Legal delegate can cover; otherwise you prefer Thursday with the primary Legal partner, and that the meeting should last 45 minutes. Do not broaden or replace those scheduling branches if the agent says no slot is available; ask it to re-check company systems against the same two branches. Never name or confirm a delegate, employee email, available time, current record, task, milestone, or system fact yourself. If asked for those facts, say you do not know and ask the agent to check company systems. If the agent claims the internal kickoff must wait for external-pilot clearance, correct it: do not wait or ask it to monitor clearance; tell it to proceed with the internal kickoff now and exclude the external participant. The project brief's confirmed-pilot status and the external participant's attendance clearance are separate facts. If the agent says attendance clearance is not pending, absent, or otherwise restrictive based only on the brief, or contradicts the required pending-clearance outcome, do not accept the claim or count that outcome as confirmed. Ask it to re-check the current project clearance record and distinguish pilot confirmation from attendance clearance, without stating the actual system status yourself. Before approving, require the agent to explain the exact time, duration, attendee list, and why the proposed Legal attendee is authorized for Nimbus. Then call get_pending_meeting_proposals to inspect the pending proposal; never invent a proposal ID. If there is exactly one proposal corresponding to what the agent presented, call approve_meeting_proposal with the returned ID. If it rejects the proposal, relay the exact correction from the error and do not claim approval. After approval succeeds, explicitly tell the agent that you approve that exact proposal and it may schedule it. Do not independently claim any downstream work is complete. Before stopping, verify that the agent explicitly confirms each of these five outcomes: the scheduled meeting time; the authorized Legal coverage; that the external pilot was not invited because clearance is pending; each of the four preparation owner-function-task mappings and its exact due date derived from the current brief; and the milestone plus internal project-channel updates. First name plus function is enough to identify a preparation owner; do not require a surname. Do not state or guess preparation task names, owners, or dates yourself. Do not accept a generic assurance that the correct owners or deadlines were assigned; require the agent to report every mapping and exact date. If an outcome is missing, ask only for confirmation of the missing item. If an outcome is contradicted, ask only for a corrected confirmation. Do not output ###STOP### yet in either case. Once all five are confirmed without contradiction, immediately output ###STOP### without additional pleasantries."
+      }
+    },
+    "ticket": "Organize the Nimbus kickoff for next week. Reconcile the current brief, project assignments, Legal delegation and clearance, calendars, existing project work, and the requester's conditional preference. Obtain approval, schedule the selected meeting, update or create every required preparation item, update the existing milestone, and notify the internal channel.",
+    "initial_state": {
+      "initialization_data": {
+        "agent_data": {
+          "documents": {
+            "doc_nimbus_brief_v2": {
+              "document_id": "doc_nimbus_brief_v2",
+              "title": "Nimbus Project Brief",
+              "version": 2,
+              "status": "superseded",
+              "updated_at": "2026-11-07T14:30:00-08:00",
+              "external_pilot": "confirmed",
+              "required_functions": ["Product", "Engineering", "Design", "Legal"],
+              "preparation_requirements": []
+            },
+            "doc_nimbus_brief_v3": {
+              "document_id": "doc_nimbus_brief_v3",
+              "title": "Nimbus Project Brief",
+              "version": 3,
+              "status": "current",
+              "updated_at": "2026-11-08T08:15:00-08:00",
+              "external_pilot": "confirmed",
+              "required_functions": ["Product", "Engineering", "Design", "Legal"],
+              "preparation_requirements": [
+                {
+                  "title": "Prepare Nimbus demo readiness review",
+                  "owner_function": "Engineering",
+                  "due_days_before_kickoff": 2
+                },
+                {
+                  "title": "Prepare Nimbus pilot legal review packet",
+                  "owner_function": "Legal",
+                  "due_days_before_kickoff": 1
+                },
+                {
+                  "title": "Prepare Nimbus kickoff agenda",
+                  "owner_function": "Product",
+                  "due_days_before_kickoff": 1
+                },
+                {
+                  "title": "Prepare Nimbus design handoff checklist",
+                  "owner_function": "Design",
+                  "due_days_before_kickoff": 2
+                }
+              ]
+            }
+          },
+          "employees": {
+            "emp_camille": {
+              "employee_id": "emp_camille",
+              "name": "Camille Okafor",
+              "email": "camille@atlas.example",
+              "function": "Legal"
+            },
+            "emp_avery": {
+              "employee_id": "emp_avery",
+              "name": "Avery Morgan",
+              "email": "avery@atlas.example",
+              "function": "Legal"
+            }
+          },
+          "project_records": {
+            "record_nimbus_product": {
+              "record_id": "record_nimbus_product",
+              "project": "Nimbus",
+              "record_type": "assignment",
+              "status": "current",
+              "function": "Product",
+              "primary_email": "maya@atlas.example",
+              "notes": "Nimbus Product lead"
+            },
+            "record_nimbus_engineering": {
+              "record_id": "record_nimbus_engineering",
+              "project": "Nimbus",
+              "record_type": "assignment",
+              "status": "current",
+              "function": "Engineering",
+              "primary_email": "priya@atlas.example",
+              "notes": "Nimbus Engineering lead"
+            },
+            "record_nimbus_design": {
+              "record_id": "record_nimbus_design",
+              "project": "Nimbus",
+              "record_type": "assignment",
+              "status": "current",
+              "function": "Design",
+              "primary_email": "mateo@atlas.example",
+              "notes": "Nimbus Design lead"
+            },
+            "record_nimbus_legal": {
+              "record_id": "record_nimbus_legal",
+              "project": "Nimbus",
+              "record_type": "assignment",
+              "status": "current",
+              "function": "Legal",
+              "primary_email": "jordan@atlas.example",
+              "notes": "Nimbus primary Legal partner"
+            },
+            "record_nimbus_delegation_current": {
+              "record_id": "record_nimbus_delegation_current",
+              "project": "Nimbus",
+              "record_type": "delegation",
+              "status": "current",
+              "function": "Legal",
+              "primary_email": "jordan@atlas.example",
+              "delegate_email": "camille@atlas.example",
+              "valid_from": "2026-11-09",
+              "valid_until": "2026-11-13",
+              "notes": "Authorized to cover all Nimbus Legal matters during this period"
+            },
+            "record_nimbus_delegation_expired": {
+              "record_id": "record_nimbus_delegation_expired",
+              "project": "Nimbus",
+              "record_type": "delegation",
+              "status": "expired",
+              "function": "Legal",
+              "primary_email": "jordan@atlas.example",
+              "delegate_email": "avery@atlas.example",
+              "valid_from": "2026-10-12",
+              "valid_until": "2026-10-16",
+              "notes": "Prior Nimbus Legal coverage"
+            },
+            "record_nimbus_clearance_current": {
+              "record_id": "record_nimbus_clearance_current",
+              "project": "Nimbus",
+              "record_type": "clearance",
+              "status": "pending",
+              "external_email": "taylor@pilot.example",
+              "clearance_status": "pending",
+              "notes": "Current pilot-attendance clearance request"
+            },
+            "record_nimbus_clearance_old": {
+              "record_id": "record_nimbus_clearance_old",
+              "project": "Nimbus",
+              "record_type": "clearance",
+              "status": "superseded",
+              "external_email": "taylor@pilot.example",
+              "clearance_status": "approved",
+              "notes": "Preliminary approval superseded by the current request"
+            }
+          },
+          "calendar_busy": {
+            "maya@atlas.example": [
+              {"start": "2026-11-11T09:00:00-08:00", "end": "2026-11-11T10:00:00-08:00"},
+              {"start": "2026-11-12T08:00:00-08:00", "end": "2026-11-12T14:00:00-08:00"},
+              {"start": "2026-11-12T14:45:00-08:00", "end": "2026-11-12T17:00:00-08:00"}
+            ],
+            "priya@atlas.example": [
+              {"start": "2026-11-11T11:00:00-08:00", "end": "2026-11-11T12:00:00-08:00"},
+              {"start": "2026-11-12T08:00:00-08:00", "end": "2026-11-12T14:00:00-08:00"},
+              {"start": "2026-11-12T14:45:00-08:00", "end": "2026-11-12T17:00:00-08:00"}
+            ],
+            "mateo@atlas.example": [
+              {"start": "2026-11-12T08:00:00-08:00", "end": "2026-11-12T14:00:00-08:00"},
+              {"start": "2026-11-12T14:45:00-08:00", "end": "2026-11-12T17:00:00-08:00"}
+            ],
+            "jordan@atlas.example": [
+              {"start": "2026-11-11T08:00:00-08:00", "end": "2026-11-11T12:00:00-08:00"},
+              {"start": "2026-11-12T08:00:00-08:00", "end": "2026-11-12T14:00:00-08:00"},
+              {"start": "2026-11-12T14:45:00-08:00", "end": "2026-11-12T17:00:00-08:00"}
+            ],
+            "camille@atlas.example": [
+              {"start": "2026-11-11T08:00:00-08:00", "end": "2026-11-11T09:30:00-08:00"},
+              {"start": "2026-11-11T11:00:00-08:00", "end": "2026-11-11T12:00:00-08:00"}
+            ],
+            "avery@atlas.example": [],
+            "taylor@pilot.example": []
+          },
+          "meeting_approval_rules": {
+            "Nimbus Project Kickoff": {
+              "title": "Nimbus Project Kickoff",
+              "window_start": "2026-11-11T08:00:00-08:00",
+              "window_end": "2026-11-11T12:00:00-08:00",
+              "duration_minutes": 45,
+              "forbidden_attendees": ["taylor@pilot.example"],
+              "alternate_windows": [
+                {
+                  "start": "2026-11-12T14:00:00-08:00",
+                  "end": "2026-11-12T14:45:00-08:00"
+                }
+              ]
+            }
+          },
+          "project_tasks": {
+            "task_1": {
+              "task_id": "task_1",
+              "title": "Prepare Nimbus demo readiness review",
+              "assignee": "priya@atlas.example",
+              "due_date": "2026-11-13",
+              "status": "open",
+              "project": "Nimbus"
+            },
+            "task_2": {
+              "task_id": "task_2",
+              "title": "Prepare Nimbus pilot legal review packet",
+              "assignee": "avery@atlas.example",
+              "due_date": "2026-11-12",
+              "status": "open",
+              "project": "Nimbus"
+            },
+            "task_3": {
+              "task_id": "task_3",
+              "title": "Prepare Nimbus kickoff agenda",
+              "assignee": "maya@atlas.example",
+              "due_date": "2026-10-29",
+              "status": "completed",
+              "project": "Nimbus"
+            },
+            "task_4": {
+              "task_id": "task_4",
+              "title": "Prepare Nimbus design handoff checklist",
+              "assignee": "mateo@atlas.example",
+              "due_date": "2026-11-13",
+              "status": "open",
+              "project": "Nimbus"
+            }
+          },
+          "project_milestones": {
+            "milestone_nimbus_kickoff": {
+              "milestone_id": "milestone_nimbus_kickoff",
+              "project": "Nimbus",
+              "name": "Nimbus kickoff readiness",
+              "status": "planning",
+              "kickoff_date": null,
+              "meeting_event_id": null
+            }
+          }
+        },
+        "user_data": null
+      },
+      "initialization_actions": null,
+      "message_history": null
+    },
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "hard_0",
+          "requestor": "assistant",
+          "name": "search_documents",
+          "arguments": {"query": "Nimbus Project Brief"},
+          "info": "Find the authoritative brief and its preparation requirements."
+        },
+        {
+          "action_id": "hard_1",
+          "requestor": "assistant",
+          "name": "search_project_records",
+          "arguments": {"query": "Nimbus"},
+          "info": "Reconcile project assignments, Legal delegations, and pilot clearance."
+        },
+        {
+          "action_id": "hard_2",
+          "requestor": "assistant",
+          "name": "list_employees",
+          "arguments": {},
+          "info": "Resolve the project record emails to directory employees."
+        },
+        {
+          "action_id": "hard_3",
+          "requestor": "assistant",
+          "name": "get_calendar_availability",
+          "arguments": {
+            "emails": [
+              "maya@atlas.example",
+              "priya@atlas.example",
+              "mateo@atlas.example",
+              "jordan@atlas.example",
+              "camille@atlas.example"
+            ],
+            "start": "2026-11-11T08:00:00-08:00",
+            "end": "2026-11-12T17:00:00-08:00"
+          },
+          "info": "Establish the earlier delegated option and later primary-Legal option."
+        },
+        {
+          "action_id": "hard_4",
+          "requestor": "assistant",
+          "name": "list_project_tasks",
+          "arguments": {"project": "Nimbus", "status": "open"},
+          "info": "Reconcile open preparation work while preserving completed prior-cycle work."
+        },
+        {
+          "action_id": "hard_5",
+          "requestor": "assistant",
+          "name": "list_project_milestones",
+          "arguments": {"project": "Nimbus"},
+          "info": "Find the existing kickoff milestone."
+        },
+        {
+          "action_id": "hard_6",
+          "requestor": "assistant",
+          "name": "create_meeting_proposal",
+          "arguments": {
+            "title": "Nimbus Project Kickoff",
+            "start": "2026-11-11T10:00:00-08:00",
+            "end": "2026-11-11T10:45:00-08:00",
+            "attendees": [
+              "maya@atlas.example",
+              "priya@atlas.example",
+              "mateo@atlas.example",
+              "camille@atlas.example"
+            ]
+          },
+          "info": "Create the exact user-selected proposal with the current delegate."
+        },
+        {
+          "action_id": "hard_7",
+          "requestor": "user",
+          "name": "get_pending_meeting_proposals",
+          "arguments": {},
+          "info": "The user inspects the exact pending proposal."
+        },
+        {
+          "action_id": "hard_8",
+          "requestor": "user",
+          "name": "approve_meeting_proposal",
+          "arguments": {"proposal_id": "proposal_1"},
+          "info": "The user records approval of the exact selected proposal."
+        },
+        {
+          "action_id": "hard_9",
+          "requestor": "assistant",
+          "name": "schedule_approved_meeting",
+          "arguments": {"proposal_id": "proposal_1"},
+          "info": "Schedule the approved proposal."
+        },
+        {
+          "action_id": "hard_10",
+          "requestor": "assistant",
+          "name": "update_project_task",
+          "arguments": {"task_id": "task_1", "due_date": "2026-11-09"},
+          "info": "Update the existing Engineering task rather than duplicating it."
+        },
+        {
+          "action_id": "hard_11",
+          "requestor": "assistant",
+          "name": "update_project_task",
+          "arguments": {
+            "task_id": "task_2",
+            "assignee": "camille@atlas.example",
+            "due_date": "2026-11-10"
+          },
+          "info": "Reassign the open Legal task from the expired delegate and update its due date."
+        },
+        {
+          "action_id": "hard_12",
+          "requestor": "assistant",
+          "name": "update_project_task",
+          "arguments": {"task_id": "task_4", "due_date": "2026-11-09"},
+          "info": "Update the existing Design task rather than duplicating it."
+        },
+        {
+          "action_id": "hard_13",
+          "requestor": "assistant",
+          "name": "create_project_task",
+          "arguments": {
+            "title": "Prepare Nimbus kickoff agenda",
+            "assignee": "maya@atlas.example",
+            "due_date": "2026-11-10",
+            "project": "Nimbus"
+          },
+          "info": "Create a new Product agenda without reopening the completed prior-cycle task."
+        },
+        {
+          "action_id": "hard_14",
+          "requestor": "assistant",
+          "name": "update_project_milestone",
+          "arguments": {
+            "milestone_id": "milestone_nimbus_kickoff",
+            "status": "scheduled",
+            "kickoff_date": "2026-11-11",
+            "meeting_event_id": "event_proposal_1"
+          },
+          "info": "Update the existing milestone with the scheduled event."
+        },
+        {
+          "action_id": "hard_15",
+          "requestor": "assistant",
+          "name": "post_project_update",
+          "arguments": {
+            "channel": "proj-nimbus",
+            "project": "Nimbus",
+            "meeting_event_id": "event_proposal_1",
+            "preparation_task_ids": ["task_1", "task_2", "task_4", "task_5"],
+            "milestone_id": "milestone_nimbus_kickoff"
+          },
+          "info": "Post one complete canonical internal update."
+        }
+      ],
+      "env_assertions": [
+        {
+          "env_type": "user",
+          "func_name": "assert_meeting_proposal_approved",
+          "arguments": {"proposal_id": "proposal_1"},
+          "assert_value": true,
+          "message": "The exact meeting proposal must be approved by the user."
+        },
+        {
+          "env_type": "assistant",
+          "func_name": "assert_calendar_event",
+          "arguments": {
+            "title": "Nimbus Project Kickoff",
+            "start": "2026-11-11T10:00:00-08:00",
+            "end": "2026-11-11T10:45:00-08:00",
+            "attendees": [
+              "maya@atlas.example",
+              "priya@atlas.example",
+              "mateo@atlas.example",
+              "camille@atlas.example"
+            ]
+          },
+          "assert_value": true,
+          "message": "The selected Wednesday kickoff with the authorized delegate must be scheduled exactly."
+        },
+        {
+          "env_type": "assistant",
+          "func_name": "assert_no_calendar_invite",
+          "arguments": {"email": "taylor@pilot.example"},
+          "assert_value": true,
+          "message": "The external pilot contact must not be invited while clearance is pending."
+        },
+        {
+          "env_type": "assistant",
+          "func_name": "assert_project_task_details",
+          "arguments": {
+            "title": "Prepare Nimbus demo readiness review",
+            "project": "Nimbus",
+            "assignee": "priya@atlas.example",
+            "due_date": "2026-11-09",
+            "status": "open"
+          },
+          "assert_value": true,
+          "message": "The existing Engineering task must be updated, not duplicated."
+        },
+        {
+          "env_type": "assistant",
+          "func_name": "assert_project_task_details",
+          "arguments": {
+            "title": "Prepare Nimbus pilot legal review packet",
+            "project": "Nimbus",
+            "assignee": "camille@atlas.example",
+            "due_date": "2026-11-10",
+            "status": "open"
+          },
+          "assert_value": true,
+          "message": "The open Legal task must be reassigned from the expired delegate and updated."
+        },
+        {
+          "env_type": "assistant",
+          "func_name": "assert_project_task_details",
+          "arguments": {
+            "title": "Prepare Nimbus design handoff checklist",
+            "project": "Nimbus",
+            "assignee": "mateo@atlas.example",
+            "due_date": "2026-11-09",
+            "status": "open"
+          },
+          "assert_value": true,
+          "message": "The existing Design task must be updated, not duplicated."
+        },
+        {
+          "env_type": "assistant",
+          "func_name": "assert_project_task_details",
+          "arguments": {
+            "title": "Prepare Nimbus kickoff agenda",
+            "project": "Nimbus",
+            "assignee": "maya@atlas.example",
+            "due_date": "2026-11-10",
+            "status": "open"
+          },
+          "assert_value": true,
+          "message": "The Product agenda task must be created."
+        },
+        {
+          "env_type": "assistant",
+          "func_name": "assert_project_milestone",
+          "arguments": {
+            "milestone_id": "milestone_nimbus_kickoff",
+            "status": "scheduled",
+            "kickoff_date": "2026-11-11",
+            "meeting_event_id": "event_proposal_1"
+          },
+          "assert_value": true,
+          "message": "The existing kickoff milestone must be updated."
+        },
+        {
+          "env_type": "assistant",
+          "func_name": "assert_chat_message_references",
+          "arguments": {
+            "channel": "proj-nimbus",
+            "meeting_event_id": "event_proposal_1",
+            "preparation_task_ids": ["task_1", "task_2", "task_4", "task_5"],
+            "milestone_id": "milestone_nimbus_kickoff"
+          },
+          "assert_value": true,
+          "message": "One project update must reference the complete work set."
+        }
+      ],
+      "communicate_info": [
+        "The Nimbus kickoff is scheduled for Wednesday, November 11, 2026 from 10:00 to 10:45 AM Pacific.",
+        "The authorized Nimbus Legal delegate is attending the kickoff.",
+        "No external pilot participant was invited because clearance is pending.",
+        "Preparation ownership and deadlines are: Priya in Engineering for the demo readiness review due November 9; Camille in Legal for the legal review packet due November 10; Maya in Product for the kickoff agenda due November 10; and Mateo in Design for the design handoff checklist due November 9.",
+        "The Nimbus kickoff milestone was updated and the internal project channel was notified."
+      ],
+      "nl_assertions": null,
+      "reward_basis": ["DB", "COMMUNICATE"]
+    },
+    "user_tools": ["get_pending_meeting_proposals", "approve_meeting_proposal"]
+  }
+]

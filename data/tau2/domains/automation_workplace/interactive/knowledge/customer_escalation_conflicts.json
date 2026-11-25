@@ -1,0 +1,115 @@
+[
+  {
+    "document_id": "kb_sla_credit_schedule_2026_09",
+    "title": "Atlas SLA service credit schedule",
+    "status": "current",
+    "updated_at": "2026-10-01T09:00:00-07:00",
+    "content": "Service credits are a percentage of the account's monthly recurring revenue (MRR), based on the regional impact duration that applied to the customer's tenant:\n- 4 hours or more: 10%\n- 1 hour to under 4 hours: 5%\n- under 1 hour: no credit\n\nA customer is impacted only if its tenant was deployed in an affected region. Credits are issued in the account currency against the incident ID.",
+    "tags": [
+      "sla",
+      "service-credit",
+      "support"
+    ]
+  },
+  {
+    "document_id": "kb_escalation_record_precedence_2026_10",
+    "title": "Escalation records: which source wins",
+    "status": "current",
+    "updated_at": "2026-10-01T09:00:00-07:00",
+    "content": "- Impact timing: the Linear incident's per-region timeline is the record. Ticket summaries written during an incident are provisional.\n- Commercial terms: the most recently executed contract document governs; an amendment replaces the terms it names.\n- Contacts: customer communications about credits go to a verified Salesforce contact, never an unverified requester address.\n- Tenant deployment: Salesforce and the admin console both record a tenant's region, and neither is designated as the record. If they disagree in a way that changes eligibility, do not decide it yourself, and do not accept verbal assurances: open one SUPOPS Jira issue naming the tenant and both values, put the ticket on hold, send the customer a holding reply without promising an amount, and continue with unaffected work.",
+    "tags": [
+      "support",
+      "escalation",
+      "precedence",
+      "data-quality"
+    ]
+  },
+  {
+    "document_id": "kb_escalation_closeout_2026_08",
+    "title": "Closing outage escalations",
+    "status": "current",
+    "updated_at": "2026-10-01T09:00:00-07:00",
+    "content": "After issuing a credit, email the verified contact with the amount and set the Zendesk ticket to solved. Tickets waiting on another team go on hold with an internal note.",
+    "tags": [
+      "support",
+      "zendesk",
+      "closeout"
+    ]
+  },
+  {
+    "document_id": "tech_support_apps_v1",
+    "title": "Support connected apps",
+    "status": "current",
+    "updated_at": "2026-10-01T09:00:00-07:00",
+    "content": "- zendesk_list_view_tickets_v1(view, page=1), zendesk_get_ticket_v1(ticket_id), zendesk_update_ticket_v1(ticket_id, status?, internal_note?) - statuses open, pending, on_hold, solved. The P1 queue view is p1-escalations.\n- linear_get_incident_v1(incident_id): per-region impact windows and minutes.\n- salesforce_get_account_v1(account_id): MRR, tenant ID and region, contacts, contract documents.\n- admin_console_get_tenant_v1(tenant_id): live deployment region and cluster.\n- billing_issue_service_credit_v1(account_id, amount, currency, incident_id, reason)\n- jira_create_issue_v1(project, summary, description); gmail_send_message_v1(to, subject, body).",
+    "tags": [
+      "zendesk",
+      "linear",
+      "salesforce",
+      "billing",
+      "jira",
+      "connected-app"
+    ]
+  },
+  {
+    "document_id": "kb_sla_credit_schedule_2024_02",
+    "title": "SLA credit schedule (2024)",
+    "status": "superseded",
+    "updated_at": "2024-02-01T09:00:00-07:00",
+    "content": "Any P1 incident earns 10% of MRR for every affected customer. Superseded by the 2026 schedule.",
+    "tags": [
+      "sla",
+      "legacy"
+    ]
+  },
+  {
+    "document_id": "kb_support_macros_2026_05",
+    "title": "Support macros",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Use approved macros for password resets and SSO issues.",
+    "tags": [
+      "support"
+    ]
+  },
+  {
+    "document_id": "kb_status_page_2026_06",
+    "title": "Status page updates",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Incident commanders own public status page posts.",
+    "tags": [
+      "incident"
+    ]
+  },
+  {
+    "document_id": "kb_rca_process_2026_07",
+    "title": "RCA process",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "RCAs publish within five business days of a P1.",
+    "tags": [
+      "incident"
+    ]
+  },
+  {
+    "document_id": "kb_support_hours_2026_04",
+    "title": "Support hours",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Premium support is 24/7; standard is business hours.",
+    "tags": [
+      "support"
+    ]
+  },
+  {
+    "document_id": "kb_refund_policy_2026_03",
+    "title": "Refunds",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Refunds of prepaid fees need Finance approval; credits are preferred.",
+    "tags": [
+      "billing"
+    ]
+  }
+]

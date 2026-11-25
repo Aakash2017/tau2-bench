@@ -11,6 +11,7 @@ from tau2.data_model.message import (
     Message,
     ToolCall,
     ToolMessage,
+    ToolOutputWithImages,
     UserMessage,
 )
 from tau2.data_model.tasks import EnvAssertion, EnvFunctionCall, InitializationData
@@ -488,6 +489,10 @@ class Environment:
             resp = f"Error: {e}"
             error = True
         logger.debug(f"Response: {resp}")
+        images = None
+        if isinstance(resp, ToolOutputWithImages):
+            images = resp.images or None
+            resp = resp.content
         resp = self.to_json_str(resp)
         return ToolMessage(
             id=message.id,
@@ -495,4 +500,5 @@ class Environment:
             requestor=message.requestor,
             role="tool",
             error=error,
+            images=images,
         )

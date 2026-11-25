@@ -1,0 +1,98 @@
+[
+  {
+    "document_id": "kb_incident_severity_2026_11",
+    "title": "Production Incident Severity and Lifecycle Policy",
+    "status": "current",
+    "updated_at": "2026-11-01T10:00:00-08:00",
+    "tags": ["incident", "severity", "SEV-1", "SEV-2", "RCA"],
+    "content": "Authoritative policy effective 2026-11-01. Classify SEV-1 only for broad unavailability affecting multiple regions or payment channels, or total inability to process payments. Classify SEV-2 for confirmed customer-impacting degradation limited to one region or channel. Customer tier, executive preference, and a single customer report do not override measured operational scope. Current production telemetry overrides anecdotal scope. Keep an incident in Investigating while impact continues. The current escalation-level-1 primary responder owns the incident and RCA. Create the RCA follow-up within the incident response and set its due date to three business days after the incident date."
+  },
+  {
+    "document_id": "kb_incident_severity_2025_03",
+    "title": "Production Incident Severity Policy",
+    "status": "superseded",
+    "updated_at": "2025-03-01T10:00:00-08:00",
+    "tags": ["incident", "severity", "strategic customer", "legacy"],
+    "content": "Superseded policy. A payment failure reported by any strategic customer may be treated as SEV-1 and the whole payments team may be paged. Do not use this document for current response decisions."
+  },
+  {
+    "document_id": "kb_incident_response_runbook_2026_10",
+    "title": "Checkout and Payments Incident Response Runbook",
+    "status": "current",
+    "updated_at": "2026-10-18T14:00:00-07:00",
+    "tags": ["payments", "checkout", "Linear", "PagerDuty", "Statuspage", "Slack"],
+    "content": "For a checkout or payments alert: inspect current Datadog series across affected and comparison channels; apply the current severity policy; search Linear and reuse an existing incident rather than creating a duplicate; identify and page only the primary PagerDuty responder active at the current time; update the Linear incident with scope, severity, owner, and supporting signal IDs; publish one accurate Statuspage incident for the affected component; create one linked RCA issue; and post one complete update to Slack channel inc-payments. Never resolve the Linear incident while telemetry still shows impact."
+  },
+  {
+    "document_id": "kb_external_incident_comms_2026_09",
+    "title": "Customer-Facing Incident Communication Standard",
+    "status": "current",
+    "updated_at": "2026-09-20T09:00:00-07:00",
+    "tags": ["Statuspage", "customer", "approval", "scope", "unaffected"],
+    "content": "Before publishing a customer-facing incident update, explain the exact proposed scope and material unaffected channels to the incident requester and obtain their acknowledgement. Statuspage impact must match measured scope: minor for a single regional channel degradation, major for multi-channel or multi-region degradation, and critical for broad unavailability. Name the affected component and state material healthy comparison channels so customers are not led to believe a global outage exists. Public updates must not expose internal issue IDs, responder names, exact metric values, monitoring-vendor names, signal IDs, or customer identity. Those operational details belong in the internal incident channel."
+  },
+  {
+    "document_id": "kb_company_holidays_2026",
+    "title": "2026 Company Business Calendar and SLA Exclusions",
+    "status": "current",
+    "updated_at": "2026-10-01T09:00:00-07:00",
+    "tags": ["calendar", "business day", "holiday", "SLA", "due date"],
+    "content": "For company policy deadlines, a business day is Monday through Friday excluding dates on this calendar. Friday, 2026-11-13 is the company Founders Day holiday and must not be counted as a business day. For an incident on Wednesday, 2026-11-11, a deadline three business days after the incident is Tuesday, 2026-11-17: Thursday is day one, Monday is day two, and Tuesday is day three."
+  },
+  {
+    "document_id": "tech_datadog_metrics_v1",
+    "title": "Datadog Metrics Query API - Internal Connector",
+    "status": "current",
+    "updated_at": "2026-10-22T12:00:00-07:00",
+    "tags": ["Datadog", "API", "metrics", "timeseries"],
+    "content": "Discoverable operation: datadog_query_metrics_v1(query: string, from_time: ISO-8601 string, to_time: ISO-8601 string). It returns metric series with signal_id, scope, channel, region, health, freshness, updated_at, metric_name, value, and unit. Query a window that includes the current incident and compare the reported production channel with other payment channels. Do not treat staging failures, latency, settlement processing, or stale aggregates as evidence that payment authorization is unavailable. Unlock the exact operation name before calling it."
+  },
+  {
+    "document_id": "tech_pagerduty_v2",
+    "title": "PagerDuty REST v2 On-Calls and Incidents Connector",
+    "status": "current",
+    "updated_at": "2026-10-25T12:00:00-07:00",
+    "tags": ["PagerDuty", "API", "on-call", "incident", "page"],
+    "content": "Read operation: pagerduty_list_oncalls_v2(schedule_ids: array[string], since: ISO-8601 string, until: ISO-8601 string). Write operation: pagerduty_create_incident_v2(title: string, urgency: 'high'|'low', assignee_id: string, incident_key: string). Use schedule sch_checkout_payments. Page only the escalation-level-1 primary responder whose interval overlaps the current time; do not page the escalation-level-2 backup unless the primary fails to acknowledge. incident_key must be the existing Linear identifier so the page is correlated. Unlock each exact operation name before calling it."
+  },
+  {
+    "document_id": "tech_pagerduty_v1_legacy",
+    "title": "Legacy PagerDuty Team Paging Connector",
+    "status": "superseded",
+    "updated_at": "2025-02-15T12:00:00-08:00",
+    "tags": ["PagerDuty", "bulk page", "legacy"],
+    "content": "Superseded operation pagerduty_page_team_v1(team_slug, message) paged every member of a team. This connector has been retired and must not be used."
+  },
+  {
+    "document_id": "tech_linear_graphql_2026_10",
+    "title": "Linear GraphQL Incident Operations",
+    "status": "current",
+    "updated_at": "2026-10-26T12:00:00-07:00",
+    "tags": ["Linear", "GraphQL", "issue", "incident", "RCA"],
+    "content": "Read operation: linear_search_issues_graphql(query: string). Incident update: linear_update_issue_graphql(issue_id: string, state: string, assignee_id: string, severity: string, scope: string, source_signal_ids: array[string], description: string optional). RCA creation: linear_create_issue_graphql(team_id: string, title: string, state: string, assignee_id: string, due_date: YYYY-MM-DD string, related_issue_id: string, labels: array[string], description: string optional). Payments team ID is team_payments. Use state Investigating for an active incident and Todo for an RCA. Unlock each exact operation name before calling it."
+  },
+  {
+    "document_id": "tech_statuspage_v1_2026_08",
+    "title": "Atlassian Statuspage Incident API",
+    "status": "current",
+    "updated_at": "2026-08-12T12:00:00-07:00",
+    "tags": ["Statuspage", "API", "incident", "component"],
+    "content": "Write operation: statuspage_create_incident_v1(page_id: string, name: string, status: 'investigating'|'identified'|'monitoring'|'resolved', impact: 'none'|'minor'|'major'|'critical', body: string, component_ids: array[string]). Payments page ID is page_payments. EU web checkout component ID is cmp_eu_web_checkout. Global payments component ID is cmp_global_payments. Unlock the exact operation name before calling it."
+  },
+  {
+    "document_id": "tech_slack_chat_2026_07",
+    "title": "Slack chat.postMessage Connector",
+    "status": "current",
+    "updated_at": "2026-07-08T12:00:00-07:00",
+    "tags": ["Slack", "chat.postMessage", "channel", "incident"],
+    "content": "Write operation: slack_chat_post_message(channel: string, text: string). For checkout and payments incidents, use channel inc-payments. The internal update should include severity, measured scope and exact error rate, healthy comparison channels, existing Linear incident identifier, current responder, and RCA due date. Unlock the exact operation name before calling it."
+  },
+  {
+    "document_id": "kb_sales_escalation_notes_2026_11",
+    "title": "Strategic Account Escalation Notes",
+    "status": "current",
+    "updated_at": "2026-11-11T08:25:00-08:00",
+    "tags": ["sales", "strategic account", "payments"],
+    "content": "Sales reports that an EU strategic customer could not complete web checkout. This note records the customer report only; it is not authoritative for incident severity or global service scope. Verify operational telemetry before communicating externally."
+  }
+]

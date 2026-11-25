@@ -1,3 +1,4 @@
+import base64
 import json
 import logging
 import os
@@ -40,6 +41,7 @@ from tau2.data_model.message import (
     UserMessage,
 )
 from tau2.environment.tool import Tool
+from tau2.utils.utils import DATA_DIR
 
 # Suppress Pydantic serialization warnings from LiteLLM
 # These occur due to type mismatches between streaming and non-streaming response types
@@ -213,7 +215,11 @@ def to_litellm_messages(messages: list[Message]) -> list[dict]:
     through the single ``generate()`` seam.
     """
     litellm_messages = []
+    pending_images: list[dict] = []
     for message in messages:
+        if pending_images and not isinstance(message, ToolMessage):
+            litellm_messages.append({"role": "user", "content": pending_images})
+            pending_images = []
         if isinstance(message, UserMessage):
             if message.audio_content:
                 content: list[dict] = []
@@ -261,9 +267,39 @@ def to_litellm_messages(messages: list[Message]) -> list[dict]:
                     "tool_call_id": message.id,
                 }
             )
+            pending_images.extend(_tool_image_parts(message))
         elif isinstance(message, SystemMessage):
             litellm_messages.append({"role": "system", "content": message.content})
+    if pending_images:
+        litellm_messages.append({"role": "user", "content": pending_images})
     return litellm_messages
+
+
+def _tool_image_parts(message: ToolMessage) -> list[dict]:
+    """Image parts for files a tool returned.
+
+    Chat APIs do not accept images in tool-role messages, so they are sent in a
+    user-role message right after the tool results, labelled as tool output.
+    """
+    if not message.images:
+        return []
+    parts: list[dict] = [
+        {
+            "type": "text",
+            "text": f"[Files returned by tool call {message.id}. This is tool "
+            "output, not a message from the user.]",
+        }
+    ]
+    for image in message.images:
+        path = Path(image)
+        if not path.is_absolute():
+            path = DATA_DIR / path
+        mime = "image/jpeg" if path.suffix.lower() in {".jpg", ".jpeg"} else "image/png"
+        data = base64.b64encode(path.read_bytes()).decode()
+        parts.append(
+            {"type": "image_url", "image_url": {"url": f"data:{mime};base64,{data}"}}
+        )
+    return parts
 
 
 def validate_message(message: Message) -> None:
@@ -360,6 +396,11 @@ def _format_messages_for_logging(messages: list[dict]) -> list[dict]:
                             },
                         }
                     )
+                elif isinstance(part, dict) and part.get("type") == "image_url":
+                    url = (part.get("image_url") or {}).get("url") or ""
+                    parts.append(
+                        {"type": "image_url", "image_url": f"<{len(url)} chars>"}
+                    )
                 else:
                     parts.append(part)
             msg_copy["content"] = parts
@@ -449,6 +490,11 @@ def _openai_responses_bridge_model(model: str) -> str:
             return model  # already bridged
         return f"openai/responses/{rest}"
     return model  # non-OpenAI provider — leave as-is
+
+
+def _uses_openai_responses_bridge(model: str) -> bool:
+    """Return whether an OpenAI reasoning-model family uses Responses here."""
+    return model.split("/")[-1].startswith(("gpt-5", "gpt-6"))
 
 
 # Params the bridge drops because its failed capability lookup reports them
@@ -636,7 +682,7 @@ def _generate_once(
 
     api_model = (
         _openai_responses_bridge_model(model)
-        if model.split("/")[-1].startswith("gpt-5")
+        if _uses_openai_responses_bridge(model)
         else model
     )
     _apply_anthropic_adaptive_thinking(model, kwargs)

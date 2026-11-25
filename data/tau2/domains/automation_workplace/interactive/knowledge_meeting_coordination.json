@@ -1,0 +1,100 @@
+[
+  {
+    "document_id": "kb_meridian_coordination_brief_2026_11",
+    "title": "Meridian Rollout Readiness Coordination Brief",
+    "status": "current",
+    "updated_at": "2026-11-12T11:00:00-08:00",
+    "tags": [
+      "Meridian",
+      "rollout",
+      "meeting",
+      "attendees",
+      "current brief"
+    ],
+    "content": "Authoritative brief effective 2026-11-12. Schedule a 45-minute Meridian rollout readiness review between Wednesday, November 18 and Friday, November 20, 2026. Morgan Ellis is the organizer and a required attendee. Quorum requires the active Atlas account owner, customer success manager, and implementation lead plus Meridian's active executive sponsor and operational owner. Resolve the current people and calendar IDs from Salesforce rather than copying an old invite. Invite only contacts whose relationship_status is active and meeting_eligibility is verified. The pilot has ended, so the pilot evaluator is explicitly excluded even if an older brief or CRM history lists that person. Ask Morgan for timing preferences, verify every required calendar in both PT and ET, and obtain Morgan's ordinary-language acknowledgement of the exact date, time, duration, and attendee set before creating the event. After scheduling, record the timestamp and coordination note on opportunity opp_meridian_rollout and post one complete update in Slack channel proj-meridian."
+  },
+  {
+    "document_id": "kb_meridian_coordination_brief_2026_10",
+    "title": "Meridian Pilot-to-Rollout Meeting Brief",
+    "status": "superseded",
+    "updated_at": "2026-10-20T09:00:00-07:00",
+    "tags": [
+      "Meridian",
+      "pilot",
+      "meeting",
+      "legacy",
+      "Theo"
+    ],
+    "content": "Superseded October brief. Hold a 60-minute rollout meeting Thursday at 9:00 AM PT and include pilot evaluator Theo Grant along with the pilot team. This brief predates pilot completion and must not be used for current scheduling or attendee selection."
+  },
+  {
+    "document_id": "kb_meeting_coordination_standard_2026_09",
+    "title": "Customer Meeting Coordination and Follow-Through Standard",
+    "status": "current",
+    "updated_at": "2026-09-18T13:00:00-07:00",
+    "tags": [
+      "calendar",
+      "quorum",
+      "timezone",
+      "approval",
+      "CRM",
+      "Slack"
+    ],
+    "content": "For cross-company meetings, use the latest brief and current CRM eligibility. Exhaust paginated CRM results before concluding that an attendee is absent. Check the organizer and every required attendee for the full proposed duration, respecting each attendee's timezone. A boundary where one busy interval ends exactly when the meeting begins is available. Elicit user-owned constraints instead of inferring them. Present the proposed start and end in every represented timezone, duration, and complete attendee list; conversational acknowledgement is sufficient approval. Create exactly one calendar event. Then update the specified CRM record with the event timestamp and a coordination note containing the calendar event ID, duration, attendee names, current-brief provenance, and any explicit exclusion. Post exactly one project-channel summary with date, start and end in each represented timezone, duration, attendee names, and event ID."
+  },
+  {
+    "document_id": "tech_salesforce_meeting_contacts_v61",
+    "title": "Salesforce v61 Meeting Contact Query Connector",
+    "status": "current",
+    "updated_at": "2026-11-01T10:00:00-08:00",
+    "tags": [
+      "Salesforce",
+      "API",
+      "contacts",
+      "pagination",
+      "eligibility"
+    ],
+    "content": "Discoverable read operation: salesforce_query_meeting_contacts_v61(account_id: string, page_size: integer 1-3 optional, cursor: string optional). For Meridian use account_id acct_meridian. The response follows a Salesforce query shape with totalSize, done, records, nextRecordsUrl, and next_cursor. Each record includes contact_id, name, email, role, relationship_status, meeting_eligibility, and calendar_id. Continue with next_cursor until done is true; the pilot evaluator may appear only on the final page. Unlock the exact operation name before calling it."
+  },
+  {
+    "document_id": "tech_google_calendar_coordination_v3",
+    "title": "Google Calendar v3 FreeBusy and Event Connectors",
+    "status": "current",
+    "updated_at": "2026-10-28T10:00:00-07:00",
+    "tags": [
+      "Google Calendar",
+      "API",
+      "freebusy",
+      "events.insert",
+      "timezone"
+    ],
+    "content": "Discoverable read operation: google_calendar_freebusy_query_v3(calendar_ids: array[string], time_min: ISO-8601 string with offset, time_max: ISO-8601 string with offset). Query all required calendars over the complete scheduling window. Discoverable write operation: google_calendar_events_insert_v3(calendar_id: string, summary: string, start: ISO-8601 string with offset, end: ISO-8601 string with offset, timezone: IANA timezone string, attendee_emails: array[string], description: string optional). Use the organizer's calendar and include the organizer in attendee_emails for this connector. The returned deterministic event id must be used in downstream records. Unlock each exact operation name before calling it."
+  },
+  {
+    "document_id": "tech_salesforce_opportunity_update_v61",
+    "title": "Salesforce v61 Opportunity Coordination Update",
+    "status": "current",
+    "updated_at": "2026-10-30T10:00:00-07:00",
+    "tags": [
+      "Salesforce",
+      "API",
+      "opportunity",
+      "meeting",
+      "follow-through"
+    ],
+    "content": "Discoverable write operation: salesforce_update_opportunity_v61(opportunity_id: string, next_customer_meeting_at: ISO-8601 string with offset, coordination_note: string). For Meridian use opportunity_id opp_meridian_rollout. The coordination note must include the calendar event ID, 45-minute duration, every attendee name, current-brief provenance, and that Theo was excluded because the pilot ended. Unlock the exact operation name before calling it."
+  },
+  {
+    "document_id": "tech_slack_meeting_update_2026_07",
+    "title": "Slack Project Meeting Update Connector",
+    "status": "current",
+    "updated_at": "2026-07-08T12:00:00-07:00",
+    "tags": [
+      "Slack",
+      "chat.postMessage",
+      "project",
+      "meeting"
+    ],
+    "content": "Discoverable write operation: slack_chat_post_message(channel: string, text: string). For Meridian use channel proj-meridian. Post one new message containing the date, start and end in PT and ET, 45-minute duration, every invited attendee name, and the calendar event ID. Do not list the excluded pilot evaluator in the project-channel announcement. Unlock the exact operation name before calling it."
+  }
+]

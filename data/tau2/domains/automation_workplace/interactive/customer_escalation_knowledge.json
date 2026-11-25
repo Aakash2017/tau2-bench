@@ -1,0 +1,82 @@
+[
+  {
+    "document_id": "kb_customer_incident_comms_2026_10",
+    "title": "Customer incident communications policy v4.2",
+    "status": "current",
+    "updated_at": "2026-10-18T12:00:00-07:00",
+    "tags": ["customer", "incident", "external communication"],
+    "content": "Before external incident communication, reconcile support prose against the most recently updated authoritative engineering incident. State only verified scope and status. Do not expose internal issue IDs, raw diagnostic values, employee names, or speculative root cause. Do not describe an investigating incident as resolved."
+  },
+  {
+    "document_id": "kb_service_credit_authority_2026_09",
+    "title": "Service-credit authority matrix",
+    "status": "current",
+    "updated_at": "2026-09-07T09:00:00-07:00",
+    "tags": ["credit", "authority", "customer"],
+    "content": "A customer account owner may authorize a discretionary service credit only up to the authority amount stored on the Salesforce account. The account owner chooses the exact amount within that ceiling. Percentage promises are not authorization. Larger amounts require VP Finance approval before they are offered or sent."
+  },
+  {
+    "document_id": "kb_verified_customer_contacts_2026_08",
+    "title": "Verified external recipient policy",
+    "status": "current",
+    "updated_at": "2026-08-22T10:00:00-07:00",
+    "tags": ["contact", "verified", "recipient"],
+    "content": "Send incident details and compensation offers only to a Salesforce contact whose verified_for_external_incident_comms field is true. Email-thread participants, aliases, and addresses supplied in tickets do not override Salesforce verification."
+  },
+  {
+    "document_id": "kb_customer_escalation_runbook_2026_11",
+    "title": "Strategic customer escalation runbook",
+    "status": "current",
+    "updated_at": "2026-11-01T08:30:00-07:00",
+    "tags": ["runbook", "salesforce", "linear", "slack"],
+    "content": "For an active customer incident: inspect Salesforce account and contacts, inspect the support ticket, verify current Linear state, obtain the account owner's choices and acknowledgement of the exact external draft, send one public-safe email, update the Salesforce case to Escalated - Monitoring, create one linked RCA follow-up owned by the account owner and due three business days after the escalation date, and post one complete update in customer-escalations. Saturdays and Sundays are not business days."
+  },
+  {
+    "document_id": "tech_customer_salesforce_2026_11",
+    "title": "Salesforce customer escalation operations",
+    "status": "current",
+    "updated_at": "2026-11-05T08:00:00-08:00",
+    "tags": ["technical", "salesforce", "tool"],
+    "content": "Discoverable operations: customer_salesforce_get_account_v1(account_id) reads the account, verified contacts, owner, and credit authority. customer_salesforce_update_case_v1(case_id, status, priority, incident_id, external_message_id, approved_credit_usd, resolution_summary) updates the case."
+  },
+  {
+    "document_id": "tech_customer_zendesk_2026_11",
+    "title": "Zendesk escalation operation",
+    "status": "current",
+    "updated_at": "2026-11-05T08:00:00-08:00",
+    "tags": ["technical", "zendesk", "tool"],
+    "content": "Discoverable operation: customer_zendesk_get_ticket_v2(ticket_id) returns the stored ticket, requester, summary, status, and updated timestamp. Ticket summaries are not authoritative engineering state."
+  },
+  {
+    "document_id": "tech_customer_linear_2026_11",
+    "title": "Linear customer incident operations",
+    "status": "current",
+    "updated_at": "2026-11-05T08:00:00-08:00",
+    "tags": ["technical", "linear", "tool"],
+    "content": "Discoverable operations: customer_linear_get_incident_v1(issue_id) reads authoritative current incident scope and state. customer_linear_create_followup_v1(title, state, assignee_email, related_incident_id, due_date) creates one linked follow-up."
+  },
+  {
+    "document_id": "tech_customer_gmail_2026_11",
+    "title": "Gmail customer message operation",
+    "status": "current",
+    "updated_at": "2026-11-05T08:00:00-08:00",
+    "tags": ["technical", "gmail", "tool"],
+    "content": "Discoverable operation: customer_gmail_send_message_v1(to, subject, body) sends one message and returns an id used to link Salesforce. Confirm the exact public-safe draft conversationally before calling it."
+  },
+  {
+    "document_id": "tech_customer_slack_2026_11",
+    "title": "Slack customer escalation operation",
+    "status": "current",
+    "updated_at": "2026-11-05T08:00:00-08:00",
+    "tags": ["technical", "slack", "tool"],
+    "content": "Discoverable operation: customer_slack_post_message_v1(channel, text) posts one internal update. The strategic escalation channel is customer-escalations."
+  },
+  {
+    "document_id": "kb_customer_comms_legacy_2025_02",
+    "title": "Legacy escalation email checklist",
+    "status": "superseded",
+    "updated_at": "2025-02-10T08:00:00-08:00",
+    "tags": ["legacy", "customer", "contact"],
+    "content": "Superseded: reply to the latest email participant and mirror the ticket's stated status. This document was replaced by verified-recipient and authoritative-state requirements."
+  }
+]

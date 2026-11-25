@@ -1,0 +1,170 @@
+[
+  {
+    "document_id": "kb_renewal_notice_standard_2026_10",
+    "title": "Renewal notice standard",
+    "status": "current",
+    "updated_at": "2026-10-01T09:00:00-07:00",
+    "content": "Owner: Customer Success Operations.\n\n## Scope\nEach batch covers accounts whose renewal date falls in the batch's two calendar months. A notice is required when ARR, in USD, is at least $50,000. Convert non-USD ARR at the treasury rate published for the day the notice is sent.\n\n## Price\nRenewal price = current ARR x (1 + uplift). Standard uplift is 7%. Where the contract sets an uplift cap, the uplift is the lower of 7% and the cap. Quote the price in the contract currency.\n\n## Recipient\nSend to the account's verified, active contact with the renewal_notice role who has not opted out. Never send to an unverified or inactive address.\n\n## Records\nWhen a notice is delivered, set the account's renewal stage to notice_sent, the notice date to the delivery date, and the renewal price. A notice counts as delivered only if it did not bounce.\n\n## Corrections\nIf a sent notice quoted the wrong price, send a corrected notice to the same verified contact. The corrected notice's date becomes the notice date. Do not send a second copy of a correct, delivered notice.",
+    "tags": [
+      "renewal",
+      "customer-success",
+      "notice",
+      "pricing"
+    ]
+  },
+  {
+    "document_id": "kb_renewal_parent_coverage_2026_09",
+    "title": "Parent-agreement coverage for renewals",
+    "status": "current",
+    "updated_at": "2026-10-01T09:00:00-07:00",
+    "content": "A subsidiary account that orders under its parent's master agreement renews with the parent and gets no separate notice. Set its renewal stage to covered_by_parent and leave notice date and price empty.",
+    "tags": [
+      "renewal",
+      "parent-account",
+      "master-agreement"
+    ]
+  },
+  {
+    "document_id": "kb_legal_hold_customer_comms_2026_08",
+    "title": "Legal holds and customer communications",
+    "status": "current",
+    "updated_at": "2026-10-01T09:00:00-07:00",
+    "content": "While an account has an active legal hold on external commercial communications, send nothing to that account. Set its renewal stage to legal_hold. Once Legal releases the hold, the account is handled normally. The legal holds register is the record of status.",
+    "tags": [
+      "legal-hold",
+      "renewal",
+      "communications"
+    ]
+  },
+  {
+    "document_id": "kb_batch_handoffs_2026_11",
+    "title": "Multi-day batch work and handoffs",
+    "status": "current",
+    "updated_at": "2026-10-01T09:00:00-07:00",
+    "content": "Long batches are often paused with a handoff note in the team channel. A handoff note is a summary, not a record: before continuing, confirm what actually happened in the mailbox, CRM and other systems, since deliveries can bounce and writes can fail after a note is posted. When a batch finishes, post one completion note in #renewals-ops, correcting anything the handoff got wrong.",
+    "tags": [
+      "handoff",
+      "batch",
+      "renewal",
+      "operations"
+    ]
+  },
+  {
+    "document_id": "tech_salesforce_renewals_v1",
+    "title": "Salesforce renewals (connected app)",
+    "status": "current",
+    "updated_at": "2026-10-01T09:00:00-07:00",
+    "content": "- salesforce_list_renewals_v1(renewal_from, renewal_to, page=1): five accounts per page sorted by name; check total_pages. Dates YYYY-MM-DD.\n- salesforce_get_account_v1(account_id): contract (master agreement, uplift_cap_pct, notes), parent account, contacts (role, verified, active, opted_out), renewal fields.\n- salesforce_update_renewal_v1(account_id, renewal_stage?, notice_sent_on?, renewal_price?): only passed fields change. Stages: not_started, notice_sent, covered_by_parent, legal_hold.",
+    "tags": [
+      "salesforce",
+      "renewal",
+      "connected-app"
+    ]
+  },
+  {
+    "document_id": "tech_renewals_mail_slack_legal_v1",
+    "title": "Renewals mailbox, Slack, Legal and Treasury (connected apps)",
+    "status": "current",
+    "updated_at": "2026-10-01T09:00:00-07:00",
+    "content": "- gmail_search_v1(query, folder?): keyword search of renewals@atlas.example, folders inbox and sent. Bounce notices arrive in the inbox from mailer-daemon.\n- gmail_send_message_v1(to, subject, body)\n- slack_search_messages_v1(channel, query?) and slack_chat_post_message(channel, text); channel names without '#'.\n- legal_list_holds_v1(): every hold with scope, status (active or released) and dates.\n- treasury_get_fx_rate_v1(base_currency, quote_currency, rate_date): daily treasury fixing, quote units per base unit.",
+    "tags": [
+      "gmail",
+      "slack",
+      "legal",
+      "treasury",
+      "connected-app"
+    ]
+  },
+  {
+    "document_id": "kb_renewal_notice_standard_2025_04",
+    "title": "Renewal notice standard (2025)",
+    "status": "superseded",
+    "updated_at": "2025-04-01T09:00:00-07:00",
+    "content": "Notices go to every account renewing in the batch window regardless of size, at a flat 7% uplift. Superseded by the October 2026 standard.",
+    "tags": [
+      "renewal",
+      "legacy"
+    ]
+  },
+  {
+    "document_id": "kb_qbr_cadence_2026_06",
+    "title": "QBR cadence",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Strategic accounts get quarterly business reviews; others semiannual.",
+    "tags": [
+      "customer-success"
+    ]
+  },
+  {
+    "document_id": "kb_churn_risk_2026_07",
+    "title": "Churn risk scoring",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Health scores combine usage, support volume and NPS. Red accounts get an exec sponsor.",
+    "tags": [
+      "customer-success"
+    ]
+  },
+  {
+    "document_id": "kb_discount_approvals_2026_05",
+    "title": "Discount approvals",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Discounts over 15% on new business need VP Sales approval.",
+    "tags": [
+      "sales",
+      "pricing"
+    ]
+  },
+  {
+    "document_id": "kb_invoice_disputes_2026_08",
+    "title": "Invoice disputes",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Billing disputes go to AR; CSMs log them in the account timeline.",
+    "tags": [
+      "billing"
+    ]
+  },
+  {
+    "document_id": "kb_customer_references_2026_04",
+    "title": "Customer references",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Ask before using a logo; Legal keeps the approved reference list.",
+    "tags": [
+      "marketing"
+    ]
+  },
+  {
+    "document_id": "kb_support_tiers_2026_03",
+    "title": "Support tiers",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Premium support includes a named TAM and 1-hour P1 response.",
+    "tags": [
+      "support"
+    ]
+  },
+  {
+    "document_id": "kb_onboarding_playbook_2026_09",
+    "title": "Customer onboarding playbook",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Kickoff within five business days of signature.",
+    "tags": [
+      "customer-success"
+    ]
+  },
+  {
+    "document_id": "kb_crm_hygiene_2026_02",
+    "title": "CRM hygiene",
+    "status": "current",
+    "updated_at": "2026-06-01T09:00:00-07:00",
+    "content": "Update next steps after every customer call.",
+    "tags": [
+      "salesforce"
+    ]
+  }
+]

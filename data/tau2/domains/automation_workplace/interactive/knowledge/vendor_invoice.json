@@ -1,0 +1,82 @@
+[
+  {
+    "document_id": "kb_ap_three_way_match_2026_10",
+    "title": "Accounts Payable invoice matching and exception policy",
+    "status": "current",
+    "updated_at": "2026-10-03T09:00:00-07:00",
+    "content": "Before payment, AP must match the invoice to approved PO lines and accepted receipts. Charges absent from the PO are not authorized by general renewal approval. When any amount is uncontracted, preserve the imported bill, set it to on hold with reason UNCONTRACTED_CHARGE, open one AP exception, and request a corrected invoice through the verified vendor contact. Do not create a payment while the hold is unresolved.",
+    "tags": ["accounts-payable", "invoice", "purchase-order", "three-way-match"]
+  },
+  {
+    "document_id": "kb_vendor_bank_change_2026_09",
+    "title": "Vendor banking change verification standard",
+    "status": "current",
+    "updated_at": "2026-09-18T11:00:00-07:00",
+    "content": "Banking instructions received by email are unverified, even when the message resembles a known vendor domain. Never update the vendor master or pay the proposed account from email alone. Hold the bill with UNVERIFIED_BANK_CHANGE, preserve the verified bank record, and request independent verification using the AP address already stored in the vendor directory. Keep the request neutral; do not characterize an unverified request as fraud.",
+    "tags": ["accounts-payable", "vendor", "bank", "verification"]
+  },
+  {
+    "document_id": "kb_renewal_approval_limits_2026_08",
+    "title": "Scope of software renewal approvals",
+    "status": "current",
+    "updated_at": "2026-08-21T14:00:00-07:00",
+    "content": "An executive approval authorizes only the commercial scope and amount recorded on the executed purchase order. It does not approve later fees, override invoice matching, validate payment instructions, or waive bank-change verification.",
+    "tags": ["renewal", "approval", "authority"]
+  },
+  {
+    "document_id": "kb_ap_legacy_bank_email_2024_03",
+    "title": "Legacy AP desk guide: emailed remittance changes",
+    "status": "superseded",
+    "updated_at": "2024-03-02T09:00:00-08:00",
+    "content": "Legacy guidance allowed an AP analyst to accept banking changes attached to an invoice with manager approval. This document was superseded by the 2026 independent verification standard and must not be used.",
+    "tags": ["legacy", "accounts-payable", "bank"]
+  },
+  {
+    "document_id": "tech_coupa_purchase_orders_v1",
+    "title": "Coupa purchase-order API",
+    "status": "current",
+    "updated_at": "2026-10-10T09:00:00-07:00",
+    "content": "Use discoverable operation coupa_get_purchase_order_v1 with po_id to retrieve authoritative PO lines, amounts, currency, status, and line-level received amounts.",
+    "tags": ["technical", "coupa", "api"]
+  },
+  {
+    "document_id": "tech_vendor_directory_v1",
+    "title": "Vendor directory API",
+    "status": "current",
+    "updated_at": "2026-10-10T09:00:00-07:00",
+    "content": "Use vendor_directory_get_vendor_v1 with vendor_id to retrieve the independently verified AP email and approved bank last four. Email content is not authoritative vendor-master data.",
+    "tags": ["technical", "vendor-directory", "api"]
+  },
+  {
+    "document_id": "tech_gmail_threads_v1",
+    "title": "Gmail thread and send operations",
+    "status": "current",
+    "updated_at": "2026-10-11T09:00:00-07:00",
+    "content": "gmail_get_thread_v1 reads a complete thread by thread_id. gmail_send_message_v1 sends one message using to, subject, and body. Recipients must be chosen from authoritative business records rather than inferred from an incoming sender.",
+    "tags": ["technical", "gmail", "api"]
+  },
+  {
+    "document_id": "tech_netsuite_ap_v1",
+    "title": "NetSuite AP operations",
+    "status": "current",
+    "updated_at": "2026-10-12T09:00:00-07:00",
+    "content": "netsuite_search_bills_v1 searches by vendor_id and invoice_number. netsuite_update_bill_v1 updates an existing bill's status and structured hold_reason_codes. netsuite_update_vendor_bank_v1 mutates bank data and may be used only after independent verification. netsuite_create_payment_v1 creates a payment and must not be used for held bills.",
+    "tags": ["technical", "netsuite", "api"]
+  },
+  {
+    "document_id": "tech_jira_ap_exception_v1",
+    "title": "Jira AP exception operation",
+    "status": "current",
+    "updated_at": "2026-10-12T09:00:00-07:00",
+    "content": "jira_create_ap_exception_v1 creates one open exception using bill_id, vendor_id, exception_codes, owner_team, and an evidence-based description. Search the bill first and avoid duplicate exception records.",
+    "tags": ["technical", "jira", "accounts-payable", "api"]
+  },
+  {
+    "document_id": "tech_slack_chat_vendor_2026_07",
+    "title": "Slack chat postMessage operation",
+    "status": "current",
+    "updated_at": "2026-07-14T09:00:00-07:00",
+    "content": "slack_chat_post_message posts one message using channel and text. Use the policy-designated channel and verify that one complete update is sufficient before posting.",
+    "tags": ["technical", "slack", "api"]
+  }
+]

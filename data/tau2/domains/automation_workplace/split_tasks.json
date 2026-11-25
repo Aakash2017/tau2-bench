@@ -1,0 +1,65 @@
+{
+  "base": [
+    "automation_workplace__sales__multi_hop_lookup",
+    "automation_workplace__sales__negative_selection",
+    "automation_workplace__finance__invoice_email_extract",
+    "automation_workplace__finance__contract_billing",
+    "automation_workplace__hr__multi_app_new_hire_setup",
+    "automation_workplace__hr__employee_transfer_approval_workflow",
+    "automation_workplace__operations__facility_incident_triage",
+    "automation_workplace__operations__server_capacity_threshold_alerts",
+    "automation_workplace__support__zendesk_sf_case_sync",
+    "automation_workplace__support__zendesk_maintenance_notify"
+  ],
+  "test": [
+    "automation_workplace__sales__multi_hop_lookup",
+    "automation_workplace__sales__negative_selection",
+    "automation_workplace__finance__invoice_email_extract",
+    "automation_workplace__finance__contract_billing",
+    "automation_workplace__hr__multi_app_new_hire_setup",
+    "automation_workplace__hr__employee_transfer_approval_workflow",
+    "automation_workplace__operations__facility_incident_triage",
+    "automation_workplace__operations__server_capacity_threshold_alerts",
+    "automation_workplace__support__zendesk_sf_case_sync",
+    "automation_workplace__support__zendesk_maintenance_notify"
+  ],
+  "source_control": [
+    "automation_workplace__sales__multi_hop_lookup",
+    "automation_workplace__sales__negative_selection",
+    "automation_workplace__finance__invoice_email_extract",
+    "automation_workplace__finance__contract_billing",
+    "automation_workplace__hr__multi_app_new_hire_setup",
+    "automation_workplace__hr__employee_transfer_approval_workflow",
+    "automation_workplace__operations__facility_incident_triage",
+    "automation_workplace__operations__server_capacity_threshold_alerts",
+    "automation_workplace__support__zendesk_sf_case_sync",
+    "automation_workplace__support__zendesk_maintenance_notify"
+  ],
+  "interactive_pilot": [
+    "automation_workplace__interactive__incident_triage_001"
+  ],
+  "interactive_canonical": [
+    "automation_workplace__interactive__incident_triage_001",
+    "automation_workplace__interactive__vendor_invoice_001",
+    "automation_workplace__interactive__customer_escalation_001",
+    "automation_workplace__interactive__access_provisioning_001",
+    "automation_workplace__interactive__access_provisioning_002",
+    "automation_workplace__interactive__access_provisioning_003",
+    "automation_workplace__interactive__access_provisioning_004",
+    "automation_workplace__interactive__access_provisioning_005",
+    "automation_workplace__interactive__access_provisioning_006",
+    "automation_workplace__interactive__access_provisioning_007",
+    "automation_workplace__interactive__renewal_portfolio_001",
+    "automation_workplace__interactive__meeting_coordination_001",
+    "automation_workplace__interactive__vendor_invoice_002",
+    "automation_workplace__interactive__renewal_portfolio_002",
+    "automation_workplace__interactive__customer_escalation_002",
+    "automation_workplace__interactive__vendor_invoice_002_solo",
+    "automation_workplace__interactive__vendor_invoice_003",
+    "automation_workplace__interactive__vendor_invoice_004",
+    "automation_workplace__interactive__vendor_invoice_005"
+  ],
+  "access_precedent": [
+    "automation_workplace__interactive__access_provisioning_007"
+  ]
+}
