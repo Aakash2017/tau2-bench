@@ -13,6 +13,7 @@ from tau2.data_model.tasks import (
     Task,
     UserScenario,
 )
+from tau2.domains.automation_workplace import standalone_apps
 from tau2.domains.automation_workplace.automationbench_source import (
     compute_allowed_services,
     load_source_task,
@@ -223,7 +224,12 @@ def _build_interactive_task(spec: dict) -> Task:
     }
     if generic_world := spec.get("generic_world"):
         # Normalize once so read-only api_fetch calls leave the dump unchanged.
-        seeded = world_state_from_dict(deepcopy(generic_world)).model_dump(mode="json")
+        if standalone_apps.is_standalone(generic_world):
+            seeded = deepcopy(generic_world)
+        else:
+            seeded = world_state_from_dict(deepcopy(generic_world)).model_dump(
+                mode="json"
+            )
         agent_data["world"] = seeded
         agent_data["initial_world"] = deepcopy(seeded)
     if family_id == "incident_triage":
@@ -256,23 +262,29 @@ def _build_interactive_task(spec: dict) -> Task:
     )
 
 
-def _interactive_tasks() -> list[Task]:
-    return [
-        _build_interactive_task(load_file(path))
-        for path in sorted(AUTOMATION_WORKPLACE_INTERACTIVE_TASKS_DIR.glob("*.json"))
-    ]
+def _interactive_tasks(selected: Optional[set[str]] = None) -> list[Task]:
+    tasks = []
+    for path in sorted(AUTOMATION_WORKPLACE_INTERACTIVE_TASKS_DIR.glob("*.json")):
+        spec = load_file(path)
+        if selected is None or spec.get("id") in selected:
+            tasks.append(_build_interactive_task(spec))
+    return tasks
 
 
 def get_tasks(task_split_name: Optional[str] = "base") -> list[Task]:
-    tasks = [_build_task(overlay) for overlay in TASK_OVERLAYS] + _interactive_tasks()
     if task_split_name is None:
-        return tasks
+        return [_build_task(o) for o in TASK_OVERLAYS] + _interactive_tasks()
     splits = get_tasks_split()
     if task_split_name not in splits:
         raise ValueError(
             f"Invalid task split name: {task_split_name}. Valid splits: {splits.keys()}"
         )
     selected = set(splits[task_split_name])
+    interactive = _interactive_tasks(selected)
+    if len(interactive) == len(selected):
+        # Authored tasks do not need the adapted AutomationBench source tasks.
+        return interactive
+    tasks = [_build_task(overlay) for overlay in TASK_OVERLAYS] + interactive
     return [task for task in tasks if task.id in selected]
 
 

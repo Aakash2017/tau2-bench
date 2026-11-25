@@ -5781,13 +5781,20 @@
   "generic_world": {
     "meta": {
       "schema_version": "0.1.0",
-      "current_time": "2026-12-14T17:00:00Z"
+      "current_time": "2026-12-14T17:00:00Z",
+      "engine": "standalone"
     },
     "gmail": {
-      "messages": []
+      "messages": [],
+      "labels": [],
+      "drafts": [],
+      "attachments": [],
+      "threads": []
     },
-    "google_sheets": {
-      "spreadsheets": []
+    "google_drive": {
+      "actions": {},
+      "folders": [],
+      "files": []
     }
   },
   "assertions": [

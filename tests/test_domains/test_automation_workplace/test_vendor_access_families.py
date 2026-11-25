@@ -3,12 +3,10 @@ from pathlib import Path
 
 import pytest
 
-from tau2.domains.automation_workplace.data_model import KnowledgeDocument
 from tau2.domains.automation_workplace.families import (
     access_provisioning,
     vendor_invoice,
 )
-from tau2.domains.automation_workplace.knowledge import search_documents
 
 DATA_DIR = (
     Path(__file__).resolve().parents[3]

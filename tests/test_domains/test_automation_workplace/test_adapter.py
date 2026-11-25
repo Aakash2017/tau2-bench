@@ -1,11 +1,30 @@
 import json
 
+import pytest
+
 from tau2.data_model.message import AssistantMessage, ToolCall
 from tau2.data_model.tasks import EvaluationCriteria, RewardType
+from tau2.domains.automation_workplace import automationbench_source
 from tau2.domains.automation_workplace.environment import get_environment, get_tasks
 from tau2.domains.automation_workplace.prompts import USER_SIMULATION_GUIDELINES
 from tau2.evaluator.evaluator_env import EnvironmentEvaluator
 from tau2.runner.build import build_user
+
+
+def _source_checkout_available() -> bool:
+    try:
+        automationbench_source.ensure_source_checkout()
+    except RuntimeError:
+        return False
+    return True
+
+
+# These tests exercise the adapted AutomationBench source tasks. The authored
+# access tasks do not need that checkout.
+pytestmark = pytest.mark.skipif(
+    not _source_checkout_available(),
+    reason="needs a zapier/AutomationBench checkout (set AUTOMATIONBENCH_ROOT)",
+)
 
 
 def _initialized_environment(task_index: int = 0):

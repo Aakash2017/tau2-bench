@@ -6,6 +6,7 @@ from copy import deepcopy
 from importlib import import_module
 from typing import Any
 
+from tau2.domains.automation_workplace import standalone_apps
 from tau2.domains.automation_workplace.automationbench_source import (
     world_state_from_dict,
 )
@@ -91,6 +92,8 @@ def _generic_state(world: dict[str, Any]) -> dict[str, Any]:
     Any api_fetch, even a read, rewrites the stored world in normalized form, so a
     raw comparison would count reads of an unseeded world as side effects.
     """
+    if standalone_apps.is_standalone(world):
+        return standalone_apps.generic_state(world)
     normalized = world_state_from_dict(deepcopy(world)).model_dump(mode="json")
     normalized.pop("meta", None)
     return normalized

@@ -12,6 +12,8 @@ import sys
 from copy import deepcopy
 from pathlib import Path
 
+from tau2.domains.automation_workplace.standalone_apps import new_world
+
 INTERACTIVE = Path(sys.argv[1])
 BASE_DIR = Path(__file__).parent / "base"
 BASE = json.loads((BASE_DIR / "task6_world.json").read_text())
@@ -1091,11 +1093,7 @@ world["injected_faults"] = []
 world["task_id"] = "access_provisioning_007"
 messages = ordered
 
-generic_world = {
-    "meta": {"schema_version": "0.1.0", "current_time": "2026-12-14T17:00:00Z"},
-    "gmail": {"messages": []},
-    "google_sheets": {"spreadsheets": []},
-}
+generic_world = new_world("2026-12-14T17:00:00Z")
 
 # -------------------------------------------------------------------- assertions
 GRANTS = {

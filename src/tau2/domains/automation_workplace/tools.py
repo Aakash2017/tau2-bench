@@ -2,7 +2,7 @@ import json
 from typing import Optional
 
 from tau2.data_model.message import ToolOutputWithImages
-from tau2.domains.automation_workplace import automationbench_source
+from tau2.domains.automation_workplace import automationbench_source, standalone_apps
 from tau2.domains.automation_workplace.data_model import AutomationWorkplaceDB
 from tau2.domains.automation_workplace.family_registry import (
     call_tool as call_family_tool,
@@ -45,6 +45,8 @@ class AutomationWorkplaceTools(ToolKitBase):
         """
         if top_k < 1 or top_k > 20:
             raise ValueError("top_k must be between 1 and 20")
+        if standalone_apps.is_standalone(self.db.world):
+            return standalone_apps.api_search(query, top_k)
         return automationbench_source.api_search(query=query, top_k=top_k)
 
     @is_tool(ToolType.WRITE)
@@ -67,6 +69,8 @@ class AutomationWorkplaceTools(ToolKitBase):
         Returns:
             A JSON string matching the corresponding real API response shape.
         """
+        if standalone_apps.is_standalone(self.db.world):
+            return standalone_apps.api_fetch(self.db.world, method, url, params, body)
         world = automationbench_source.world_state_from_dict(self.db.world)
         response = automationbench_source.api_fetch(
             world=world,
@@ -88,6 +92,8 @@ class AutomationWorkplaceTools(ToolKitBase):
         Returns:
             Base64url-encoded text accepted by Gmail's send endpoints.
         """
+        if standalone_apps.is_standalone(self.db.world):
+            return standalone_apps.base64_encode(text)
         return automationbench_source.base64_encode(text)
 
     @is_tool(ToolType.READ)
