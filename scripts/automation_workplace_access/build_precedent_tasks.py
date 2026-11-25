@@ -142,6 +142,14 @@ class Build:
             "thread_id": self.keys[parent] if parent else "",
         }
 
+    def find(self, key, snippet):
+        """Register an existing seeded message by a unique text snippet."""
+        hits = [
+            m for m in self.world["slack_messages"].values() if snippet in m["text"]
+        ]
+        assert len(hits) == 1, (snippet, len(hits))
+        self.keys[key] = hits[0]["message_id"]
+
     def desk(self, key, stamp, name, what, until, rid):
         self.say(
             key, "atlas-ops", stamp, f"{name} received {what} through {until} ({rid})."
@@ -520,6 +528,7 @@ b.desk(
     "2027-03-02",
     "ACCESS-409",
 )
+b.find("hana_ev", "Amir hasn't done secure-production-access yet")
 b.say(
     "tomas_ok",
     "Marta Kowalski",
@@ -627,12 +636,12 @@ spec008 = {
             "status": "Blocked - training",
             "reason": "PRODUCTION_TRAINING_INCOMPLETE",
             "label": "Hana: read-only held until the prod course is done",
-            "evidence": [],
+            "evidence": ["hana_ev"],
             "note": "Waiting on the production course, assigned.",
         }
     ],
     "trainings": ["worker_hana_kim"],
-    "training_evidence": [],
+    "training_evidence": ["hana_ev"],
     "silent": ["hana kim", "bruno costa"],
     "desk_posts": ["wen_bot", "kai_bot", "mina_bot", "esi_bot"],
     "nl": [
@@ -640,8 +649,6 @@ spec008 = {
         NL_RULE,
     ],
 }
-spec008["holds"][0]["evidence"] = ["wen_do"]
-spec008["training_evidence"] = ["wen_do"]
 finish(b, spec008)
 
 # =========================================================================== 009
@@ -748,6 +755,7 @@ b.desk(
     "2026-12-14",
     "ACCESS-405",
 )
+b.find("vp_ev", "parking ACCESS-384")
 b.say(
     "mei_vp",
     "Rafael Ortiz",
@@ -863,7 +871,7 @@ spec009 = {
             "status": "Blocked - approval",
             "reason": "ROLE_OWNER_APPROVAL_PENDING",
             "label": "Mei: admin held, only the VP approved",
-            "evidence": ["mei_vp"],
+            "evidence": ["mei_vp", "vp_ev"],
             "note": "Waiting on the production admin owners.",
         }
     ],
@@ -886,6 +894,7 @@ b.person("Wen Park", "Software Engineer")
 b.person("Kai Nakamura", "Site Reliability Engineer", manager=MARTA)
 b.person("Dara Quinn", "Data Engineer", course_done="2026-10-27")
 teo, wen, kai = (f"worker_{n}" for n in ("teo_brandvold", "wen_park", "kai_nakamura"))
+b.find("hana_ev", "Amir hasn't done secure-production-access yet")
 b.say(
     "teo_ask",
     "Marta Kowalski",
@@ -1094,12 +1103,12 @@ spec010 = {
             "status": "Blocked - training",
             "reason": "PRODUCTION_TRAINING_INCOMPLETE",
             "label": "Hana: read-only held until the prod course is done",
-            "evidence": ["ines_hold"],
+            "evidence": ["hana_ev"],
             "note": "Waiting on the production course, assigned.",
         },
     ],
     "trainings": ["worker_hana_kim"],
-    "training_evidence": ["ines_hold"],
+    "training_evidence": ["hana_ev"],
     "silent": ["sven holm", "hana kim", "bruno costa"],
     "desk_posts": ["teo_bot", "wen_bot", "ines_bot", "kai_bot"],
     "nl": [

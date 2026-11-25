@@ -801,3 +801,18 @@ asking Ken for Dara's end date. `disclosure_conformance.py` (simulator check bef
 (per-trial attribution to agent or environment after a run) support the disclosure task.
 Open items: the same people appear with different dates across the separate 008 to 010 worlds, so the worlds cannot be
 merged for a memory eval without reconciling timelines; `manifest.json` `knowledge_document_count` is stale.
+
+### Tasks 8 to 10, strict successes (3 trials per cell)
+
+| Task | `gpt-6.2-astra` xhigh | `claude-opus-5-5` high |
+|---|---|---|
+| 008 | 2/3 | 1/3 |
+| 009 | 2/3 | 0/1 (2 trials lost to an Anthropic billing error, not rerun) |
+| 010 | 1/3 | 0/3 |
+
+Astra pass^1/pass^2/pass^3 averaged over Tasks 7 to 10: 0.67 / 0.42 / 0.25 (pass@3 1.00). Failure modes:
+Astra 008 and 009 lost only on one combined Slack post; Astra 010 never asked the manager for Dara's end date in 2 of 3
+trials. Opus 010 always asked and got the date, then set Omar's expiry to his stated end (2027-03-31) instead of capping
+at the 30-day window; Opus 008 set Ines's expiry one day late in 2 trials. Results:
+`data/simulations/automation_workplace_access_008_010_astra62_xhigh/`, `opus55_ap008_010_n3/`. Per-task detail:
+`docs/automation-workplace-access-tasks.md`.
